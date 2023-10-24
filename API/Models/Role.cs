@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace Leave_Management_App.Models
+namespace API.Models
 {
 
     [Table("tb_m_roles")]

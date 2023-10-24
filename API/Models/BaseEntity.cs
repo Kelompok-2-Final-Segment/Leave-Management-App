@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace Leave_Management_App.Models
+namespace API.Models
 {
     public class BaseEntity
     {

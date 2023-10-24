@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "Leave_Management_App": {
+    "API": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

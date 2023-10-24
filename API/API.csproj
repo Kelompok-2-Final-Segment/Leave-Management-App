@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Leave_Management_App</RootNamespace>
+    <RootNamespace>API</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,10 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Contracts\" />
-    <Folder Include="Repositories\" />
-    <Folder Include="Utilities\Handlers\" />
     <Folder Include="Utilities\Validations\" />
   </ItemGroup>
 

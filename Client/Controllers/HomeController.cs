@@ -1,8 +1,8 @@
-﻿using Client_Leave_Management_App.Models;
+﻿using Client_API.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace Client_Leave_Management_App.Controllers
+namespace Client_API.Controllers
 {
     public class HomeController : Controller
     {

@@ -1,4 +1,4 @@
-namespace Client_Leave_Management_App.Models
+namespace Client_API.Models
 {
     public class ErrorViewModel
     {

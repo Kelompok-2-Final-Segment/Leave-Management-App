@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace Leave_Management_App.Models
+namespace API.Models
 {
     [Table("tb_m_accounts")]
     public class Account : BaseEntity
@@ -14,6 +14,7 @@ namespace Leave_Management_App.Models
         public bool IsUsed { get; set; }
         [Required, Column("expired_time")]
         public DateTime ExpiredTime { get; set; }
+        public Employee? Employee { get; set; }
         public ICollection<AccountRole>? AccountRoles { get; set; }
 
     }

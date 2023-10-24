@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 
-namespace Leave_Management_App.Models
+namespace API.Models
 {
     [Table("tb_m_account_roles")]
     public class AccountRole : BaseEntity
