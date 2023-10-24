@@ -1,4 +1,5 @@
 ﻿using Client_API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -18,9 +19,25 @@ namespace Client_API.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        [AllowAnonymous]
+        [HttpGet("/Unauthorized")]
+        public IActionResult Unauthorized()
         {
-            return View();
+            return View("401");
+        }
+
+        [AllowAnonymous]
+        [HttpGet("/NotFound")]
+        public IActionResult NotFound()
+        {
+            return View("404");
+        }
+
+        [AllowAnonymous]
+        [HttpGet("/Forbidden")]
+        public IActionResult Forbidden()
+        {
+            return View("403");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
