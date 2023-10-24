@@ -49,5 +49,5 @@ public class ManagerController : Controller
         return View();
     }
 
-    
+
 }
