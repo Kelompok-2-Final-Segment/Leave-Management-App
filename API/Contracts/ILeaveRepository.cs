@@ -1,4 +1,4 @@
-﻿using API.DTOs.Leave;
+﻿using API.DTOs.Leaves;
 using API.Models;
 
 namespace API.Contracts

@@ -8,8 +8,8 @@ namespace API.Models
     {
         [Required, Column("name",TypeName = "nvarchar(100)")]
         public string Name { get; set; }
-        [Required, Column("manager_guid")]
-        public Guid ManagerGuid { get; set; }
+        [Column("manager_guid")]
+        public Guid? ManagerGuid { get; set; }
         public IEnumerable<Employee>? Employees { get; set; }
     }
 }
