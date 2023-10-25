@@ -67,8 +67,8 @@ namespace API.Data
 
             modelBuilder.Entity<Role>().HasData(
                 new Role { Guid = Guid.NewGuid(), Name = "Manager", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now },
-                new Role { Guid = Guid.NewGuid(), Name = "Employee", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now },
-                new Role { Guid = Guid.NewGuid(), Name = "HR", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now }
+                new Role { Guid = Guid.NewGuid(), Name = "Staff", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now },
+                new Role { Guid = Guid.NewGuid(), Name = "Admin", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now }
                 );
 
             modelBuilder.Entity<Department>().HasData(
