@@ -10,44 +10,44 @@ public class ManagerController : Controller
         return View();
     }
 
-    // Auth
-    public IActionResult Login()
-    {
-        return View();
-    }
-
-    public IActionResult Logout()
-    {
-        return View();
-    }
-
     // Leaves Management
-    public IActionResult ManageLeaveApplications()
+    [HttpGet("/manager/leave/pending")]
+    public IActionResult ManagePendingLeaves()
     {
-        return View();
+        return View("pending-leave");
     }
 
-    public IActionResult ManageLeaveHistories()
+    [HttpGet("/manager/leave/approved")]
+    public IActionResult ManageApprovedLeaves()
     {
-        return View();
+        return View("approved-leave");
     }
 
-    
-    // Employeee Management 
+    [HttpGet("manager/leave/rejected")]
+    public IActionResult ManageRejectedLeaves()
+    {
+        return View("rejected-leave");
+    }
+
+    [HttpGet("manager/leave/history")]
+
+    public IActionResult ManageLeaveHistory()
+    {
+        return View("leave-history");
+    }
+
+    [HttpGet("manager/leave/statistic")]
+
+    public IActionResult ManageLeaveStatistic()
+    {
+        return View("leave-statistic");
+    }
+
+
+    // Employeee Management
+    [HttpGet("manager/staff/")]
     public IActionResult GetAllEmployee()
     {
-        return View();
+        return View("employee");
     }
-
-    public IActionResult GetEmployeeDetailByNik()
-    {
-        return View();
-    }
-
-    public IActionResult CreateEmployee()
-    {
-        return View();
-    }
-
-
 }

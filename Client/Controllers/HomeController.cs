@@ -19,6 +19,19 @@ namespace Client_API.Controllers
             return View();
         }
 
+        // Auth
+        [HttpGet("/login")]
+        public IActionResult Login()
+        {
+            return View("login");
+        }
+
+        [HttpGet("/logout")]
+        public IActionResult Logout()
+        {
+            return View("logout");
+        }
+
         [AllowAnonymous]
         [HttpGet("/Unauthorized")]
         public IActionResult Unauthorized()
