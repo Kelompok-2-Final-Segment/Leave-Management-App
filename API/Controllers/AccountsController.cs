@@ -164,7 +164,7 @@ namespace API.Controllers
                     //return badrequest apabila ada s
                     return BadRequest(new ResponseBadRequestHandler("Email is Used"));
                 }
-               
+
                 Account account = registerDto;
                 account.Guid = employee.Guid;
                 account.Password = HashHandler.HashPassword(registerDto.Password);
@@ -244,9 +244,9 @@ namespace API.Controllers
                     return NotFound(new ResponseNotFoundHandler("Data Not Found"));
 
                 }
-                Account toUpdate = accountDto;
-                toUpdate.CreatedDate = entity.CreatedDate;
-                var result = _accountRepository.Update(toUpdate);
+                entity = AccountDto.ConvertToAccount(accountDto, entity);
+
+                var result = _accountRepository.Update(entity);
                 return Ok(new ResponseOkHandler<String>("Data Updated"));
 
             }

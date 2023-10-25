@@ -71,8 +71,8 @@ namespace API.Controllers
                     return NotFound(new ResponseNotFoundHandler("Data Not Found"));
 
                 }
-                entity = (LeaveBalance)leaveBalanceDto;
-                entity.ModifiedDate = DateTime.Now;
+                entity = LeaveBalanceDto.ConvertToLeaveBalance(leaveBalanceDto, entity);
+
 
                 var result = _leaveBalanceRepository.Update(entity);
                 return Ok(new ResponseOkHandler<String>("Data Updated"));

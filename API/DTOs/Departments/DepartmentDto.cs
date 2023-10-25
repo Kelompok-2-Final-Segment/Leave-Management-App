@@ -8,17 +8,15 @@ namespace API.DTOs.Departments
         public string Name { get; set; }
         public Guid? ManagerGuid { get; set; }
 
-        public static explicit operator Department(DepartmentDto dto)
+        public static Department ConvertToDepartment(DepartmentDto dto, Department department)
         {
-            return new Department
-            {
-                Guid = dto.Guid,
-                Name = dto.Name,
-                ManagerGuid = dto.ManagerGuid,
-            };
+            department.Name = dto.Name;
+            department.ManagerGuid = dto.ManagerGuid;
+            department.ModifiedDate = DateTime.Now;
+            return department;
         }
 
-        public static implicit operator DepartmentDto(Department department)
+        public static explicit operator DepartmentDto(Department department)
         {
             return new DepartmentDto
             {

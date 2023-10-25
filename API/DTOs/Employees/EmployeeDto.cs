@@ -14,10 +14,10 @@ namespace API.DTOs.Employees
         [Display(Name = "Last Name")]
         public string? LastName { get; set; }
         [Display(Name = "Birth Date")]
-        public DateTime BirthDate {  get; set; }
+        public DateTime BirthDate { get; set; }
         public Gender Gender { get; set; }
         [Display(Name = "Hiring Date")]
-        public DateTime HiringDate {  get; set; }
+        public DateTime HiringDate { get; set; }
         public string Email { get; set; }
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
@@ -25,28 +25,26 @@ namespace API.DTOs.Employees
 
 
         //membuat implicit operator untuk update
-        public static implicit operator Employee(EmployeeDto employeeDto)
+        public static Employee ConvertToEMployee(EmployeeDto employeeDto, Employee employee)
         {
-            return new Employee
-            {
-                Guid = employeeDto.Guid,
-                FirstName = employeeDto.FirstName,
-                LastName = employeeDto.LastName,
-                BirthDate = employeeDto.BirthDate,
-                Gender = employeeDto.Gender,
-                HiringDate = employeeDto.HiringDate,
-                Email = employeeDto.Email,
-                PhoneNumber = employeeDto.PhoneNumber,
-                ModifiedDate = DateTime.Now
 
-            };
+            employee.FirstName = employeeDto.FirstName;
+            employee.LastName = employeeDto.LastName;
+            employee.BirthDate = employeeDto.BirthDate;
+            employee.Gender = employeeDto.Gender;
+            employee.HiringDate = employeeDto.HiringDate;
+            employee.Email = employeeDto.Email;
+            employee.PhoneNumber = employeeDto.PhoneNumber;
+            employee.ModifiedDate = DateTime.Now;
+            return employee;
+
         }
         //membuat explicit operator untuk response get, create , getbyid
         public static explicit operator EmployeeDto(Employee employee)
         {
             return new EmployeeDto
             {
-                Guid =employee.Guid,
+                Guid = employee.Guid,
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
                 BirthDate = employee.BirthDate,

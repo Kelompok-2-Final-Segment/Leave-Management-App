@@ -18,7 +18,7 @@ namespace API.Controllers
 
         public DepartmentsController(IDepartmentRepository departmentRepository)
         {
-           _departmentRepository = departmentRepository;
+            _departmentRepository = departmentRepository;
         }
 
         [HttpGet]
@@ -72,9 +72,8 @@ namespace API.Controllers
                     return NotFound(new ResponseNotFoundHandler("Data Not Found"));
 
                 }
-                entity = (Department) departmentDto;
-                entity.ModifiedDate = DateTime.Now;
-          
+                entity = DepartmentDto.ConvertToDepartment(departmentDto, entity);
+
                 var result = _departmentRepository.Update(entity);
                 return Ok(new ResponseOkHandler<String>("Data Updated"));
 
@@ -84,7 +83,7 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Update Data", e.Message));
             }
         }
-   
+
         [HttpDelete("{guid}")]
         public IActionResult Delete(Guid guid)
         {

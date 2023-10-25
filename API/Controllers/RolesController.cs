@@ -71,11 +71,10 @@ namespace API.Controllers
                 if (entity is null)
                 {
                     return NotFound(new ResponseNotFoundHandler("Data Not Found"));
-
                 }
-                entity.Name = roleDto.Name;
-                entity.ModifiedDate = DateTime.Now;
-
+                //entity.Name = roleDto.Name;
+                 entity = RoleDto.ConvertToRole(roleDto, entity);
+  
                 var result = _roleRepository.Update(entity);
                 return Ok(new ResponseOkHandler<String>("Data Updated"));
 

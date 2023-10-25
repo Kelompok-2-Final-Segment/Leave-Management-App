@@ -9,15 +9,13 @@ namespace API.DTOs.Roles
 
 
         //membuat implicit operator untuk update
-        public static implicit operator Role(RoleDto roleDto)
+        public static Role ConvertToRole(RoleDto roleDto , Role role)
         {
-            return new Role
-            {
-                Guid = roleDto.Guid,
-                Name = roleDto.Name,
-                ModifiedDate = DateTime.Now
 
-            };
+            role.Name = roleDto.Name;
+            role.ModifiedDate = DateTime.Now;
+
+            return role;
         }
         //membuat explicit operator untuk response get, create , getbyid
         public static explicit operator RoleDto(Role role)

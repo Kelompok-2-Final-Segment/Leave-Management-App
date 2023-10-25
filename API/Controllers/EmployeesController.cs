@@ -35,14 +35,14 @@ namespace API.Controllers
                                   select new EmployeeDetailsDto
                                   {
                                       Guid = emp.Guid,
-                      
+
                                       FullName = string.Concat(emp.FirstName, " ", emp.LastName),
                                       BirthDate = emp.BirthDate,
                                       Gender = emp.Gender.ToString(),
                                       HiringDate = emp.HiringDate,
                                       Email = emp.Email,
                                       PhoneNumber = emp.PhoneNumber,
-                              
+
                                   };
 
             return Ok(new ResponseOkHandler<IEnumerable<EmployeeDetailsDto>>(employeeDetails));
@@ -101,16 +101,8 @@ namespace API.Controllers
                     return NotFound(new ResponseNotFoundHandler("Data Not Found"));
 
                 }
-                entity.ModifiedDate = DateTime.Now;
-                entity.Email = employeeDto.Email;
-                entity.BirthDate = employeeDto.BirthDate;
-                entity.HiringDate = employeeDto.HiringDate;
-                entity.FirstName = employeeDto.FirstName;
-                entity.LastName = employeeDto.LastName;
-                entity.Gender = employeeDto.Gender;
-                entity.PhoneNumber = employeeDto.PhoneNumber;
 
-                ///*t/**/oUpdate.NIK = entity.NIK;*/
+                entity = EmployeeDto.ConvertToEMployee(employeeDto, entity);
                 var result = _employeeRepository.Update(entity);
                 return Ok(new ResponseOkHandler<String>("Data Updated"));
 

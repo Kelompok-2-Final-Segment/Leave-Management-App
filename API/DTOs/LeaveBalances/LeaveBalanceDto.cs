@@ -20,15 +20,14 @@ namespace API.DTOs.LeaveBalances
             };
         }
 
-        public static implicit operator LeaveBalance(LeaveBalanceDto leaveBalanceDto)
+        public static LeaveBalance ConvertToLeaveBalance(LeaveBalanceDto leaveBalanceDto, LeaveBalance leaveBalance)
         {
-            return new LeaveBalance
-            {
-                Guid = leaveBalanceDto.Guid,
-                Balance = leaveBalanceDto.AvailableBalance,
-                UsedBalance = leaveBalanceDto.UsedBalance,
-                LeaveTypeGuid = leaveBalanceDto.LeaveTypeGuid
-            };
+
+            leaveBalance.Balance = leaveBalanceDto.AvailableBalance;
+            leaveBalance.UsedBalance = leaveBalanceDto.UsedBalance;
+            leaveBalance.LeaveTypeGuid = leaveBalanceDto.LeaveTypeGuid;
+            leaveBalance.ModifiedDate = DateTime.Now;
+            return leaveBalance;
         }
     }
 }

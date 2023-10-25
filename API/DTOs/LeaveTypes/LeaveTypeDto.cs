@@ -17,8 +17,16 @@ namespace API.DTOs.LeaveTypes
                 Name = leavetype.Name,
                 MinDuration = leavetype.MinDuration,
                 MaxDuration = leavetype.MaxDuration,
-          
+
             };
+        }
+        public static LeaveType ConvertToLeaveType(LeaveTypeDto leavetypeDto, LeaveType leaveType)
+        {
+            leaveType.Name = leavetypeDto.Name;
+            leaveType.MinDuration = leavetypeDto.MinDuration;
+            leaveType.MaxDuration = leavetypeDto.MaxDuration;
+            leaveType.ModifiedDate = DateTime.Now;
+            return leaveType;
         }
     }
 }

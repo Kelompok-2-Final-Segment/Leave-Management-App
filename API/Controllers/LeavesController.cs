@@ -71,8 +71,7 @@ namespace API.Controllers
                     return NotFound(new ResponseNotFoundHandler("Data Not Found"));
 
                 }
-                entity = (Leave)leaveDto;
-                entity.ModifiedDate = DateTime.Now;
+                entity = LeaveDto.ConvertToLeave(leaveDto, entity);
 
                 var result = _leaveRepository.Update(entity);
                 return Ok(new ResponseOkHandler<String>("Data Updated"));
