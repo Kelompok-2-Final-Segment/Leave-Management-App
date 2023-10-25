@@ -27,12 +27,12 @@ public class EmployeeController : Controller
         return View();
     }
 
-    public IActionResult SeeOnRequestLeave()
+    public IActionResult LeaveBalance()
     {
         return View();
     }
 
-    public IActionResult ManageLeaveHistories()
+    public IActionResult LeaveHistories()
     {
         return View();
     }
