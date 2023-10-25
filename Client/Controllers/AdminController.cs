@@ -12,36 +12,23 @@ public class AdminController : Controller
         return View();
     }
 
-    // Auth
-    [HttpGet("/admin/login")]
-    public IActionResult Login()
-    {
-        return View("login");
-    }
-
-    [HttpGet("/admin/logout")]
-    public IActionResult Logout()
-    {
-        return View();
-    }
-
     // Leaves Management
     [HttpGet("/admin/leave/pending")]
     public IActionResult ManagePendingLeaves()
     {
-        return View("pending-leaves");
+        return View("pending-leave");
     }
 
     [HttpGet("/admin/leave/approved")]
     public IActionResult ManageApprovedLeaves()
     {
-        return View("approved-leaves");
+        return View("approved-leave");
     }
 
     [HttpGet("admin/leave/rejected")]
     public IActionResult ManageRejectedLeaves()
     {
-        return View("rejected-leaves");
+        return View("rejected-leave");
     }
 
     [HttpGet("admin/leave/type")]
@@ -77,6 +64,8 @@ public class AdminController : Controller
     {
         return View();
     }
+
+    // Account 
 
 
 }
