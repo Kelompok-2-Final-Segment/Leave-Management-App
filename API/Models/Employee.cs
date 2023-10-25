@@ -26,13 +26,14 @@ namespace API.Models
         [Required, Column("email", TypeName = "nvarchar(100)")]
         public string Email { get; set; }
 
-        [Required, Column("phone_number", TypeName = "nvarchar(20)")]
+        [Required, Column("phone_number", TypeName = "nvarchar(25)")]
         public string PhoneNumber { get; set; }
-        [Column("manager_guid")]
-        public Guid? ManagerGuid { get; set; }
+        [Required,Column("department_guid")]
+        public Guid DepartmentGuid { get; set; }
         public Account? Account { get; set; }
         public Department? Department { get; set; }
-        public IEnumerable<Leave>? Leaves { get; set; }
+        public LeaveBalance? LeaveBalance { get; set; }
+        public IEnumerable<Leave>? Leaves { get; set; }        
 
     }
 }

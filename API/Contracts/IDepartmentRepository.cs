@@ -1,4 +1,4 @@
-﻿using API.DTOs.Department;
+﻿using API.DTOs.Departments;
 using API.Models;
 
 namespace API.Contracts

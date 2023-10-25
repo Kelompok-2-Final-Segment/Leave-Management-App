@@ -1,5 +1,5 @@
 ﻿using API.Contracts;
-using API.DTOs.Account;
+using API.DTOs.Accounts;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

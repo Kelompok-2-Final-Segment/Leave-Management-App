@@ -7,7 +7,7 @@ namespace API.Data
     {
         public LeaveManagementDbContext(DbContextOptions<LeaveManagementDbContext> options) : base(options)
         {
-           
+
         }
 
         public DbSet<Account> Accounts { get; set; }
@@ -35,7 +35,7 @@ namespace API.Data
                 .WithOne(ar => ar.Account)
                 .HasForeignKey(ar => ar.AccountGuid);
 
-            modelBuilder.Entity<Role>()        
+            modelBuilder.Entity<Role>()
                 .HasMany(r => r.AccountRoles)
                 .WithOne(ar => ar.Role)
                 .HasForeignKey(ar => ar.RoleGuid);
@@ -45,13 +45,43 @@ namespace API.Data
                 .WithOne(l => l.Employee)
                 .HasForeignKey(l => l.EmployeeGuid);
 
+            modelBuilder.Entity<Employee>()
+                .HasOne(e => e.LeaveBalance)
+                .WithOne(lb => lb.Employee)
+                .HasForeignKey<LeaveBalance>(lb => lb.Guid);
+
+            modelBuilder.Entity<Department>()
+                .HasMany(d => d.Employees)
+                .WithOne(e => e.Department)
+                .HasForeignKey(e => e.DepartmentGuid);
+
             modelBuilder.Entity<Leave>()
                 .HasOne(l => l.LeaveType)
                 .WithMany(lt => lt.Leaves)
                 .HasForeignKey(l => l.LeaveTypeGuid);
 
-            modelBuilder.Entity<Employee>().HasData(
-                new Employee { Guid= new Guid(), Gender= 0, FirstName= "user", LastName="1", Email="user1@mail.com", HiringDate = new DateTime(2020, 10, 1) ,BirthDate = new DateTime(2000, 04, 1) , CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now, PhoneNumber = "0891351849134"});
+            modelBuilder.Entity<LeaveType>()
+                .HasOne(lt => lt.LeaveBalance)
+                .WithOne(lb => lb.LeaveType)
+                .HasForeignKey<LeaveBalance>(lb => lb.LeaveTypeGuid);
+
+            modelBuilder.Entity<Role>().HasData(
+                new Role { Guid = Guid.NewGuid(), Name = "Manager", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now },
+                new Role { Guid = Guid.NewGuid(), Name = "Staff", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now },
+                new Role { Guid = Guid.NewGuid(), Name = "Admin", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now }
+                );
+
+            modelBuilder.Entity<Department>().HasData(
+                new Department { Guid = Guid.NewGuid(), Name = "Finance", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now },
+
+                new Department { Guid = Guid.NewGuid(), Name = "HR", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now },
+
+                new Department { Guid = Guid.NewGuid(), Name = "IT", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now },
+
+                new Department { Guid = Guid.NewGuid(), Name = "Sales and Marketing", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now },
+
+                new Department { Guid = Guid.NewGuid(), Name = "Customer Support", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now }
+                );
         }
     }
 }
