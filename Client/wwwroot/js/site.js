@@ -1,1 +1,1 @@
-﻿new DataTable('#tableLeaves');
+﻿
