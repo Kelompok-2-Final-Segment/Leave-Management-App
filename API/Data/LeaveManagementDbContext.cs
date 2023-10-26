@@ -82,6 +82,12 @@ namespace API.Data
 
                 new Department { Guid = Guid.NewGuid(), Name = "Customer Support", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now }
                 );
+
+            modelBuilder.Entity<LeaveType>().HasData(
+                new LeaveType { Guid= Guid.NewGuid(), Name = "Annual Leave" , MaxDuration= 12, MinDuration=1},
+                new LeaveType { Guid = Guid.NewGuid(), Name = "Sick Leave", MaxDuration = 100, MinDuration = 1 },
+                new LeaveType { Guid = Guid.NewGuid(), Name = "Personal Leave", MaxDuration = 2, MinDuration = 1 }
+                );
         }
     }
 }
