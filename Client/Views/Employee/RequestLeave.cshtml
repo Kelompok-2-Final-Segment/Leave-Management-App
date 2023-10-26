@@ -3,28 +3,25 @@
     Layout = "~/Views/Shared/_LayoutDashboardEmployee.cshtml";
 }
 
-<h1>RequestLeave</h1>
+
 
 <section class="content">
     <div class="container-fluid">
+        <div class="clearfix">
+            <div class="pull-left">
+                <h4 class="text-blue h4">STAFF FORM</h4>
+                <p class="mb-20"></p>
+            </div>
+        </div>
         <form action="" method="POST" enctype="">
             <input type="text" value="" name="" hidden />
             <div class="form-group">
-                <label for="alasan">Alasan</label>
+                <label for="alasan">Deskripsi</label>
                 <textarea class="form-control"
                           id="alasan"
                           rows="3"
-                          name="alasan"
+                          name="deskripsi"
                           required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="perihal_cuti">Perihal Cuti</label>
-                <input type="text"
-                       class="form-control"
-                       id="perihal_cuti"
-                       aria-describedby="perihal_cuti"
-                       name="perihal_cuti"
-                       required />
             </div>
             <div class="form-group">
                 <label for="mulai">Mulai Cuti</label>
@@ -44,11 +41,8 @@
                        name="berakhir"
                        required />
             </div>
-
-            <button type="submit" class="btn btn-success">Submit</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
-    <!-- /.container-fluid -->
 </section>
-<!-- /.content -->
-    </main>
+

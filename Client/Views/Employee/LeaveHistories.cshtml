@@ -3,9 +3,7 @@
     Layout = "~/Views/Shared/_LayoutDashboardEmployee.cshtml";
 }
 
-<h1>LeaveHistories</h1>
-
-<div class="container-fluid py-4">
+<div class="container-fluid">
     <div class="title pb-20">
         <h2 class="h3 mb-0 py-4">Leave Breakdown</h2>
     </div>
@@ -21,11 +19,6 @@
                                     Data Cuti
                                 </p>
                                 <h5 class="font-weight-bolder">1</h5>
-                                <p class="mb-0">
-                                    <a href="#" class="small-box-footer">
-                                        More info <i class="fas fa-arrow-circle-right"></i>
-                                    </a>
-                                </p>
                             </div>
                         </div>
                         <div class="col-4 text-end">
@@ -48,11 +41,6 @@
                                     Data Cuti Diterima
                                 </p>
                                 <h5 class="font-weight-bolder">2,300</h5>
-                                <p class="mb-0">
-                                    <a href="#" class="small-box-footer">
-                                        More info <i class="fas fa-arrow-circle-right"></i>
-                                    </a>
-                                </p>
                             </div>
                         </div>
                         <div class="col-4 text-end">
@@ -75,11 +63,6 @@
                                     Data Cuti Ditolak
                                 </p>
                                 <h5 class="font-weight-bolder">+3,462</h5>
-                                <p class="mb-0">
-                                    <a href="#" class="small-box-footer">
-                                        More info <i class="fas fa-arrow-circle-right"></i>
-                                    </a>
-                                </p>
                             </div>
                         </div>
                         <div class="col-4 text-end">
@@ -102,11 +85,6 @@
                                     Data Cuti Tunggu
                                 </p>
                                 <h5 class="font-weight-bolder">$103,430</h5>
-                                <p class="mb-0">
-                                    <a href="#" class="small-box-footer">
-                                        More info <i class="fas fa-arrow-circle-right"></i>
-                                    </a>
-                                </p>
                             </div>
                         </div>
                         <div class="col-4 text-end">
@@ -129,11 +107,6 @@
                                     Sisa Cuti
                                 </p>
                                 <h5 class="font-weight-bolder">$103,430</h5>
-                                <p class="mb-0">
-                                    <a href="#" class="small-box-footer">
-                                        More info <i class="fas fa-arrow-circle-right"></i>
-                                    </a>
-                                </p>
                             </div>
                         </div>
                         <div class="col-4 text-end">
@@ -153,7 +126,7 @@
 <div class="pd-20">
     <h2 class="text-blue h4 py-1">ALL MY LEAVE</h2>
 </div>
-<table id="tableLeaves" class="table table-striped table-hover">
+    <table id="tableLeaves" class="table table-striped table-hover" style="width:100%">
     <thead class="table-dark">
         <tr>
             <th>No</th>
@@ -176,5 +149,7 @@
 }
 
 @section Scripts{
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 }
