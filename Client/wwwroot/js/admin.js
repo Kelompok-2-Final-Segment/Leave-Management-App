@@ -6,7 +6,7 @@ console.log("Hellow");
 function setDataTable() {
     $("#table-employee").DataTable({
         ajax: {
-            url: 'https://localhost:7007/api/Employee',
+            url: 'https://localhost:7054/admin/employee/all',
             dataSrc: 'data',
             dataType: 'JSON'
         },
@@ -35,20 +35,9 @@ function columnConfig() {
             }
         },
         { data: "gender" },
-        {
-            data: "birthDate",
-            render: function (data, type, row, meta) {
-                return shortDateTime(data);
-            }
-        },
-        {
-            data: "hiringDate",
-            render: function (data, type, row, meta) {
-                return shortDateTime(data);
-            }
-        },
         { data: "email" },
-        { data: "phoneNumber" },
+        { data: "role" },
+        { data: "department" },
         {
             data: null,
             render: function (data, type, row, meta) {
@@ -121,7 +110,9 @@ function buttonConfig() {
 
 // Remove data table default class for avoiding conflict with bootstrap styles
 function setBootstrapToDataTableButton() {
-    $('#create-btn, #excel-btn, #pdf-btn').removeClass('dt-button buttons-pdf buttons-html5');
-    $('#colvis-btn').removeClass('dt-button');
-    console.log("hellow");
+    document.getElementById('create-btn').classList.remove('dt-button', 'buttons-pdf', 'buttons-html5');
+    document.getElementById('excel-btn').classList.remove('dt-button', 'buttons-pdf', 'buttons-html5');
+    document.getElementById('pdf-btn').classList.remove('dt-button', 'buttons-pdf', 'buttons-html5');
+    document.getElementById('colvis-btn').classList.remove('dt-button');
+    console.log("testing");
 }

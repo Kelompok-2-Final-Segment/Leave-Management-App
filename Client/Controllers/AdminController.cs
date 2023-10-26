@@ -53,10 +53,16 @@ public class AdminController : Controller
 
 
     // Employeee Management 
-    [HttpGet("admin/employee/")]
-    public IActionResult GetAllEmployee()
+    [HttpGet("admin/employee/")] 
+    public IActionResult Employee()
     {
         return View("employee");
+    }
+
+    [HttpGet("admin/employee/all")]
+    public IActionResult GetAllEmployee()
+    {
+        return View();
     }
 
     [HttpPost]
@@ -64,8 +70,4 @@ public class AdminController : Controller
     {
         return View();
     }
-
-    // Account 
-
-
 }
