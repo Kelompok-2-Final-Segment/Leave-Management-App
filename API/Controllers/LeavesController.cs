@@ -18,16 +18,18 @@ namespace API.Controllers
         {
             _leaveRepository = leaveRepository;
         }
-
+        [HttpGet("All-Leaves")]
         public IActionResult GetAllLeaves()
         {
             return Ok();
         }
+        [HttpGet("Pending")]
         public IActionResult GetPendingLeaves()
         {
             return Ok();
 
         }
+        [HttpGet("Rejected")]
         public IActionResult GetRejectedLeaves()
         {
             return Ok();

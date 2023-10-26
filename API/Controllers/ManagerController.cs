@@ -25,7 +25,7 @@ namespace API.Controllers
             _roleRepository = roleRepository;
             _employeeRepository = employeeRepository;
         }
-
+        [HttpGet]
         public IActionResult GetStaff(EmployeeDto employeeDto)
         {
             var result = _employeeRepository.GetAll();
@@ -36,13 +36,18 @@ namespace API.Controllers
             var data =  result.Where(i =>  i.DepartmentGuid == employeeDto.DepartmentGuid).Select(i => (EmployeeDto) i);
             return Ok(new ResponseOkHandler<IEnumerable<EmployeeDto>>(data));
         }
-       
+        [HttpDelete]
         public IActionResult DeleteStaff()
         {
             return Ok();
         }
-       
 
+        [HttpPut]
+        public IActionResult EditStaff()
+        {
+            return BadRequest();
+        }
+        [HttpPut("Leave")]
         public IActionResult EditLeave()
         {
             return Ok();

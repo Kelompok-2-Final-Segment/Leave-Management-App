@@ -79,8 +79,9 @@ namespace API.Controllers
             try
             {
                 Employee toCreate = createEmployeeDto;
+                toCreate.NIK = GenerateNIKHandler.GenerateNIK(_employeeRepository.GetLastNik());
                 var result = _employeeRepository.Create(toCreate);
-                return Ok(new ResponseOkHandler<EmployeeDto>((EmployeeDto)result));
+                return Ok(new ResponseOkHandler<string>("Date Created Successfully"));
 
             }
             catch (Exception e)
