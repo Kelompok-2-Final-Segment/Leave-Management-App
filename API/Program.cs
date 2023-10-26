@@ -52,12 +52,12 @@ builder.Services.AddControllers()
 //JWT Policies
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("Employee", policy =>
-        policy.RequireRole("Employee"));
+    options.AddPolicy("Staff", policy =>
+        policy.RequireRole("Staff"));
     options.AddPolicy("Manager", policy =>
         policy.RequireRole("Manager"));
-    options.AddPolicy("HR", policy =>
-        policy.RequireRole("HR"));
+    options.AddPolicy("Admin", policy =>
+        policy.RequireRole("Admin"));
 
 });
 
