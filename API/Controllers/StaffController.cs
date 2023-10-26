@@ -11,7 +11,7 @@ namespace API.Controllers
         {
             return Ok();
         }
-
+        [HttpDelete]
         public IActionResult DeleteRequest()
         {
             return Ok();

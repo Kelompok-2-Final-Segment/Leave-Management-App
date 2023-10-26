@@ -8,7 +8,8 @@ namespace API.Models
     [Table("tb_m_employees")]
     public class Employee : BaseEntity
     {
-
+        [Required, Column("nik", TypeName = "nchar(6)")]
+        public string NIK { get; set; }
         [Required, Column("first_name", TypeName = "nvarchar(100)")]
         public string FirstName { get; set; }
 

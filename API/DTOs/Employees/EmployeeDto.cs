@@ -4,12 +4,14 @@ using API.DTOs.Accounts;
 using API.Models;
 using API.Utilities.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.DTOs.Employees
 {
     public class EmployeeDto
     {
         public Guid Guid { get; set; }
+        public string NIK { get; set; }
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
         [Display(Name = "Last Name")]
@@ -62,6 +64,7 @@ namespace API.DTOs.Employees
             return new EmployeeDto
             {
                 Guid = employee.Guid,
+                NIK = employee.NIK,
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
                 BirthDate = employee.BirthDate,
