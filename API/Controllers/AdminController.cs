@@ -30,7 +30,29 @@ namespace API.Controllers
         [HttpGet("Employees")]
         public IActionResult GetEmployees()
         {
-            return Ok();
+            var employees = _employeeRepository.GetAll();
+            var roles = _roleRepository.GetAll();
+            var departments = _departmentRepository.GetAll();
+
+            if (!employees.Any())
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var employeeDetails = from emp in employees
+                                  select new EmployeeDetailsDto
+                                  {
+                                      Guid = emp.Guid,
+
+                                      FullName = string.Concat(emp.FirstName, " ", emp.LastName),
+                                      BirthDate = emp.BirthDate,
+                                      Gender = emp.Gender.ToString(),
+                                      HiringDate = emp.HiringDate,
+                                      Email = emp.Email,
+                                      PhoneNumber = emp.PhoneNumber,
+
+                                  };
+
+            return Ok(new ResponseOkHandler<IEnumerable<EmployeeDetailsDto>>(employeeDetails));
         }
 
         [HttpPost("Employees/Register")]
