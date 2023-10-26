@@ -12,9 +12,9 @@ namespace API.Repositories
             _context = context;
         }  
 
-        public Guid? GetRoleGuid()
+        public Guid? GetRoleGuid(string roleName)
         {
-            return _context.Set<Role>().FirstOrDefault(r => r.Name == "User")?.Guid;
+            return _context.Set<Role>().FirstOrDefault(r => r.Name == roleName)?.Guid;
         }
     }
 }

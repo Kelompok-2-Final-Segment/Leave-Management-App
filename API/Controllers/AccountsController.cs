@@ -15,13 +15,13 @@ namespace API.Controllers
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IEmployeeRepository _employeeRepository;
-
+        private readonly IDepartmentRepository _departmentRepository;
         private readonly IAccountRoleRepository _accountRoleRepository;
         private readonly IRoleRepository _roleRepository;
         private readonly IEmailHandler _emailHandler;
         private readonly IJWTokenHandler _tokenHandler;
         //dependency injection dilakukan
-        public AccountsController(IAccountRepository accountRepository, IEmployeeRepository employeeRepository, IEmailHandler emailHandler, IJWTokenHandler tokenHandler, IAccountRoleRepository accountRoleRepository, IRoleRepository roleRepository)
+        public AccountsController(IAccountRepository accountRepository, IEmployeeRepository employeeRepository, IEmailHandler emailHandler, IJWTokenHandler tokenHandler, IAccountRoleRepository accountRoleRepository, IRoleRepository roleRepository, IDepartmentRepository departmentRepository)
         {
             _accountRepository = accountRepository;
             _employeeRepository = employeeRepository;
@@ -29,6 +29,7 @@ namespace API.Controllers
             _tokenHandler = tokenHandler;
             _accountRoleRepository = accountRoleRepository;
             _roleRepository = roleRepository;
+            _departmentRepository = departmentRepository;
         }
 
         [HttpPost("ForgotPassword")]
@@ -153,20 +154,21 @@ namespace API.Controllers
             {
 
                 var employee = _employeeRepository.GetByEmail(registerDto.Email);
-                if (employee is null)
+                if (employee != null)
                 {
-                    //meng insert apabila tidak ada
-                    employee = registerDto;
-                    employee = _employeeRepository.Create(employee);
-                }
-                else
-                {
-                    //return badrequest apabila ada s
                     return BadRequest(new ResponseBadRequestHandler("Email is Used"));
+                    
                 }
+                
+                Employee employeeCreate = registerDto;
+                employeeCreate.DepartmentGuid = _departmentRepository.GetDepartmentGuid(registerDto.DepartmentName) ?? throw new Exception("department name tidak ditemukan");
+
+                _employeeRepository.Create(employeeCreate);
+                
 
                 Account account = registerDto;
-                account.Guid = employee.Guid;
+                account.Guid = employeeCreate.Guid;
+               
                 account.Password = HashHandler.HashPassword(registerDto.Password);
 
                 _accountRepository.Create(account);
@@ -175,7 +177,7 @@ namespace API.Controllers
                 {
                     Guid = new Guid(),
                     AccountGuid = account.Guid,
-                    RoleGuid = _roleRepository.GetRoleGuid() ?? throw new Exception("default row not found")
+                    RoleGuid = _roleRepository.GetRoleGuid(registerDto.RoleName) ?? throw new Exception("role name tidak ditemukan")
                 });
 
                 transaction.Commit();
@@ -188,7 +190,6 @@ namespace API.Controllers
             }
         }
 
-        //method get dari http untuk getall universities
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -222,7 +223,7 @@ namespace API.Controllers
                 toCreate.Password = HashHandler.HashPassword(createAccountDto.Password);
 
                 var result = _accountRepository.Create(toCreate);
-                return Ok(new ResponseOkHandler<AccountDto>((AccountDto)result));
+                return Ok(new ResponseOkHandler<string>("Data Created Successfully"));
 
             }
 

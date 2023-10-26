@@ -23,7 +23,7 @@ namespace API.DTOs.Accounts
         {
             return new Employee
             {
-                Guid = new Guid(),
+                Guid = Guid.NewGuid(),
                 FirstName = employeeDto.FirstName,
                 LastName = employeeDto.LastName,
                 BirthDate = employeeDto.BirthDate,
@@ -47,7 +47,7 @@ namespace API.DTOs.Accounts
                 IsUsed = false,
                 CreatedDate = DateTime.Now,
                 ModifiedDate = DateTime.Now,
-
+                
             };
         }
     }

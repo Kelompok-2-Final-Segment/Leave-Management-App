@@ -3,9 +3,8 @@ using API.DTOs.Departments;
 using API.Models;
 using API.Utilities.Handlers.Exceptions;
 using API.Utilities.Handlers;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using API.DTOs.Departments;
+
 
 namespace API.Controllers
 {

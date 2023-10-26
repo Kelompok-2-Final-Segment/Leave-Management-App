@@ -11,11 +11,26 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class LeavesController : ControllerBase
     {
+
         private readonly ILeaveRepository _leaveRepository;
 
         public LeavesController(ILeaveRepository leaveRepository)
         {
             _leaveRepository = leaveRepository;
+        }
+
+        public IActionResult GetAllLeaves()
+        {
+            return Ok();
+        }
+        public IActionResult GetPendingLeaves()
+        {
+            return Ok();
+
+        }
+        public IActionResult GetRejectedLeaves()
+        {
+            return Ok();
         }
 
         [HttpGet]

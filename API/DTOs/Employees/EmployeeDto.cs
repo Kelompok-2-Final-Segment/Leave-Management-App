@@ -1,5 +1,6 @@
 ﻿
 
+using API.DTOs.Accounts;
 using API.Models;
 using API.Utilities.Enums;
 using System.ComponentModel.DataAnnotations;
@@ -35,6 +36,22 @@ namespace API.DTOs.Employees
             employee.HiringDate = employeeDto.HiringDate;
             employee.Email = employeeDto.Email;
             employee.PhoneNumber = employeeDto.PhoneNumber;
+            employee.DepartmentGuid = employeeDto.DepartmentGuid;
+            employee.ModifiedDate = DateTime.Now;
+            return employee;
+
+        }      
+        public static Employee ConvertToEMployee(RegisterDto employeeDto, Employee employee)
+        {
+
+            employee.FirstName = employeeDto.FirstName;
+            employee.LastName = employeeDto.LastName;
+            employee.BirthDate = employeeDto.BirthDate;
+            employee.Gender = employeeDto.Gender;
+            employee.HiringDate = employeeDto.HiringDate;
+            employee.Email = employeeDto.Email;
+            employee.PhoneNumber = employeeDto.PhoneNumber;
+            employee.DepartmentGuid = employee.DepartmentGuid;
             employee.ModifiedDate = DateTime.Now;
             return employee;
 
