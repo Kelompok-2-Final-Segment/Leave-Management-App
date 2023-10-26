@@ -5,4 +5,40 @@
     ViewData["Title"] = "Admin Dashboard";
     Layout = "~/Views/Shared/_LayoutDashboardAdmin.cshtml";
 }
-<h1>Employee Page</h1>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header pb-0" bg-white>
+                <h6>Manage Employee</h6>
+            </div>
+            <div class="card-body px-3 pt-0 pb-2">
+                <div class="table-responsive p-0">
+                        <table class="table table-striped" id="table-employee">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">No.</th>
+                                    <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">NIK</th>
+                                    <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Full Name</th>
+                                    <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Birthdate</th>
+                                    <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Gender</th>
+                                    <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Email</th>
+                                    <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Department</th>
+                                    <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts{
+    <script src="~/js/manager.js" asp-append-version="true"></script>
+}
