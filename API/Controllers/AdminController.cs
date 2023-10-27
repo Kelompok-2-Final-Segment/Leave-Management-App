@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography.X509Certificates;
 using API.Contracts;
 using API.DTOs.Employees;
+using API.Utilities.Enums;
+using API.DTOs.Leaves;
+using API.Repositories;
 
 namespace API.Controllers
 {
@@ -20,8 +23,9 @@ namespace API.Controllers
         private readonly IAccountRoleRepository _accountRoleRepository;
         private readonly ILeaveBalanceRepository _leaveBalanceRepository;
         private readonly ILeaveTypeRepository _leaveTypeRepository;
+        private readonly ILeaveRepository _leaveRepository;
 
-        public AdminController(IAccountRepository accountRepository, IDepartmentRepository departmentRepository, IRoleRepository roleRepository, IEmployeeRepository employeeRepository, IAccountRoleRepository accountRoleRepository, ILeaveBalanceRepository leaveBalanceRepository, ILeaveTypeRepository leaveTypeRepository)
+        public AdminController(IAccountRepository accountRepository, IDepartmentRepository departmentRepository, IRoleRepository roleRepository, IEmployeeRepository employeeRepository, IAccountRoleRepository accountRoleRepository, ILeaveBalanceRepository leaveBalanceRepository, ILeaveTypeRepository leaveTypeRepository, ILeaveRepository leaveRepository)
         {
             _accountRepository = accountRepository;
             _departmentRepository = departmentRepository;
@@ -30,6 +34,7 @@ namespace API.Controllers
             _accountRoleRepository = accountRoleRepository;
             _leaveBalanceRepository = leaveBalanceRepository;
             _leaveTypeRepository = leaveTypeRepository;
+            _leaveRepository = leaveRepository;
         }
         [HttpGet("Employees")]
         public IActionResult GetEmployees()
@@ -119,7 +124,18 @@ namespace API.Controllers
                 account.Password = HashHandler.HashPassword(registerDto.Password);
 
                 _accountRepository.Create(account);
-
+                if(registerDto.RoleName == "Manager")
+                {
+                    var toUpdateManager = _departmentRepository.GetByGuid(employeeCreate.DepartmentGuid);
+                    if (toUpdateManager != null && toUpdateManager.ManagerGuid == null) {
+                        toUpdateManager.ManagerGuid = employeeCreate.Guid;
+                        _departmentRepository.Update(toUpdateManager);
+                    } else
+                    {
+                        return BadRequest(new ResponseBadRequestHandler("Setiap department hanya boleh memiliki satu manager"));
+                    }
+                    
+                }
                 _accountRoleRepository.Create(new AccountRole
                 {
                     Guid = new Guid(),
@@ -133,13 +149,22 @@ namespace API.Controllers
                 }
                 foreach (var item in leavetypes)
                 {
+                    var available = true;
+                    if(item.FemaleOnly == true && employeeCreate.Gender.ToString() == "Male" )
+                    {
+                        available = false;
+                    }
+                    if(item.Name == "Annual Leave" && employeeCreate.HiringDate <= DateTime.Today.AddYears(-1))
+                    {
+                        available = false;
+                    }
                     LeaveBalance leaveBalance = new LeaveBalance
                     {
                         Guid = Guid.NewGuid(),
                         LeaveTypeGuid = item.Guid,
                         EmployeeGuid = account.Guid,
                         UsedBalance = 0,
-                        IsAvailable = true,
+                        IsAvailable = available,
                         CreatedDate = DateTime.Now,
                         ModifiedDate = DateTime.Now
                     };
@@ -203,9 +228,26 @@ namespace API.Controllers
             return Ok();
         }
         [HttpPut("Leaves/Edit")]
-        public IActionResult EditLeave()
+        public IActionResult EditLeave(EditLeaveDto editLeaveDto)
         {
-            return BadRequest();
+            try
+            {
+                var entity = _leaveRepository.GetByGuid(editLeaveDto.Guid);
+                if (entity is null)
+                {
+                    return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+
+                }
+                entity = EditLeaveDto.EditLeaveByHR(editLeaveDto, entity);
+
+                var result = _leaveRepository.Update(entity);
+                return Ok(new ResponseOkHandler<String>("Data Updated"));
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Update Data", e.Message));
+            }
         }
     }
 }

@@ -61,29 +61,29 @@ namespace API.Controllers
 
 
 
-        [HttpPut]
-        public IActionResult Update(LeaveDto leaveDto)
-        {
-            try
-            {
-                var entity = _leaveRepository.GetByGuid(leaveDto.Guid);
-                if (entity is null)
-                {
-                    return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+        //[HttpPut]
+        //public IActionResult Update(LeaveDto leaveDto)
+        //{
+        //    try
+        //    {
+        //        var entity = _leaveRepository.GetByGuid(leaveDto.Guid);
+        //        if (entity is null)
+        //        {
+        //            return NotFound(new ResponseNotFoundHandler("Data Not Found"));
 
-                }
-                entity = LeaveDto.ConvertToLeave(leaveDto, entity);
+        //        }
+        //        entity = LeaveDto.ConvertToLeave(leaveDto, entity);
 
-                var result = _leaveRepository.Update(entity);
-                return Ok(new ResponseOkHandler<String>("Data Updated"));
+        //        var result = _leaveRepository.Update(entity);
+        //        return Ok(new ResponseOkHandler<String>("Data Updated"));
 
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Create Data", e.Message));
-            }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Create Data", e.Message));
+        //    }
 
-        }
+        //}
 
         [HttpDelete("{guid}")]
         public IActionResult Delete(Guid guid)

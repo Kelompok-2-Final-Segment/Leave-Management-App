@@ -35,6 +35,22 @@ namespace API.DTOs.Employees
                 RoleName = role.Name
             };
         }
+        public static EmployeeDetailsDto ConvertToStaffDetails(Employee employee,Department department)
+        {
+            return new EmployeeDetailsDto
+            {
+                Guid = employee.Guid,
+                NIK = employee.NIK,
+                FullName = employee.FirstName + " " + employee.LastName,
+                BirthDate = employee.BirthDate,
+                Gender = employee.Gender.ToString(),
+                HiringDate = employee.HiringDate,
+                Email = employee.Email,
+                PhoneNumber = employee.PhoneNumber,
+                DepartmentName = department.Name,
+                RoleName = "Staff"
+            };
+        }
     }
 }
 
