@@ -52,8 +52,10 @@ namespace API.Controllers
                 Role toCreate = createRoleDto;
 
                 var result = _roleRepository.Create(toCreate);
-                return Ok(new ResponseOkHandler<RoleDto>((RoleDto)result));
+                return Ok(new ResponseOkHandler<string>("Data Created Successfully"));
+{
 
+                }
             }
             catch (Exception e)
             {
@@ -79,6 +81,7 @@ namespace API.Controllers
                 return Ok(new ResponseOkHandler<String>("Data Updated"));
 
             }
+
             catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Create Data", e.Message));

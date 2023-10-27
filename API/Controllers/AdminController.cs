@@ -31,28 +31,60 @@ namespace API.Controllers
         public IActionResult GetEmployees()
         {
             var employees = _employeeRepository.GetAll();
-            var roles = _roleRepository.GetAll();
+            var accountRoles = _accountRoleRepository.GetAll();
             var departments = _departmentRepository.GetAll();
 
-            if (!employees.Any())
+            if (!employees.Any() && !accountRoles.Any() && !departments.Any())
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
             var employeeDetails = from emp in employees
+                                  join ar in accountRoles on emp.Guid equals ar.AccountGuid
+                                  join d in departments on emp.DepartmentGuid equals d.Guid
                                   select new EmployeeDetailsDto
                                   {
                                       Guid = emp.Guid,
-
                                       FullName = string.Concat(emp.FirstName, " ", emp.LastName),
                                       BirthDate = emp.BirthDate,
-                                      Gender = emp.Gender.ToString(),
                                       HiringDate = emp.HiringDate,
+                                      Gender = emp.Gender.ToString(),
                                       Email = emp.Email,
                                       PhoneNumber = emp.PhoneNumber,
-
+                                      DepartmentName = d.Name,
+                                      RoleName = _roleRepository.GetRoleName(ar.RoleGuid) ?? throw new Exception("no role ")
                                   };
 
             return Ok(new ResponseOkHandler<IEnumerable<EmployeeDetailsDto>>(employeeDetails));
+        }
+        [HttpGet("Employees/{guid}")]
+        public IActionResult GetEmployeeByGuid(Guid guid)
+        {
+            var employee = _employeeRepository.GetByGuid(guid);
+            if(employee == null)
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var accountRole = _accountRoleRepository.GetAll().FirstOrDefault(ar => ar.AccountGuid == employee.Guid);
+            var department = _departmentRepository.GetByGuid(employee.DepartmentGuid);
+
+            if (accountRole == null || department == null)
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var employeeDetail = new EmployeeDetailsDto
+                                 {
+                                      Guid = employee.Guid,
+                                      FullName = string.Concat(employee.FirstName, " ", employee.LastName),
+                                      BirthDate = employee.BirthDate,
+                                      HiringDate = employee.HiringDate,
+                                      Gender = employee.Gender.ToString(),
+                                      Email = employee.Email,
+                                      PhoneNumber = employee.PhoneNumber,
+                                      DepartmentName = department.Name,
+                                      RoleName = _roleRepository.GetRoleName(accountRole.RoleGuid) ?? throw new Exception("no role ")
+                                  };
+
+            return Ok(new ResponseOkHandler<EmployeeDetailsDto>(employeeDetail));
         }
 
         [HttpPost("Employees/Register")]
@@ -125,7 +157,22 @@ namespace API.Controllers
         [HttpDelete("Employees/Delete/{guid}")]
         public IActionResult DeleteEmployee(Guid guid)
         {
-            return Ok();
+            try
+            {
+                var employee = _employeeRepository.GetByGuid(guid);
+                if (employee is null)
+                {
+                    return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+
+                }
+                var result = _employeeRepository.Delete(employee);
+                return Ok(new ResponseOkHandler<String>("Data Deleted"));
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Create Data", e.Message));
+            }
+
         }
         [HttpGet("Leaves")]
         public IActionResult GetAll()

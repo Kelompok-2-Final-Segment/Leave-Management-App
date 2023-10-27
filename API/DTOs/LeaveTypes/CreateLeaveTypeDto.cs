@@ -5,6 +5,7 @@ namespace API.DTOs.LeaveTypes
     public class CreateLeaveTypeDto
     {
         public string Name { get; set; }
+        public int Balance { get; set; }
         public int MinDuration { get; set; }
         public int MaxDuration { get; set; }
 
@@ -14,6 +15,7 @@ namespace API.DTOs.LeaveTypes
             {
                 Guid = new Guid(),
                 Name = dto.Name,
+                Balance = dto.Balance,
                 MinDuration = dto.MinDuration,
                 MaxDuration = dto.MaxDuration,
                 CreatedDate = DateTime.Now,

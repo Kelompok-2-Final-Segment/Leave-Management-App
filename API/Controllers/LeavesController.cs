@@ -59,22 +59,6 @@ namespace API.Controllers
             return Ok(new ResponseOkHandler<LeaveDto>((LeaveDto)result));
         }
 
-        [HttpPost]
-        public IActionResult Create(CreateLeaveDto createLeaveDto)
-        {
-            try
-            {
-                Leave toCreate = createLeaveDto;
-
-                var result = _leaveRepository.Create(toCreate);
-                return Ok(new ResponseOkHandler<string>("Data Created Successfully"));
-
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Create Data", e.Message));
-            }
-        }
 
 
         [HttpPut]

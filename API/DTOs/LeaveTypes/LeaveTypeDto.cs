@@ -6,6 +6,7 @@ namespace API.DTOs.LeaveTypes
     {
         public Guid Guid { get; set; }
         public string Name { get; set; }
+        public int Balance { get; set; }
         public int MinDuration { get; set; }
         public int MaxDuration { get; set; }
 
@@ -15,6 +16,7 @@ namespace API.DTOs.LeaveTypes
             {
                 Guid = leavetype.Guid,
                 Name = leavetype.Name,
+                Balance = leavetype.Balance,
                 MinDuration = leavetype.MinDuration,
                 MaxDuration = leavetype.MaxDuration,
 
@@ -23,6 +25,7 @@ namespace API.DTOs.LeaveTypes
         public static LeaveType ConvertToLeaveType(LeaveTypeDto leavetypeDto, LeaveType leaveType)
         {
             leaveType.Name = leavetypeDto.Name;
+            leaveType.Balance = leavetypeDto.Balance;
             leaveType.MinDuration = leavetypeDto.MinDuration;
             leaveType.MaxDuration = leavetypeDto.MaxDuration;
             leaveType.ModifiedDate = DateTime.Now;
