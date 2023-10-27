@@ -10,17 +10,6 @@ public class EmployeeController : Controller
         return View();
     }
 
-    // Auth
-    public IActionResult Login()
-    {
-        return View();
-    }
-
-    public IActionResult Logout()
-    {
-        return View();
-    }
-
     // Leaves Management
     public IActionResult RequestLeave()
     {

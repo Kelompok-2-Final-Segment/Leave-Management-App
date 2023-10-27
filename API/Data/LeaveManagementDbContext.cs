@@ -6,9 +6,7 @@ namespace API.Data
     public class LeaveManagementDbContext : DbContext
     {
         public LeaveManagementDbContext(DbContextOptions<LeaveManagementDbContext> options) : base(options)
-        {
-
-        }
+        {}
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<AccountRole> AccountRoles { get; set; }
