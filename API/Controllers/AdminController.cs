@@ -18,14 +18,18 @@ namespace API.Controllers
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IAccountRoleRepository _accountRoleRepository;
+        private readonly ILeaveBalanceRepository _leaveBalanceRepository;
+        private readonly ILeaveTypeRepository _leaveTypeRepository;
 
-        public AdminController(IAccountRepository accountRepository, IDepartmentRepository departmentRepository, IRoleRepository roleRepository, IEmployeeRepository employeeRepository, IAccountRoleRepository accountRoleRepository)
+        public AdminController(IAccountRepository accountRepository, IDepartmentRepository departmentRepository, IRoleRepository roleRepository, IEmployeeRepository employeeRepository, IAccountRoleRepository accountRoleRepository, ILeaveBalanceRepository leaveBalanceRepository, ILeaveTypeRepository leaveTypeRepository)
         {
             _accountRepository = accountRepository;
             _departmentRepository = departmentRepository;
             _roleRepository = roleRepository;
             _employeeRepository = employeeRepository;
             _accountRoleRepository = accountRoleRepository;
+            _leaveBalanceRepository = leaveBalanceRepository;
+            _leaveTypeRepository = leaveTypeRepository;
         }
         [HttpGet("Employees")]
         public IActionResult GetEmployees()
@@ -122,6 +126,25 @@ namespace API.Controllers
                     AccountGuid = account.Guid,
                     RoleGuid = _roleRepository.GetRoleGuid(registerDto.RoleName) ?? throw new Exception("role name tidak ditemukan")
                 });
+                var leavetypes = _leaveTypeRepository.GetAll();
+                if (!leavetypes.Any())
+                {
+                    return NotFound(new ResponseNotFoundHandler("isi leaveType minimal satu"));
+                }
+                foreach (var item in leavetypes)
+                {
+                    LeaveBalance leaveBalance = new LeaveBalance
+                    {
+                        Guid = Guid.NewGuid(),
+                        LeaveTypeGuid = item.Guid,
+                        EmployeeGuid = account.Guid,
+                        UsedBalance = 0,
+                        IsAvailable = true,
+                        CreatedDate = DateTime.Now,
+                        ModifiedDate = DateTime.Now
+                    };
+                    _leaveBalanceRepository.Create(leaveBalance);
+                };
 
                 transaction.Commit();
                 return Ok(new ResponseOkHandler<string>("Account Created"));

@@ -13,10 +13,14 @@ namespace API.Controllers
     public class LeaveTypesController : ControllerBase
     {
         private readonly ILeaveTypeRepository _leavetyperepository;
+        private readonly IEmployeeRepository _employeerepository;
+        private readonly ILeaveBalanceRepository _leavebalancerepository;
 
-        public LeaveTypesController(ILeaveTypeRepository leavetyperepository)
+        public LeaveTypesController(ILeaveTypeRepository leavetyperepository, ILeaveBalanceRepository leavebalancerepository, IEmployeeRepository employeerepository)
         {
             _leavetyperepository = leavetyperepository;
+            _leavebalancerepository = leavebalancerepository;
+            _employeerepository = employeerepository;
         }
 
         [HttpGet]
@@ -49,8 +53,22 @@ namespace API.Controllers
             try
             {
                 LeaveType toCreate = createLeaveTypeDto;
-
                 var result = _leavetyperepository.Create(toCreate);
+                var employee = _employeerepository.GetAll();
+                foreach (var item in employee)
+                {
+                    var leaveBalance = new LeaveBalance
+                    {
+                        Guid = Guid.NewGuid(),
+                        UsedBalance = 0,
+                        IsAvailable = true,
+                        LeaveTypeGuid = toCreate.Guid,
+                        EmployeeGuid = item.Guid,
+                        CreatedDate = DateTime.Now,
+                        ModifiedDate = DateTime.Now
+                    };
+                    _leavebalancerepository.Create(leaveBalance);
+                }
                 return Ok(new ResponseOkHandler<string>("Data Created Successfully"));
 
             }
