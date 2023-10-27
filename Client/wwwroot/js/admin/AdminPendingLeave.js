@@ -2,6 +2,11 @@
 setDataTable();
 console.log("Hellow");
 
+// Leave Detail
+function leaveDetail() {
+    $('#modal-pending-leave').modal('show');
+}
+
 // Data Table
 function setDataTable() {
     $("#table-pending-leave").DataTable({
@@ -43,8 +48,9 @@ function columnConfig() {
             render: function (data, type, row, meta) {
                 const deleteButton = document.createElement('button');
                 deleteButton.type = 'button';
-                deleteButton.className = 'btn btn-danger btn-delete-employee';
-                deleteButton.innerText = 'Delete';
+                deleteButton.className = 'btn btn-primary btn-delete-employee';
+                deleteButton.innerText = 'SET STATUS';
+                deleteButton.setAttribute('onclick', `leaveDetail()`);
 
                 document.addEventListener('DOMContentLoaded', function () {
                     deleteButton.addEventListener('click', function () {
@@ -58,6 +64,8 @@ function columnConfig() {
 
     ];
 }
+
+
 
 // Export configuration for data table
 function buttonConfig() {

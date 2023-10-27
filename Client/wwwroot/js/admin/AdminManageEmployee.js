@@ -10,7 +10,7 @@ console.log("Hellow");
 function dataTable() {
     $("#table-employee").DataTable({
         ajax: {
-            url: 'https://localhost:7054/admin/employee/all',
+            url: 'https://localhost:7054/admin/',
             dataSrc: 'data',
             dataType: 'JSON'
         },
