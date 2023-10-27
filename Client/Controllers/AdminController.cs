@@ -1,11 +1,21 @@
 ﻿using API.Models;
+using Client.Contracts;
+using Client.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace Client.Controllers;
 
 public class AdminController : Controller
 {
+    private readonly IAdminRepository adminRepository;
+
+    public AdminController(IAdminRepository adminRepository)
+    {
+        this.adminRepository = adminRepository;
+    }
 
     public IActionResult Index()
     {
@@ -60,14 +70,28 @@ public class AdminController : Controller
     }
 
     [HttpGet("admin/employee/all")]
-    public IActionResult GetAllEmployee()
+    public async Task<IActionResult> GetAllEmployee()
     {
-        return View();
+        var result = await adminRepository.GetAllEmployee();
+        
+        if (result == null)
+        {
+            return NotFound();
+        }
+
+        return Json(result);
     }
 
-    [HttpPost]
-    public IActionResult CreateEmployee()
+    [HttpPost("admin/employee/create")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CreateEmployee(EmployeeCombinedModel combinedObject)
     {
-        return View();
+        Debug.WriteLine("CEK DISINI : ADMIN EMPLOYEE");
+        Debug.WriteLine(JsonConvert.SerializeObject(combinedObject.RegisterEmployee));
+
+        var registrationData = combinedObject.RegisterEmployee;
+        var result = await adminRepository.RegisterEmployee(registrationData);
+
+        return RedirectToAction("Employee");
     }
 }

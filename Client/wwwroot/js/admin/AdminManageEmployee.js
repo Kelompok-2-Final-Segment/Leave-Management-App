@@ -22,22 +22,16 @@ function setDataTable() {
 function columnConfig() {
     return [
         {
-            data: "guid",
+            data: null,
             render: function (data, type, row, meta) {
                 return meta.row + meta.settings._iDisplayStart + 1;
             }
         },
         { data: "nik" },
-        {
-            data: "fullName",
-            render: function (data, type, row, meta) {
-                return row.firstName + ' ' + row.lastName;
-            }
-        },
+        { data: "fullName" },
         { data: "gender" },
-        { data: "email" },
-        { data: "role" },
-        { data: "department" },
+        { data: "roleName" },
+        { data: "departmentName" },
         {
             data: null,
             render: function (data, type, row, meta) {
@@ -45,12 +39,6 @@ function columnConfig() {
                 deleteButton.type = 'button';
                 deleteButton.className = 'btn btn-danger btn-delete-employee';
                 deleteButton.innerText = 'Delete';
-
-                document.addEventListener('DOMContentLoaded', function () {
-                    deleteButton.addEventListener('click', function () {
-                        console.log(row.guid);
-                    });
-                });
 
                 return deleteButton.outerHTML;
             }
