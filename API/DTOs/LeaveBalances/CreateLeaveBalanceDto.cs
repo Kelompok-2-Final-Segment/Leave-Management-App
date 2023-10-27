@@ -8,6 +8,7 @@ namespace API.DTOs.LeaveBalances
         public int UsedBalance { get; set; }
         public bool IsAvailable { get; set; }
         public Guid LeaveTypeGuid { get; set; }
+        public Guid EmployeeGuid { get; set; }
 
         public static implicit operator LeaveBalance(CreateLeaveBalanceDto createLeaveBalanceDto)
         {
@@ -17,6 +18,7 @@ namespace API.DTOs.LeaveBalances
                 UsedBalance = createLeaveBalanceDto.UsedBalance,
                 IsAvailable = createLeaveBalanceDto.IsAvailable,
                 LeaveTypeGuid = createLeaveBalanceDto.LeaveTypeGuid,
+                EmployeeGuid = createLeaveBalanceDto.EmployeeGuid,
                 CreatedDate = DateTime.Now,
                 ModifiedDate = DateTime.Now,
             };
