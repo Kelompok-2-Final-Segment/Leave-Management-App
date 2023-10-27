@@ -67,7 +67,6 @@
                                     <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">NIK</th>
                                     <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Full Name</th>
                                     <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Gender</th>
-                                    <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Email</th>
                                 <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Role</th>
                                     <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Department</th>
                                     <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Action</th>
@@ -113,8 +112,8 @@
                     <div class="mb-3">
                         <select asp-for="RegisterEmployee.Gender" class="form-select form-select-sm" aria-label=".form-select-sm example" id="select-gender">
                             <option>Select Gender</option>
-                            <option value="0">Male</option>
-                            <option value="1">Female</option>
+                            <option value="1">Male</option>
+                            <option value="0">Female</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -126,17 +125,20 @@
                     <div class="mb-3">
                         <select asp-for="RegisterEmployee.RoleName" class="form-select form-select-sm" aria-label=".form-select-sm example" id="select-gender">
                             <option>Select Role</option>
-                            <option value="0">Staff</option>
-                            <option value="1">Manager</option>
-                            <option value="2">Administrator / HR</option>
+                            <option value="Staff">Staff</option>
+                            <option value="Manager">Manager</option>
+                            <option value="Admin">Administrator / HR</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <select asp-for="RegisterEmployee.DepartmentName" class="form-select form-select-sm" aria-label=".form-select-sm example" id="select-gender">
                             <option>Select Department</option>
-                            <option value="0">Finance</option>
-                            <option value="1">IT</option>
-                            <option value="2">Marketing</option>
+                            <option value="Sales and Marketing">Sales and Marketing</option>
+                            <option value="HR">Human Resources</option>
+                            <option value="IT">Information Technology</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Customer Support">Customer Support</option>
+
                         </select>
                     </div>
                     <div class="mb-3">
