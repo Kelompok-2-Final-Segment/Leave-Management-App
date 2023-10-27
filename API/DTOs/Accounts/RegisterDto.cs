@@ -41,6 +41,7 @@ namespace API.DTOs.Accounts
 
 
 
+
         public static implicit operator Account(RegisterDto createAccountDto)
         {
             return new Account

@@ -33,7 +33,7 @@ namespace API.Models
         public Guid DepartmentGuid { get; set; }
         public Account? Account { get; set; }
         public Department? Department { get; set; }
-        public LeaveBalance? LeaveBalance { get; set; }
+        public IEnumerable<LeaveBalance>? LeaveBalances { get; set; }
         public IEnumerable<Leave>? Leaves { get; set; }        
 
     }

@@ -10,11 +10,16 @@ namespace API.Repositories
         public RoleRepository(LeaveManagementDbContext context) : base(context)
         {
             _context = context;
-        }  
+        }
 
         public Guid? GetRoleGuid(string roleName)
         {
             return _context.Set<Role>().FirstOrDefault(r => r.Name == roleName)?.Guid;
+        }
+
+        public string GetRoleName(Guid guid)
+        {
+            return _context.Set<Role>().FirstOrDefault(r => r.Guid == guid)?.Name;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace API.Repositories
 
         public Guid? GetDepartmentGuid(string departName)
         {
-             return _context.Set<Role>().FirstOrDefault(r => r.Name == departName)?.Guid;
+             return _context.Set<Department>().FirstOrDefault(d => d.Name == departName)?.Guid;
         }
     }
 }

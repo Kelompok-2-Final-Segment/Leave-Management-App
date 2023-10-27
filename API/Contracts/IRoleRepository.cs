@@ -6,5 +6,6 @@ namespace API.Contracts
     public interface IRoleRepository : IGeneralRepository<Role>
     {
         Guid? GetRoleGuid(string roleName);
+        String? GetRoleName(Guid guid);
     }
 }

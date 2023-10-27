@@ -5,7 +5,7 @@ namespace API.DTOs.LeaveBalances
     public class LeaveBalanceDto
     {
         public Guid Guid { get; set; }
-        public int AvailableBalance { get; set; }
+        public bool IsAvailable { get; set; } 
         public int UsedBalance { get; set; }
         public Guid LeaveTypeGuid { get; set; }
 
@@ -14,7 +14,7 @@ namespace API.DTOs.LeaveBalances
             return new LeaveBalanceDto
             {
                 Guid = leaveBalance.Guid,
-                AvailableBalance = leaveBalance.Balance,
+                IsAvailable = leaveBalance.IsAvailable,
                 UsedBalance = leaveBalance.UsedBalance,
                 LeaveTypeGuid = leaveBalance.LeaveTypeGuid
             };
@@ -22,9 +22,8 @@ namespace API.DTOs.LeaveBalances
 
         public static LeaveBalance ConvertToLeaveBalance(LeaveBalanceDto leaveBalanceDto, LeaveBalance leaveBalance)
         {
-
-            leaveBalance.Balance = leaveBalanceDto.AvailableBalance;
             leaveBalance.UsedBalance = leaveBalanceDto.UsedBalance;
+            leaveBalance.IsAvailable = leaveBalanceDto.IsAvailable;
             leaveBalance.LeaveTypeGuid = leaveBalanceDto.LeaveTypeGuid;
             leaveBalance.ModifiedDate = DateTime.Now;
             return leaveBalance;

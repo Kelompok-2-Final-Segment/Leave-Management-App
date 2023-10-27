@@ -6,9 +6,7 @@ namespace API.Data
     public class LeaveManagementDbContext : DbContext
     {
         public LeaveManagementDbContext(DbContextOptions<LeaveManagementDbContext> options) : base(options)
-        {
-
-        }
+        {}
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<AccountRole> AccountRoles { get; set; }
@@ -24,6 +22,10 @@ namespace API.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Employee>().HasIndex(e => e.PhoneNumber).IsUnique();
             modelBuilder.Entity<Employee>().HasIndex(e => e.Email).IsUnique();
+            modelBuilder.Entity<Employee>().HasIndex(e => e.NIK).IsUnique();
+            modelBuilder.Entity<Department>().HasIndex(d => d.Name).IsUnique();
+            modelBuilder.Entity<Role>().HasIndex(r => r.Name).IsUnique();
+            modelBuilder.Entity<LeaveType>().HasIndex(lt => lt.Name).IsUnique();
 
             modelBuilder.Entity<Employee>()
                 .HasOne(e => e.Account)
@@ -46,9 +48,9 @@ namespace API.Data
                 .HasForeignKey(l => l.EmployeeGuid);
 
             modelBuilder.Entity<Employee>()
-                .HasOne(e => e.LeaveBalance)
+                .HasMany(e => e.LeaveBalances)
                 .WithOne(lb => lb.Employee)
-                .HasForeignKey<LeaveBalance>(lb => lb.Guid);
+                .HasForeignKey(lb => lb.EmployeeGuid);
 
             modelBuilder.Entity<Department>()
                 .HasMany(d => d.Employees)
@@ -61,9 +63,9 @@ namespace API.Data
                 .HasForeignKey(l => l.LeaveTypeGuid);
 
             modelBuilder.Entity<LeaveType>()
-                .HasOne(lt => lt.LeaveBalance)
+                .HasMany(lt => lt.LeaveBalances)
                 .WithOne(lb => lb.LeaveType)
-                .HasForeignKey<LeaveBalance>(lb => lb.LeaveTypeGuid);
+                .HasForeignKey(lb => lb.LeaveTypeGuid);
 
             modelBuilder.Entity<Role>().HasData(
                 new Role { Guid = Guid.NewGuid(), Name = "Manager", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now },
@@ -84,9 +86,9 @@ namespace API.Data
                 );
 
             modelBuilder.Entity<LeaveType>().HasData(
-                new LeaveType { Guid= Guid.NewGuid(), Name = "Annual Leave" , MaxDuration= 12, MinDuration=1},
-                new LeaveType { Guid = Guid.NewGuid(), Name = "Sick Leave", MaxDuration = 100, MinDuration = 1 },
-                new LeaveType { Guid = Guid.NewGuid(), Name = "Personal Leave", MaxDuration = 2, MinDuration = 1 }
+                new LeaveType { Guid= Guid.NewGuid(), Name = "Annual Leave" , Balance = 12 , MaxDuration= 12, MinDuration=1},
+                new LeaveType { Guid = Guid.NewGuid(), Name = "Sick Leave", Balance = 90 , MaxDuration = 90, MinDuration = 1 },
+                new LeaveType { Guid = Guid.NewGuid(), Name = "Personal Leave", Balance = 2 , MaxDuration = 2, MinDuration = 1 }
                 );
         }
     }
