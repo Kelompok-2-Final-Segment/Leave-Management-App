@@ -17,5 +17,10 @@ namespace API.Repositories
         {
              return _context.Set<Department>().FirstOrDefault(d => d.Name == departName)?.Guid;
         }
+
+        public Department? GetDepartmentByManagerGuid(Guid guid)
+        {
+            return _context.Set<Department>().FirstOrDefault(d => d.ManagerGuid == guid);
+        }
     }
 }

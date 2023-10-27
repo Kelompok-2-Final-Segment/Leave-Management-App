@@ -57,11 +57,16 @@ namespace API.Controllers
                 var employee = _employeerepository.GetAll();
                 foreach (var item in employee)
                 {
+                    var available = true;
+                    if (toCreate.FemaleOnly == true && item.Gender.ToString() == "Male")
+                    {
+                        available = false;
+                    }
                     var leaveBalance = new LeaveBalance
                     {
                         Guid = Guid.NewGuid(),
                         UsedBalance = 0,
-                        IsAvailable = true,
+                        IsAvailable = available,
                         LeaveTypeGuid = toCreate.Guid,
                         EmployeeGuid = item.Guid,
                         CreatedDate = DateTime.Now,

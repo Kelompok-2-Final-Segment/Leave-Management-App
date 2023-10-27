@@ -6,6 +6,7 @@ using API.Utilities.Handlers.Exceptions;
 using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Mvc;
 using API.DTOs.Employees;
+using API.DTOs.Leaves;
 
 namespace API.Controllers
 {
@@ -13,44 +14,57 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class ManagerController : ControllerBase
     {
-        private readonly IAccountRepository _accountRepository;
-        private readonly IRoleRepository _roleRepository;
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly ILeaveRepository _leaveRepository;
 
-        public ManagerController(IAccountRepository accountRepository, IDepartmentRepository departmentRepository, IRoleRepository roleRepository, IEmployeeRepository employeeRepository)
+        public ManagerController(IDepartmentRepository departmentRepository, IEmployeeRepository employeeRepository, ILeaveRepository leaveRepository)
         {
-            _accountRepository = accountRepository;
+
             _departmentRepository = departmentRepository;
-            _roleRepository = roleRepository;
             _employeeRepository = employeeRepository;
+            _leaveRepository = leaveRepository;
         }
-        [HttpGet]
-        public IActionResult GetStaff(EmployeeDto employeeDto)
+
+        [HttpGet("Staffs/{guid}")]
+        public IActionResult GetStaffs(Guid guid)
         {
-            var result = _employeeRepository.GetAll();
-            if (!result.Any())
+            var employees = _employeeRepository.GetAll();
+            var department = _departmentRepository.GetDepartmentByManagerGuid(guid);
+            if (!employees.Any() || department == null)
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
-            var data =  result.Where(i =>  i.DepartmentGuid == employeeDto.DepartmentGuid).Select(i => (EmployeeDto) i);
-            return Ok(new ResponseOkHandler<IEnumerable<EmployeeDto>>(data));
-        }
-        [HttpDelete]
-        public IActionResult DeleteStaff()
-        {
-            return Ok();
+            var staffs = employees.Where(e => e.DepartmentGuid == department.Guid).Select(s => EmployeeDetailsDto.ConvertToStaffDetails(s, department));
+            return Ok(new ResponseOkHandler<IEnumerable<EmployeeDetailsDto>>(staffs));
         }
 
-        [HttpPut]
+        [HttpPut("Staffs")]
         public IActionResult EditStaff()
         {
             return BadRequest();
         }
-        [HttpPut("Leave")]
-        public IActionResult EditLeave()
+        [HttpPut("Leaves/{guid}")]
+        public IActionResult EditLeave(EditLeaveDto editLeaveDto)
         {
-            return Ok();
+            try
+            {
+                var entity = _leaveRepository.GetByGuid(editLeaveDto.Guid);
+                if (entity is null)
+                {
+                    return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+
+                }
+                entity = EditLeaveDto.EditLeaveByManager(editLeaveDto, entity);
+
+                var result = _leaveRepository.Update(entity);
+                return Ok(new ResponseOkHandler<String>("Data Updated"));
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Update Data", e.Message));
+            }
         }
     }
 }

@@ -9,8 +9,9 @@ namespace API.DTOs.Leaves
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Description { get; set; }
-        public StatusLevel Status { get; set; }
-        public string Remarks { get; set; }
+        public string Status { get; set; }
+        public string RemarksManager { get; set; } 
+        public string RemarksHR { get; set; }
 
         public static explicit operator LeaveDto(Leave leave)
         {
@@ -20,19 +21,11 @@ namespace API.DTOs.Leaves
                 StartDate = leave.StartDate,
                 EndDate = leave.EndDate,
                 Description = leave.Description,
-                Status = leave.Status,
-                Remarks = leave.Remarks
+                Status = leave.Status.ToString(),
+                RemarksManager = leave.RemarksManager,
+                RemarksHR = leave.RemarksHR
             };
         }
-        public static Leave ConvertToLeave(LeaveDto leaveDto, Leave leave)
-        {
-            leave.StartDate = leaveDto.StartDate;
-            leave.EndDate = leaveDto.EndDate;
-            leave.Description = leaveDto.Description;
-            leave.Status = leaveDto.Status;
-            leave.Remarks = leaveDto.Remarks;
-            leave.ModifiedDate = DateTime.Now;
-            return leave;
-        }
+
     }
 }

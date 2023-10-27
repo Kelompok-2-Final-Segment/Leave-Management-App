@@ -10,6 +10,8 @@ namespace API.Models
         public string Name { get; set; }
         [Required, Column("balance")]
         public int Balance { get; set; }
+        [Required, Column("female_only")]
+        public bool FemaleOnly { get; set; }
         [Required, Column("min_duration")]
         public int MinDuration { get; set; }
         [Required, Column("max_duration")]

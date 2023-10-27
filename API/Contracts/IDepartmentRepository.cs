@@ -6,5 +6,6 @@ namespace API.Contracts
     public interface IDepartmentRepository : IGeneralRepository<Department>
     {
         Guid? GetDepartmentGuid(string departName);
+        Department? GetDepartmentByManagerGuid(Guid guid);
     }
 }

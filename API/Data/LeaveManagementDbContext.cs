@@ -6,7 +6,7 @@ namespace API.Data
     public class LeaveManagementDbContext : DbContext
     {
         public LeaveManagementDbContext(DbContextOptions<LeaveManagementDbContext> options) : base(options)
-        {}
+        { }
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<AccountRole> AccountRoles { get; set; }
@@ -86,9 +86,9 @@ namespace API.Data
                 );
 
             modelBuilder.Entity<LeaveType>().HasData(
-                new LeaveType { Guid= Guid.NewGuid(), Name = "Annual Leave" , Balance = 12 , MaxDuration= 12, MinDuration=1},
-                new LeaveType { Guid = Guid.NewGuid(), Name = "Sick Leave", Balance = 90 , MaxDuration = 90, MinDuration = 1 },
-                new LeaveType { Guid = Guid.NewGuid(), Name = "Personal Leave", Balance = 2 , MaxDuration = 2, MinDuration = 1 }
+                new LeaveType { Guid = Guid.NewGuid(), Name = "Annual Leave", Balance = 12, FemaleOnly = false, MaxDuration = 12, MinDuration = 1 },
+                new LeaveType { Guid = Guid.NewGuid(), Name = "Sick Leave", Balance = 90, FemaleOnly = false, MaxDuration = 90, MinDuration = 1 },
+                new LeaveType { Guid = Guid.NewGuid(), Name = "Personal Leave", Balance = 2, FemaleOnly = false, MaxDuration = 2, MinDuration = 1 }
                 );
         }
     }
