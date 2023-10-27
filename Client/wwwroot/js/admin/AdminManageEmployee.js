@@ -1,9 +1,13 @@
-﻿// Main
-setDataTable();
+﻿// Import
+import Alert from "../utilities/alert.js";
+
+// Main
+dataTable();
 console.log("Hellow");
 
+/* Data Table for Getting Employees Data */
 // Data Table
-function setDataTable() {
+function dataTable() {
     $("#table-employee").DataTable({
         ajax: {
             url: 'https://localhost:7054/admin/employee/all',
@@ -39,6 +43,7 @@ function columnConfig() {
                 deleteButton.type = 'button';
                 deleteButton.className = 'btn btn-danger btn-delete-employee';
                 deleteButton.innerText = 'Delete';
+                deleteButton.setAttribute('onclick', `deleteEmployee("12345")`);
 
                 return deleteButton.outerHTML;
             }
@@ -104,3 +109,51 @@ function setBootstrapToDataTableButton() {
     document.getElementById('colvis-btn').classList.remove('dt-button');
     console.log("testing");
 }
+
+// Delete Employee
+function deleteEmployee(guid) {
+    console.log("Hellow");
+}
+
+/* AJAX For Register*/
+$('#button-register').on('click', () => {
+    var registrationData = {
+        firstName: $('#input-firstname').val(),
+        lastName: $('#input-lastname').val(),
+        birthDate: $('#input-birthdate').val(),
+        hiringDate: $('#input-hiring-date').val(),
+        gender: parseInt($('#select-gender').val(), 10),
+        email: $('#input-email').val(),
+        phoneNumber: $('#input-phone-number').val(),
+        roleName: $('#select-role').val(),
+        departmentName: $('#select-department').val(),
+        password: $('#input-password').val(),
+        confirmPassword: $('#input-confirm-password').val()
+    }
+
+    let json = JSON.stringify(registrationData);
+    console.log(aspAction);
+    console.log(json);
+
+    $.ajax({
+        type: 'POST',
+        url: aspAction,
+        data: { entity: json },
+        dataType: "json",
+    })
+        .done((data, textStatus, errorThrown) => {
+            $('#modal-create').modal('hide');
+            console.log(data);
+            if (data.code >= 300) {
+                console.log("Error bang");
+                Alert.error();
+            }
+
+            if (data.code >= 200 && data.code < 300) {
+                console.log("Sukses bang");
+                Alert.success("Employee Data Created Successfully!");
+            }
+
+            $('#table-employee').DataTable().ajax.reload();
+        });
+});
