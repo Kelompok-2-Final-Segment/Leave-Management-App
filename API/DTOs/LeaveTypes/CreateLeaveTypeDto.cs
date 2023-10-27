@@ -13,7 +13,7 @@ namespace API.DTOs.LeaveTypes
         {
             return new LeaveType
             {
-                Guid = new Guid(),
+                Guid = Guid.NewGuid(),
                 Name = dto.Name,
                 Balance = dto.Balance,
                 MinDuration = dto.MinDuration,
