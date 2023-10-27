@@ -1,4 +1,5 @@
 ﻿using API.Models;
+using Client.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -65,8 +66,9 @@ public class AdminController : Controller
         return View();
     }
 
-    [HttpPost]
-    public IActionResult CreateEmployee()
+    [HttpPost("admin/employee/create")]
+    [ValidateAntiForgeryToken]
+    public IActionResult CreateEmployee(EmployeeCombinedModel combinedObject)
     {
         return View();
     }
