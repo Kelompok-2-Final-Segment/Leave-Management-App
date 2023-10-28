@@ -33,7 +33,6 @@ namespace API.Controllers
         }
 
         [HttpPost("ForgotPassword")]
-        [AllowAnonymous]
         public IActionResult ForgotPassword(ForgotPasswordDto forgotPasswordDto)
         {
             try
@@ -66,7 +65,6 @@ namespace API.Controllers
         }
 
         [HttpPost("ChangePassword")]
-        [AllowAnonymous]
         public IActionResult ChangePassword(ChangePasswordDto changePasswordDto)
         {
             var employee = _employeeRepository.GetByEmail(changePasswordDto.Email);
@@ -104,7 +102,6 @@ namespace API.Controllers
         }
 
         [HttpPost("Login")]
-        [AllowAnonymous]
         public IActionResult Login(LoginDto loginDto)
         {
             //mengambil objek employe by email
@@ -142,141 +139,141 @@ namespace API.Controllers
             return Ok(new ResponseOkHandler<Object>("Login Success", new { Token = token }));
         }
 
-        [HttpPost("Register")]
-        [AllowAnonymous]
-        public IActionResult Register(RegisterDto registerDto)
-        {
-            //mengambil objek employee
-            using var context = _accountRepository.GetContext();
-            using var transaction = context.Database.BeginTransaction();
+        //[HttpPost("Register")]
+        //[AllowAnonymous]
+        //public IActionResult Register(RegisterDto registerDto)
+        //{
+        //    //mengambil objek employee
+        //    using var context = _accountRepository.GetContext();
+        //    using var transaction = context.Database.BeginTransaction();
 
-            try
-            {
+        //    try
+        //    {
 
-                var employee = _employeeRepository.GetByEmail(registerDto.Email);
-                if (employee != null)
-                {
-                    return BadRequest(new ResponseBadRequestHandler("Email is Used"));
+        //        var employee = _employeeRepository.GetByEmail(registerDto.Email);
+        //        if (employee != null)
+        //        {
+        //            return BadRequest(new ResponseBadRequestHandler("Email is Used"));
                     
-                }
+        //        }
                 
-                Employee employeeCreate = registerDto;
-                employeeCreate.DepartmentGuid = _departmentRepository.GetDepartmentGuid(registerDto.DepartmentName) ?? throw new Exception("department name tidak ditemukan");
+        //        Employee employeeCreate = registerDto;
+        //        employeeCreate.DepartmentGuid = _departmentRepository.GetDepartmentGuid(registerDto.DepartmentName) ?? throw new Exception("department name tidak ditemukan");
 
-                _employeeRepository.Create(employeeCreate);
+        //        _employeeRepository.Create(employeeCreate);
                 
 
-                Account account = registerDto;
-                account.Guid = employeeCreate.Guid;
+        //        Account account = registerDto;
+        //        account.Guid = employeeCreate.Guid;
                
-                account.Password = HashHandler.HashPassword(registerDto.Password);
+        //        account.Password = HashHandler.HashPassword(registerDto.Password);
 
-                _accountRepository.Create(account);
+        //        _accountRepository.Create(account);
 
-                _accountRoleRepository.Create(new AccountRole
-                {
-                    Guid = new Guid(),
-                    AccountGuid = account.Guid,
-                    RoleGuid = _roleRepository.GetRoleGuid(registerDto.RoleName) ?? throw new Exception("role name tidak ditemukan")
-                });
+        //        _accountRoleRepository.Create(new AccountRole
+        //        {
+        //            Guid = new Guid(),
+        //            AccountGuid = account.Guid,
+        //            RoleGuid = _roleRepository.GetRoleGuid(registerDto.RoleName) ?? throw new Exception("role name tidak ditemukan")
+        //        });
 
-                transaction.Commit();
-                return Ok(new ResponseOkHandler<string>("Account Created"));
-            }
-            catch (Exception ex)
-            {
-                transaction.Rollback();
-                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to create account", ex.Message));
-            }
-        }
+        //        transaction.Commit();
+        //        return Ok(new ResponseOkHandler<string>("Account Created"));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        transaction.Rollback();
+        //        return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to create account", ex.Message));
+        //    }
+        //}
 
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var result = _accountRepository.GetAll();
-            if (!result.Any())
-            {
-                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
-            }
-            var data = result.Select(i => (AccountDto)i);
-            return Ok(new ResponseOkHandler<IEnumerable<AccountDto>>(data));
-        }
-        //method get dari http untuk getByGuid account
-        [HttpGet("{guid}")]
-        public IActionResult GetByGuid(Guid guid)
-        {
-            var result = _accountRepository.GetByGuid(guid);
-            if (result is null)
-            {
-                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+        //[HttpGet]
+        //public IActionResult GetAll()
+        //{
+        //    var result = _accountRepository.GetAll();
+        //    if (!result.Any())
+        //    {
+        //        return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+        //    }
+        //    var data = result.Select(i => (AccountDto)i);
+        //    return Ok(new ResponseOkHandler<IEnumerable<AccountDto>>(data));
+        //}
+        ////method get dari http untuk getByGuid account
+        //[HttpGet("{guid}")]
+        //public IActionResult GetByGuid(Guid guid)
+        //{
+        //    var result = _accountRepository.GetByGuid(guid);
+        //    if (result is null)
+        //    {
+        //        return NotFound(new ResponseNotFoundHandler("Data Not Found"));
 
-            }
-            return Ok(new ResponseOkHandler<AccountDto>((AccountDto)result));
-        }
-        //method post dari http untuk create account
-        [HttpPost]
-        public IActionResult Create(CreateAccountDto createAccountDto)
-        {
-            try
-            {
-                Account toCreate = createAccountDto;
-                toCreate.Password = HashHandler.HashPassword(createAccountDto.Password);
+        //    }
+        //    return Ok(new ResponseOkHandler<AccountDto>((AccountDto)result));
+        //}
+        ////method post dari http untuk create account
+        //[HttpPost]
+        //public IActionResult Create(CreateAccountDto createAccountDto)
+        //{
+        //    try
+        //    {
+        //        Account toCreate = createAccountDto;
+        //        toCreate.Password = HashHandler.HashPassword(createAccountDto.Password);
 
-                var result = _accountRepository.Create(toCreate);
-                return Ok(new ResponseOkHandler<string>("Data Created Successfully"));
+        //        var result = _accountRepository.Create(toCreate);
+        //        return Ok(new ResponseOkHandler<string>("Data Created Successfully"));
 
-            }
+        //    }
 
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Create Data", e.Message));
-            }
-        }
+        //    catch (Exception e)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Create Data", e.Message));
+        //    }
+        //}
 
-        //method put dari http untuk Update account
-        [HttpPut]
-        public IActionResult Update(AccountDto accountDto)
-        {
-            try
-            {
-                var entity = _accountRepository.GetByGuid(accountDto.Guid);
-                if (entity is null)
-                {
-                    return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+        ////method put dari http untuk Update account
+        //[HttpPut]
+        //public IActionResult Update(AccountDto accountDto)
+        //{
+        //    try
+        //    {
+        //        var entity = _accountRepository.GetByGuid(accountDto.Guid);
+        //        if (entity is null)
+        //        {
+        //            return NotFound(new ResponseNotFoundHandler("Data Not Found"));
 
-                }
-                entity = AccountDto.ConvertToAccount(accountDto, entity);
+        //        }
+        //        entity = AccountDto.ConvertToAccount(accountDto, entity);
 
-                var result = _accountRepository.Update(entity);
-                return Ok(new ResponseOkHandler<String>("Data Updated"));
+        //        var result = _accountRepository.Update(entity);
+        //        return Ok(new ResponseOkHandler<String>("Data Updated"));
 
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Create Data", e.Message));
-            }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Create Data", e.Message));
+        //    }
 
-        }
-        //method delete dari http untuk delete account
-        [HttpDelete("{guid}")]
-        public IActionResult Delete(Guid guid)
-        {
-            try
-            {
-                var account = _accountRepository.GetByGuid(guid);
-                if (account is null)
-                {
-                    return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+        //}
+        ////method delete dari http untuk delete account
+        //[HttpDelete("{guid}")]
+        //public IActionResult Delete(Guid guid)
+        //{
+        //    try
+        //    {
+        //        var account = _accountRepository.GetByGuid(guid);
+        //        if (account is null)
+        //        {
+        //            return NotFound(new ResponseNotFoundHandler("Data Not Found"));
 
-                }
-                var result = _accountRepository.Delete(account);
+        //        }
+        //        var result = _accountRepository.Delete(account);
 
-                return Ok(new ResponseOkHandler<String>("Data Deleted"));
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Create Data", e.Message));
-            }
-        }
+        //        return Ok(new ResponseOkHandler<String>("Data Deleted"));
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Create Data", e.Message));
+        //    }
+        //}
     }
 }
