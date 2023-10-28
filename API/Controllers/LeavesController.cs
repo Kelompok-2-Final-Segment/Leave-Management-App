@@ -28,8 +28,8 @@ namespace API.Controllers
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
-            var data = result.Select(i => (LeaveDto)i);
-            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(data));
+            var data = result.Select(i => (LeaveDetailStaffDto) i);
+            return Ok(new ResponseOkHandler<IEnumerable<LeaveDetailStaffDto>>(data));
         }
 
         //[HttpGet("{guid}")]

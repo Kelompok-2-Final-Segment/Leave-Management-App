@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/Admin/[controller]")]
     public class LeaveBalancesController : ControllerBase
     {
         private readonly ILeaveBalanceRepository _leaveBalanceRepository;
@@ -42,22 +42,22 @@ namespace API.Controllers
             return Ok(new ResponseOkHandler<LeaveBalanceDto>((LeaveBalanceDto)result));
         }
 
-        [HttpPost]
-        public IActionResult Create(CreateLeaveBalanceDto createLeaveBalanceDto)
-        {
-            try
-            {
-                LeaveBalance toCreate = createLeaveBalanceDto;
+        //[HttpPost]
+        //public IActionResult Create(CreateLeaveBalanceDto createLeaveBalanceDto)
+        //{
+        //    try
+        //    {
+        //        LeaveBalance toCreate = createLeaveBalanceDto;
 
-                var result = _leaveBalanceRepository.Create(toCreate);
-                return Ok(new ResponseOkHandler<string>("Data Created Successfully"));
+        //        var result = _leaveBalanceRepository.Create(toCreate);
+        //        return Ok(new ResponseOkHandler<string>("Data Created Successfully"));
 
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Create Data", e.Message));
-            }
-        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Create Data", e.Message));
+        //    }
+        //}
 
 
         [HttpPut]
