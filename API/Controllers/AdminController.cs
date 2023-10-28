@@ -233,13 +233,27 @@ namespace API.Controllers
             try
             {
                 var entity = _leaveRepository.GetByGuid(editLeaveDto.Guid);
-                if (entity is null)
+                var leaveBalances = _leaveBalanceRepository.GetAll();
+                if (entity is null || leaveBalances == null)
                 {
                     return NotFound(new ResponseNotFoundHandler("Data Not Found"));
 
                 }
                 entity = EditLeaveDto.EditLeaveByHR(editLeaveDto, entity);
+                if(entity.Status.ToString() == "Approved")
+                {
+                    
+                    var leaveBalance = leaveBalances.FirstOrDefault(lb => lb.EmployeeGuid == entity.EmployeeGuid && lb.LeaveTypeGuid == entity.LeaveTypeGuid);
+                    if (leaveBalance == null)
+                    {
+                        return NotFound(new ResponseNotFoundHandler("Data Not Found"));
 
+                    }
+                    TimeSpan leaveDuration = entity.StartDate - entity.EndDate;
+                    int leaveLength = leaveDuration.Days;
+                    leaveBalance.UsedBalance = leaveBalance.UsedBalance + leaveLength;
+                    _leaveBalanceRepository.Update(leaveBalance);
+                }
                 var result = _leaveRepository.Update(entity);
                 return Ok(new ResponseOkHandler<String>("Data Updated"));
 

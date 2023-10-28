@@ -58,6 +58,44 @@ namespace API.Controllers
             
             return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(leavesDto));
         }
+     
+        [HttpGet("Leaves/Pending/{guid}")]
+        public IActionResult GetPendingLeaves(Guid guid)
+        {
+            var leaves = _leaveRepository.GetAll().Where(l => l.EmployeeGuid == guid && l.Status.ToString() == "Pending");
+            if (!leaves.Any())
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var leavesDto = leaves.Select(l => (LeaveDto)l);
+
+            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(leavesDto));
+
+        }
+        [HttpGet("Leaves/Rejected/{guid}")]
+        public IActionResult GetRejectedLeaves(Guid guid)
+        {
+             var leaves = _leaveRepository.GetAll().Where(l => l.EmployeeGuid == guid && l.Status.ToString() == "Rejected");
+            if (!leaves.Any())
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var leavesDto = leaves.Select(l => (LeaveDto) l);
+            
+            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(leavesDto));
+        }
+        [HttpGet("Leaves/Approved/{guid}")]
+        public IActionResult GetApprovedLeaves(Guid guid)
+        {
+             var leaves = _leaveRepository.GetAll().Where(l => l.EmployeeGuid == guid && l.Status.ToString() == "Approved");
+            if (!leaves.Any())
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var leavesDto = leaves.Select(l => (LeaveDto) l);
+            
+            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(leavesDto));
+        }
 
         [HttpPost("Leaves/request")]
         public IActionResult RequestLeave(CreateLeaveDto createLeaveDto)
@@ -76,9 +114,11 @@ namespace API.Controllers
                 {
                     return NotFound(new ResponseNotFoundHandler("Employee or leaveType Not Found"));
                 }
-                if (leaveType.Balance - leaveBalance.UsedBalance <= 0)
+                TimeSpan leaveDuration = toCreate.StartDate - toCreate.EndDate;
+                int leaveLength = leaveDuration.Days;
+                if (leaveType.Balance - leaveBalance.UsedBalance <= 0 && leaveLength + leaveBalance.UsedBalance >= leaveType.Balance)
                 {
-                    return BadRequest(new ResponseBadRequestHandler("You Can't Request This Leave"));
+                    return BadRequest(new ResponseBadRequestHandler("Your leave balance is not enough"));
                 }
                 var result = _leaveRepository.Create(toCreate);
                 return Ok(new ResponseOkHandler<string>("Leave Requested Successfully"));
@@ -89,7 +129,7 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Create Data", e.Message));
             }
         }
-        [HttpDelete("{guid}")]
+        [HttpDelete("Leaves/{guid}")]
         public IActionResult DeleteRequest(Guid guid)
         {
             try
