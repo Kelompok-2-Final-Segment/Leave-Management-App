@@ -8,6 +8,7 @@ namespace API.DTOs.Leaves
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Description { get; set; }
+        public string? Document { get; set; }
         public Guid EmployeeGuid { get; set; }
         public Guid LeaveTypeGuid { get; set; }
 
@@ -19,6 +20,7 @@ namespace API.DTOs.Leaves
                 StartDate = dto.StartDate,
                 EndDate = dto.EndDate,
                 Description = dto.Description,
+                Document = dto.Document,
                 Status = 0,
                 RemarksManager = "",
                 RemarksHR = "",

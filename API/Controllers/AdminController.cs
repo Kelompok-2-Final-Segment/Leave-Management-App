@@ -69,7 +69,7 @@ namespace API.Controllers
         public IActionResult GetEmployeeByGuid(Guid guid)
         {
             var employee = _employeeRepository.GetByGuid(guid);
-            if(employee == null)
+            if (employee == null)
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
@@ -81,17 +81,17 @@ namespace API.Controllers
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
             var employeeDetail = new EmployeeDetailsDto
-                                 {
-                                      Guid = employee.Guid,
-                                      FullName = string.Concat(employee.FirstName, " ", employee.LastName),
-                                      BirthDate = employee.BirthDate,
-                                      HiringDate = employee.HiringDate,
-                                      Gender = employee.Gender.ToString(),
-                                      Email = employee.Email,
-                                      PhoneNumber = employee.PhoneNumber,
-                                      DepartmentName = department.Name,
-                                      RoleName = _roleRepository.GetRoleName(accountRole.RoleGuid) ?? throw new Exception("no role ")
-                                  };
+            {
+                Guid = employee.Guid,
+                FullName = string.Concat(employee.FirstName, " ", employee.LastName),
+                BirthDate = employee.BirthDate,
+                HiringDate = employee.HiringDate,
+                Gender = employee.Gender.ToString(),
+                Email = employee.Email,
+                PhoneNumber = employee.PhoneNumber,
+                DepartmentName = department.Name,
+                RoleName = _roleRepository.GetRoleName(accountRole.RoleGuid) ?? throw new Exception("no role ")
+            };
 
             return Ok(new ResponseOkHandler<EmployeeDetailsDto>(employeeDetail));
         }
@@ -124,17 +124,19 @@ namespace API.Controllers
                 account.Password = HashHandler.HashPassword(registerDto.Password);
 
                 _accountRepository.Create(account);
-                if(registerDto.RoleName == "Manager")
+                if (registerDto.RoleName == "Manager")
                 {
                     var toUpdateManager = _departmentRepository.GetByGuid(employeeCreate.DepartmentGuid);
-                    if (toUpdateManager != null && toUpdateManager.ManagerGuid == null) {
+                    if (toUpdateManager != null && toUpdateManager.ManagerGuid == null)
+                    {
                         toUpdateManager.ManagerGuid = employeeCreate.Guid;
                         _departmentRepository.Update(toUpdateManager);
-                    } else
+                    }
+                    else
                     {
                         return BadRequest(new ResponseBadRequestHandler("Setiap department hanya boleh memiliki satu manager"));
                     }
-                    
+
                 }
                 _accountRoleRepository.Create(new AccountRole
                 {
@@ -150,11 +152,11 @@ namespace API.Controllers
                 foreach (var item in leavetypes)
                 {
                     var available = true;
-                    if(item.FemaleOnly == true && employeeCreate.Gender.ToString() == "Male" )
+                    if (item.FemaleOnly == true && employeeCreate.Gender.ToString() == "Male")
                     {
                         available = false;
                     }
-                    if(item.Name == "Annual Leave" && employeeCreate.HiringDate <= DateTime.Today.AddYears(-1))
+                    if (item.Name == "Annual Leave" && employeeCreate.HiringDate <= DateTime.Today.AddYears(-1))
                     {
                         available = false;
                     }
@@ -222,11 +224,83 @@ namespace API.Controllers
             }
 
         }
-        [HttpGet("Leaves")]
-        public IActionResult GetAll()
+
+        [HttpGet("Leaves/Statistics")]
+        public IActionResult GetStatisticLeaves()
         {
-            return Ok();
+            var employees = _employeeRepository.GetAll();
+            var departments = _departmentRepository.GetAll();
+            var leaves = _leaveRepository.GetAll();
+
+            if (!leaves.Any() && !employees.Any() && !departments.Any())
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+
+            var leaveStatistic = LeaveStatisticDto.ConvertToStatisticLeave(employees,departments, leaves);
+
+            return Ok(new ResponseOkHandler<LeaveStatisticDto>(leaveStatistic));
         }
+
+        [HttpGet("Leaves")]
+        public IActionResult GetAllLeaves()
+        {
+
+            var leaves = _leaveRepository.GetAll();
+
+            if (!leaves.Any())
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+
+            var approvedLeaves = leaves.Select(l => (LeaveDto)l);
+            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(approvedLeaves));
+
+        }
+
+        [HttpGet("Leaves/Pending")]
+        public IActionResult GetPendingLeaves()
+        {
+
+            var leaves = _leaveRepository.GetAll();
+
+            if (!leaves.Any())
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+
+            var approvedLeaves = leaves.Where(l => l.Status.ToString() == "Pending").Select(l => (LeaveDto)l);
+            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(approvedLeaves));
+
+        }
+
+        [HttpGet("Leaves/Rejected")]
+        public IActionResult GetRejectedLeaves()
+        {
+            var leaves = _leaveRepository.GetAll();
+
+            if (!leaves.Any())
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+
+            var approvedLeaves = leaves.Where(l => l.Status.ToString() == "Rejected").Select(l => (LeaveDto)l);
+            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(approvedLeaves));
+        }
+        [HttpGet("Leaves/Approved")]
+        public IActionResult GetApprovedLeaves(Guid guid)
+        {
+            var leaves = _leaveRepository.GetAll();
+
+            if (!leaves.Any())
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+
+            var approvedLeaves = leaves.Where(l => l.Status.ToString() == "Approved").Select(l => (LeaveDto)l);
+            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(approvedLeaves));
+        }
+
         [HttpPut("Leaves/Edit")]
         public IActionResult EditLeave(EditLeaveDto editLeaveDto)
         {
@@ -240,9 +314,9 @@ namespace API.Controllers
 
                 }
                 entity = EditLeaveDto.EditLeaveByHR(editLeaveDto, entity);
-                if(entity.Status.ToString() == "Approved")
+                if (entity.Status.ToString() == "Approved")
                 {
-                    
+
                     var leaveBalance = leaveBalances.FirstOrDefault(lb => lb.EmployeeGuid == entity.EmployeeGuid && lb.LeaveTypeGuid == entity.LeaveTypeGuid);
                     if (leaveBalance == null)
                     {

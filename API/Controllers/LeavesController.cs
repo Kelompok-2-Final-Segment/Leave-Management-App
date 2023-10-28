@@ -32,17 +32,17 @@ namespace API.Controllers
             return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(data));
         }
 
-        [HttpGet("{guid}")]
-        public IActionResult GetByGuid(Guid guid)
-        {
-            var result = _leaveRepository.GetByGuid(guid);
-            if (result is null)
-            {
-                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+        //[HttpGet("{guid}")]
+        //public IActionResult GetByGuid(Guid guid)
+        //{
+        //    var result = _leaveRepository.GetByGuid(guid);
+        //    if (result is null)
+        //    {
+        //        return NotFound(new ResponseNotFoundHandler("Data Not Found"));
 
-            }
-            return Ok(new ResponseOkHandler<LeaveDto>((LeaveDto)result));
-        }
+        //    }
+        //    return Ok(new ResponseOkHandler<LeaveDto>((LeaveDto)result));
+        //}
 
 
 

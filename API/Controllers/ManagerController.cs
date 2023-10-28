@@ -44,6 +44,33 @@ namespace API.Controllers
         {
             return BadRequest();
         }
+        [HttpGet("Leaves/Histories/{guid}")]
+        public IActionResult GetHistoryLeaves(Guid guid)
+        {
+            var employees = _employeeRepository.GetAll();
+            var leaves = _leaveRepository.GetAll();
+            var departments = _departmentRepository.GetAll();
+            var department = _departmentRepository.GetDepartmentByManagerGuid(guid) ?? throw new Exception("department manager not found");
+            if (!leaves.Any() && !employees.Any() && !departments.Any())
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var leavess = from emp in employees
+                          join l in leaves on emp.Guid equals l.EmployeeGuid
+                          join d in departments on emp.DepartmentGuid equals department.Guid
+                          select new LeaveDto
+                          {
+                              StartDate = l.StartDate,
+                              EndDate = l.EndDate,
+                              Description = l.Description,
+                              Status = l.Status.ToString(),
+                              RemarksManager = l.RemarksManager,
+                              RemarksHR = l.RemarksHR
+                          };
+
+          
+            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(leavess));
+        }
 
 
         [HttpGet("Leaves/Pending/{guid}")]

@@ -9,6 +9,7 @@ namespace API.DTOs.Leaves
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Description { get; set; }
+        public string? Document { get; set; }
         public string Status { get; set; }
         public string RemarksManager { get; set; } 
         public string RemarksHR { get; set; }
@@ -21,6 +22,7 @@ namespace API.DTOs.Leaves
                 StartDate = leave.StartDate,
                 EndDate = leave.EndDate,
                 Description = leave.Description,
+                Document = leave.Document,
                 Status = leave.Status.ToString(),
                 RemarksManager = leave.RemarksManager,
                 RemarksHR = leave.RemarksHR
