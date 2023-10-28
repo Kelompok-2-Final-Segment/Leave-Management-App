@@ -176,7 +176,10 @@
 </div>
 
 @section Scripts{
+    <script>
+        let createAction = "@Url.Action("CreateEmployee")";
+        let detailAction = "@Url.Action("EmployeeDetail")";    
+    </script>
     <script src="~/js/admin/EmployeeHandler.js" asp-append-version="true"></script>
-    <script>let aspAction = "@Url.Action("CreateEmployee")"; </script>
     <script type="module" src="~/js/admin/AdminManageEmployee.js" asp-append-version="true"></script>
 }
