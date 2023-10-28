@@ -146,13 +146,22 @@ $('#button-register').on('click', () => {
             $('#modal-create').modal('hide');
             console.log(data);
             if (data.code >= 300) {
-                console.log("Error bang");
-                Alert.error();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed to Create Employee Data',
+                    text: 'Oops! Something went wrong while trying to create employee data. Please double-check your information.',
+                    footer: '<a href="">Why do I have this issue?</a>'
+                });
             }
 
             if (data.code >= 200 && data.code < 300) {
-                console.log("Sukses bang");
-                Alert.success("Employee Data Created Successfully!");
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Employee Data Created Successfully',
+                    showConfirmButton: false,
+                    timer: 2500
+                });
             }
 
             $('#table-employee').DataTable().ajax.reload();
