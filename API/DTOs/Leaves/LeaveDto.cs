@@ -6,24 +6,40 @@ namespace API.DTOs.Leaves
     public class LeaveDto
     {
         public Guid Guid { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string FullName { get; set; }
+        public string NIK { get; set; }
+        public string LeaveName { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public string Description { get; set; }
-        public string Status { get; set; }
-        public string RemarksManager { get; set; } 
-        public string RemarksHR { get; set; }
+        public string Status { get; set; } 
 
-        public static explicit operator LeaveDto(Leave leave)
+        
+
+        public static LeaveDto ConvertToLeaveDto(Leave leave, LeaveType leaveType, Employee employee)
         {
             return new LeaveDto
             {
                 Guid = leave.Guid,
+                CreatedDate = leave.CreatedDate,
+                FullName = string.Concat(employee.FirstName + " " + employee.LastName),
+                NIK = employee.NIK,
+                LeaveName = leaveType.Name,
                 StartDate = leave.StartDate,
                 EndDate = leave.EndDate,
-                Description = leave.Description,
                 Status = leave.Status.ToString(),
-                RemarksManager = leave.RemarksManager,
-                RemarksHR = leave.RemarksHR
+            };
+        } 
+        public static LeaveDto ConvertToLeaveStaff(Leave leave, LeaveType leaveType)
+        {
+            return new LeaveDto
+            {
+                Guid = leave.Guid,
+                CreatedDate = leave.CreatedDate,
+                LeaveName = leaveType.Name,
+                StartDate = leave.StartDate,
+                EndDate = leave.EndDate,
+                Status = leave.Status.ToString(),
             };
         }
 

@@ -25,3 +25,8 @@ body {
 .modal-footer {
     border-top: none !important;
 }
+
+#detail-employee-card {
+    min-height: 600px;
+}
+

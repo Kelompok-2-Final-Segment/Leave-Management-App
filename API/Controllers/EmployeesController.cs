@@ -21,32 +21,32 @@ namespace API.Controllers
         }
 
 
-        [HttpGet("details")]
-        //membuat authorize khusus manager
-        [Authorize(Policy = "Manager")]
-        public IActionResult GetDetails()
-        {
-            var employee = _employeeRepository.GetAll();
-            if (!employee.Any())
-            {
-                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
-            }
-            var employeeDetails = from emp in employee
-                                  select new EmployeeDetailsDto
-                                  {
-                                      Guid = emp.Guid,
+        //[HttpGet("details")]
+        ////membuat authorize khusus manager
+        //[Authorize(Policy = "Manager")]
+        //public IActionResult GetDetails()
+        //{
+        //    var employee = _employeeRepository.GetAll();
+        //    if (!employee.Any())
+        //    {
+        //        return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+        //    }
+        //    var employeeDetails = from emp in employee
+        //                          select new EmployeeDetailsDto
+        //                          {
+        //                              Guid = emp.Guid,
 
-                                      FullName = string.Concat(emp.FirstName, " ", emp.LastName),
-                                      BirthDate = emp.BirthDate,
-                                      Gender = emp.Gender.ToString(),
-                                      HiringDate = emp.HiringDate,
-                                      Email = emp.Email,
-                                      PhoneNumber = emp.PhoneNumber,
+        //                              FullName = string.Concat(emp.FirstName, " ", emp.LastName),
+        //                              BirthDate = emp.BirthDate,
+        //                              Gender = emp.Gender.ToString(),
+        //                              HiringDate = emp.HiringDate,
+        //                              Email = emp.Email,
+        //                              PhoneNumber = emp.PhoneNumber,
 
-                                  };
+        //                          };
 
-            return Ok(new ResponseOkHandler<IEnumerable<EmployeeDetailsDto>>(employeeDetails));
-        }
+        //    return Ok(new ResponseOkHandler<IEnumerable<EmployeeDetailsDto>>(employeeDetails));
+        //}
 
         //method get dari http untuk getall universities
         [HttpGet]
@@ -73,22 +73,22 @@ namespace API.Controllers
             return Ok(new ResponseOkHandler<EmployeeDto>((EmployeeDto)result));
         }
         //method post dari http untuk create employee
-        [HttpPost]
-        public IActionResult Create(CreateEmployeeDto createEmployeeDto)
-        {
-            try
-            {
-                Employee toCreate = createEmployeeDto;
-                toCreate.NIK = GenerateNIKHandler.GenerateNIK(_employeeRepository.GetLastNik());
-                var result = _employeeRepository.Create(toCreate);
-                return Ok(new ResponseOkHandler<string>("Date Created Successfully"));
+        //[HttpPost]
+        //public IActionResult Create(CreateEmployeeDto createEmployeeDto)
+        //{
+        //    try
+        //    {
+        //        Employee toCreate = createEmployeeDto;
+        //        toCreate.NIK = GenerateNIKHandler.GenerateNIK(_employeeRepository.GetLastNik());
+        //        var result = _employeeRepository.Create(toCreate);
+        //        return Ok(new ResponseOkHandler<string>("Date Created Successfully"));
 
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Create Data", e.Message));
-            }
-        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Create Data", e.Message));
+        //    }
+        //}
 
         //method put dari http untuk Update employee
         [HttpPut]

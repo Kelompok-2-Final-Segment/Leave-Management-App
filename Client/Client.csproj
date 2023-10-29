@@ -21,4 +21,9 @@
     <ProjectReference Include="..\API\API.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\js\manager\" />
+    <Folder Include="wwwroot\js\staff\" />
+  </ItemGroup>
+
 </Project>

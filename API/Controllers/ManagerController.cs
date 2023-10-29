@@ -17,13 +17,15 @@ namespace API.Controllers
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly ILeaveRepository _leaveRepository;
+        private readonly ILeaveTypeRepository _leaveTypeRepository;
 
-        public ManagerController(IDepartmentRepository departmentRepository, IEmployeeRepository employeeRepository, ILeaveRepository leaveRepository)
+        public ManagerController(IDepartmentRepository departmentRepository, IEmployeeRepository employeeRepository, ILeaveRepository leaveRepository, ILeaveTypeRepository leaveTypeRepository)
         {
 
             _departmentRepository = departmentRepository;
             _employeeRepository = employeeRepository;
             _leaveRepository = leaveRepository;
+            _leaveTypeRepository = leaveTypeRepository;
         }
 
         [HttpGet("Staffs/{guid}")]
@@ -44,6 +46,26 @@ namespace API.Controllers
         {
             return BadRequest();
         }
+        [HttpGet("Leaves/Histories/{guid}")]
+        public IActionResult GetHistoryLeaves(Guid guid)
+        {
+            var employees = _employeeRepository.GetAll();
+            var leaves = _leaveRepository.GetAll();
+            var departments = _departmentRepository.GetAll();
+            var leaveTypes = _leaveTypeRepository.GetAll();
+            var department = _departmentRepository.GetDepartmentByManagerGuid(guid) ?? throw new Exception("department manager not found");
+            if (!leaves.Any() && !leaveTypes.Any() && !employees.Any() && !departments.Any())
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var leavesDto = from emp in employees
+                                      join l in leaves on emp.Guid equals l.EmployeeGuid
+                                      join lt in leaveTypes on l.LeaveTypeGuid equals lt.Guid
+                                      join d in departments on emp.DepartmentGuid equals department.Guid
+                                      select LeaveDto.ConvertToLeaveDto(l, lt, emp);
+
+            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(leavesDto));
+        }
 
 
         [HttpGet("Leaves/Pending/{guid}")]
@@ -52,26 +74,24 @@ namespace API.Controllers
             var employees = _employeeRepository.GetAll();
             var leaves = _leaveRepository.GetAll();
             var departments = _departmentRepository.GetAll();
+            var leaveTypes = _leaveTypeRepository.GetAll();
             var department = _departmentRepository.GetDepartmentByManagerGuid(guid) ?? throw new Exception("department manager not found");
-            if (!leaves.Any() && !employees.Any() && !departments.Any())
+            if (!leaves.Any() && !leaveTypes.Any() && !employees.Any() && !departments.Any())
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
-            var leavess = from emp in employees
+            var leaveDto = from emp in employees
                           join l in leaves on emp.Guid equals l.EmployeeGuid
+                          join lt in leaveTypes on l.LeaveTypeGuid equals lt.Guid
                           join d in departments on emp.DepartmentGuid equals department.Guid
-                          select new LeaveDto
-                          {
-                              StartDate = l.StartDate,
-                              EndDate = l.EndDate,
-                              Description = l.Description,
-                              Status = l.Status.ToString(),
-                              RemarksManager = l.RemarksManager,
-                              RemarksHR = l.RemarksHR
-                          };
+                          select LeaveDto.ConvertToLeaveDto(l, lt, emp);
 
-            var approvedLeaves = leavess.Where(l => l.Status == "Pending");
-            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(approvedLeaves));
+            var pendingLeaves = leaveDto.Where(l => l.Status == "Pending");
+            if (!pendingLeaves.Any())
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(pendingLeaves));
 
         }
         [HttpGet("Leaves/Rejected/{guid}")]
@@ -80,26 +100,24 @@ namespace API.Controllers
             var employees = _employeeRepository.GetAll();
             var leaves = _leaveRepository.GetAll();
             var departments = _departmentRepository.GetAll();
+            var leaveTypes = _leaveTypeRepository.GetAll();
             var department = _departmentRepository.GetDepartmentByManagerGuid(guid) ?? throw new Exception("department manager not found");
-            if (!leaves.Any() && !employees.Any() && !departments.Any())
+            if (!leaves.Any() && !leaveTypes.Any() && !employees.Any() && !departments.Any())
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
-            var leavess = from emp in employees
-                          join l in leaves on emp.Guid equals l.EmployeeGuid
-                          join d in departments on emp.DepartmentGuid equals department.Guid
-                          select new LeaveDto
-                          {
-                              StartDate = l.StartDate,
-                              EndDate = l.EndDate,
-                              Description = l.Description,
-                              Status = l.Status.ToString(),
-                              RemarksManager = l.RemarksManager,
-                              RemarksHR = l.RemarksHR
-                          };
+            var leaveDto = from emp in employees
+                                      join l in leaves on emp.Guid equals l.EmployeeGuid
+                                      join lt in leaveTypes on l.LeaveTypeGuid equals lt.Guid
+                                      join d in departments on emp.DepartmentGuid equals department.Guid
+                                      select LeaveDto.ConvertToLeaveDto(l, lt, emp);
 
-            var approvedLeaves = leavess.Where(l => l.Status == "Rejected");
-            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(approvedLeaves));
+            var rejectedLeaves = leaveDto.Where(l => l.Status == "Rejected");
+            if (!rejectedLeaves.Any())
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(rejectedLeaves));
         }
         [HttpGet("Leaves/Approved/{guid}")]
         public IActionResult GetApprovedLeaves(Guid guid)
@@ -107,25 +125,23 @@ namespace API.Controllers
             var employees = _employeeRepository.GetAll();
             var leaves = _leaveRepository.GetAll();
             var departments = _departmentRepository.GetAll();
+            var leaveTypes = _leaveTypeRepository.GetAll();
             var department = _departmentRepository.GetDepartmentByManagerGuid(guid) ?? throw new Exception("department manager not found");
-            if (!leaves.Any() && !employees.Any() && !departments.Any())
+            if (!leaves.Any() && !leaveTypes.Any() && !employees.Any() && !departments.Any())
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
-            var leavess = from emp in employees
-                                 join l in leaves on emp.Guid equals l.EmployeeGuid
-                                 join d in departments on emp.DepartmentGuid equals department.Guid
-                                 select new LeaveDto
-                                 {
-                                     StartDate = l.StartDate,
-                                     EndDate = l.EndDate,
-                                     Description = l.Description,
-                                     Status = l.Status.ToString(),
-                                     RemarksManager = l.RemarksManager,
-                                     RemarksHR = l.RemarksHR
-                                 };
+            var leaveDto = from emp in employees
+                           join l in leaves on emp.Guid equals l.EmployeeGuid
+                           join lt in leaveTypes on l.LeaveTypeGuid equals lt.Guid
+                           join d in departments on emp.DepartmentGuid equals department.Guid
+                           select LeaveDto.ConvertToLeaveDto(l, lt, emp);
 
-            var approvedLeaves = leavess.Where(l => l.Status == "Approved");
+            var approvedLeaves = leaveDto.Where(l => l.Status == "Approved");
+            if (!approvedLeaves.Any())
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
             return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(approvedLeaves));
         }
 

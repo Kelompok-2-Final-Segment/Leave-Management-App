@@ -28,21 +28,21 @@ namespace API.Controllers
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
-            var data = result.Select(i => (LeaveDto)i);
-            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(data));
+            var data = result.Select(i => (LeaveDetailStaffDto) i);
+            return Ok(new ResponseOkHandler<IEnumerable<LeaveDetailStaffDto>>(data));
         }
 
-        [HttpGet("{guid}")]
-        public IActionResult GetByGuid(Guid guid)
-        {
-            var result = _leaveRepository.GetByGuid(guid);
-            if (result is null)
-            {
-                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+        //[HttpGet("{guid}")]
+        //public IActionResult GetByGuid(Guid guid)
+        //{
+        //    var result = _leaveRepository.GetByGuid(guid);
+        //    if (result is null)
+        //    {
+        //        return NotFound(new ResponseNotFoundHandler("Data Not Found"));
 
-            }
-            return Ok(new ResponseOkHandler<LeaveDto>((LeaveDto)result));
-        }
+        //    }
+        //    return Ok(new ResponseOkHandler<LeaveDto>((LeaveDto)result));
+        //}
 
 
 

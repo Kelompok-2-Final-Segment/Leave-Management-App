@@ -1,26 +1,17 @@
 ﻿// Import
 import Alert from "../utilities/alert.js";
 
-// Main
-dataTable();
-console.log("Hellow");
-
-/* Data Table for Getting Employees Data */
-// Data Table
-function dataTable() {
-    $("#table-employee").DataTable({
-        ajax: {
-            url: 'https://localhost:7054/admin/',
-            dataSrc: 'data',
-            dataType: 'JSON'
-        },
-        columns: columnConfig(),
-        dom: 'Bfrtip',
-        buttons: buttonConfig()
-    });
-
-    setBootstrapToDataTableButton()
-}
+/* Employee Data Table */
+$("#table-employee").DataTable({
+    ajax: {
+        url: 'https://localhost:7054/admin/employee/all',
+        dataSrc: 'data',
+        dataType: 'JSON'
+    },
+    columns: columnConfig(),
+    dom: 'Bfrtip',
+    buttons: buttonConfig()
+});
 
 // Create column configuration for data table
 function columnConfig() {
@@ -41,11 +32,29 @@ function columnConfig() {
             render: function (data, type, row, meta) {
                 const deleteButton = document.createElement('button');
                 deleteButton.type = 'button';
-                deleteButton.className = 'btn btn-danger btn-delete-employee';
+                deleteButton.className = 'btn btn-danger';
                 deleteButton.innerText = 'Delete';
-                deleteButton.setAttribute('onclick', `deleteEmployee("12345")`);
+                deleteButton.setAttribute('onclick', `deleteEmployee("${row.guid}")`);
 
-                return deleteButton.outerHTML;
+                const form = document.createElement('form');
+                form.method = 'post';
+                form.action = '/admin/employee/detail';  // Ganti dengan path dan controller yang sesuai
+                form.style.display = 'inline';
+
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'guid';
+                hiddenInput.value = row.guid;
+
+                const detailButton = document.createElement('button');
+                detailButton.type = 'submit';
+                detailButton.className = 'btn btn-primary';
+                detailButton.innerText = 'Detail';
+
+                form.appendChild(hiddenInput);
+                form.appendChild(detailButton);
+
+                return `${deleteButton.outerHTML} ${form.outerHTML}`;
             }
         },
 
@@ -102,18 +111,10 @@ function buttonConfig() {
 }
 
 // Remove data table default class for avoiding conflict with bootstrap styles
-function setBootstrapToDataTableButton() {
-    document.getElementById('create-btn').classList.remove('dt-button', 'buttons-pdf', 'buttons-html5');
-    document.getElementById('excel-btn').classList.remove('dt-button', 'buttons-pdf', 'buttons-html5');
-    document.getElementById('pdf-btn').classList.remove('dt-button', 'buttons-pdf', 'buttons-html5');
-    document.getElementById('colvis-btn').classList.remove('dt-button');
-    console.log("testing");
-}
-
-// Delete Employee
-function deleteEmployee(guid) {
-    console.log("Hellow");
-}
+document.getElementById('create-btn').classList.remove('dt-button', 'buttons-pdf', 'buttons-html5');
+document.getElementById('excel-btn').classList.remove('dt-button', 'buttons-pdf', 'buttons-html5');
+document.getElementById('pdf-btn').classList.remove('dt-button', 'buttons-pdf', 'buttons-html5');
+document.getElementById('colvis-btn').classList.remove('dt-button');
 
 /* AJAX For Register*/
 $('#button-register').on('click', () => {
@@ -132,12 +133,12 @@ $('#button-register').on('click', () => {
     }
 
     let json = JSON.stringify(registrationData);
-    console.log(aspAction);
+    console.log(createAction);
     console.log(json);
 
     $.ajax({
         type: 'POST',
-        url: aspAction,
+        url: createAction,
         data: { entity: json },
         dataType: "json",
     })
@@ -145,13 +146,22 @@ $('#button-register').on('click', () => {
             $('#modal-create').modal('hide');
             console.log(data);
             if (data.code >= 300) {
-                console.log("Error bang");
-                Alert.error();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed to Create Employee Data',
+                    text: 'Oops! Something went wrong while trying to create employee data. Please double-check your information.',
+                    footer: '<a href="">Why do I have this issue?</a>'
+                });
             }
 
             if (data.code >= 200 && data.code < 300) {
-                console.log("Sukses bang");
-                Alert.success("Employee Data Created Successfully!");
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Employee Data Created Successfully',
+                    showConfirmButton: false,
+                    timer: 2500
+                });
             }
 
             $('#table-employee').DataTable().ajax.reload();

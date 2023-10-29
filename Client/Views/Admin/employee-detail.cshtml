@@ -1,0 +1,122 @@
+﻿@using Client.Models;
+
+@model EmployeeCombinedModel
+@{
+    ViewData["Title"] = "Employee Detail - Admin";
+    Layout = "~/Views/Shared/_LayoutDashboardAdmin.cshtml";
+}
+
+<div class="row mt-4 h-100">
+    <div class="col-lg-3 mb-lg-0 mb-4">
+        <div id="detail-employee-card" class="card ">
+            <div class="card-header pb-0 p-3">
+                <div class="d-flex justify-content-between">
+                    <h4 class="mb-2">Employee Detail</h4>
+                </div>
+            </div>
+            <div class="px-3 pb-3">
+                <form method="post" asp-action="CreateEmployee" id="form-registration">
+                    <div class="mb-2">
+                        <label for="input-birthdate" class="form-label">FULL NAME</label>
+                        <input type="text" id="input-firstname" class="form-control" placeholder="FIRST NAME" aria-label="First name" value="@Model.EmployeeDetail.FullName">
+                    </div>
+                    <div class="mb-2">
+                        <label for="input-birthdate" class="form-label">BIRTHDATE</label>
+                        <input type="date" class="form-control" id="input-birthdate" placeholder="BIRTHDATE" value="">
+                    </div>
+                    <div class="mb-2">
+                        <label for="input-hiring-date" class="form-label">HIRING DATE</label>
+                        <input type="date" class="form-control" id="input-hiring-date" placeholder="HIRING DATE">
+                    </div>
+                    <div class="mb-2">
+                        <label for="input-hiring-date" class="form-label">GENDER</label>
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="select-gender">
+                            <option>Select Gender</option>
+                            <option value="1">Male</option>
+                            <option value="0">Female</option>
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label for="input-hiring-date" class="form-label">CONTACT</label>
+                        <input type="email" class="form-control" id="input-email" placeholder="EMAIL ADDRESS" value="@Model.EmployeeDetail.Email">
+                    </div>
+                    <div class="mb-2">
+                        <input type="text" class="form-control" id="input-phone-number" placeholder="PHONE NUMBER" value="@Model.EmployeeDetail.PhoneNumber">
+                    </div>
+                    <div class="mb-2">
+                        <label for="input-hiring-date" class="form-label">ROLE</label>
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="select-role">
+                            <option>Select Role</option>
+                            <option value="Staff">Staff</option>
+                            <option value="Manager">Manager</option>
+                            <option value="Admin">Administrator / HR</option>
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="select-department">
+                            <option>Select Department</option>
+                            <option value="Sales and Marketing">Sales and Marketing</option>
+                            <option value="HR">Human Resources</option>
+                            <option value="IT">Information Technology</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Customer Support">Customer Support</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-9">
+        <div class="card h-100">
+            <div class="card-header pb-0 p-3">
+                <h4 class="mb-0">Employee Leave Records</h4>
+            </div>
+            <div class="card-body px-0">
+                <div class="table-responsive p-0">
+                    <table class="table align-items-center mb-0e">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">NO.</th>
+                                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">APPLY DATE</th>
+                                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">LEAVE TYPE</th>
+                                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">DESCRIPTION</th>
+                                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">START DATE</th>
+                                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">END DATE</th>
+                                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">DESCRIPTION</th>
+                                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">STATUS</th>
+                                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">REMARK</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $("#select-role").val("@Model.EmployeeDetail.RoleName").change();
+        $("#select-department").val("@Model.EmployeeDetail.DepartmentName").change();
+
+        let gender = "@Model.EmployeeDetail.Gender" === "Female" ? "0" : "1";
+        $("#select-gender").val(gender).change();
+
+        $("#input-birthdate").attr('value', toDateHTML("@Model.EmployeeDetail.BirthDate"));
+        $("#input-hiring-date").attr('value', toDateHTML("@Model.EmployeeDetail.HiringDate"));
+
+        function toDateHTML(date) { 
+            let splitBySpace = date.split(' ');
+            let originalDate = splitBySpace[0];
+            let parts = originalDate.split('/');
+            return `${parts[02]}-${addZero(parts[0])}-${addZero(parts[1])}`;
+        }
+
+        function addZero(obj) {
+            return obj.length == 1 ? "0" + obj : obj;
+        }
+
+    </script>
+}

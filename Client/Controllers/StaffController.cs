@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers;
 
-public class EmployeeController : Controller
+public class StaffController : Controller
 {
     public IActionResult Index()
     {

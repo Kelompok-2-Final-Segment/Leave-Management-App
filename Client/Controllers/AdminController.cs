@@ -106,4 +106,53 @@ public class AdminController : Controller
             return Json(errorResponse);
         }
     }
+
+    [HttpGet("/admin/employee/detail")]
+    public IActionResult GetEmployeeDetail()
+    {
+        return RedirectToAction("Employee");
+    }
+
+    [HttpDelete("admin/employee/delete/{guid}")]
+    public async Task<IActionResult> DeleteEmployee(string guid)
+    {
+        try
+        {
+            Guid employeeGuid = Guid.Parse(guid);
+
+            var result = await adminRepository.DeleteEmployee(employeeGuid);
+
+            return Json(result);
+        }
+        catch
+        {
+            var errorResponse = new ResponseBadRequestHandler("ID is Invalid or Not Found");
+
+            return Json(errorResponse);
+        }
+    }
+
+    [HttpPost("admin/employee/detail")]
+    public async Task<IActionResult> EmployeeDetail(string guid)
+    {
+        try
+        {
+            Guid employeeGuid = Guid.Parse(guid);
+            Debug.WriteLine("Cek disini");
+            Debug.WriteLine(guid);
+            var result = await adminRepository.GetEmployeeByGuid(employeeGuid);
+
+            EmployeeCombinedModel model = new EmployeeCombinedModel();
+            model.EmployeeDetail = result.Data;
+
+            Debug.WriteLine("Cek disini");
+            Debug.WriteLine(model.EmployeeDetail.FullName);
+
+            return View("employee-detail", model);
+        }
+        catch
+        {
+            return NotFound();
+        }
+    }
 }

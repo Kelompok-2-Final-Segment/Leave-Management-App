@@ -20,6 +20,19 @@ public class AdminRepository : IAdminRepository
         };
     }
 
+    public async Task<ResponseOkHandler<string>> DeleteEmployee(Guid guid)
+    {
+        ResponseOkHandler<string> entityVM = null;
+
+        using (var response = httpClient.DeleteAsync("Employees/Delete/" + guid).Result)
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<string>>(apiResponse);
+        }
+
+        return entityVM;
+    }
+
     public async Task<ResponseOkHandler<IEnumerable<EmployeeDetailsDto>>> GetAllEmployee()
     {
         ResponseOkHandler<IEnumerable<EmployeeDetailsDto>> entityVM = null;
@@ -29,6 +42,20 @@ public class AdminRepository : IAdminRepository
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<IEnumerable<EmployeeDetailsDto>>>(apiResponse);
+        }
+
+        return entityVM;
+    }
+
+    public async Task<ResponseOkHandler<EmployeeDetailsDto>> GetEmployeeByGuid(Guid guid)
+    {
+        ResponseOkHandler<EmployeeDetailsDto> entityVM = null;
+
+
+        using (var response = await httpClient.GetAsync("Employees/" + guid))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<EmployeeDetailsDto>>(apiResponse);
         }
 
         return entityVM;

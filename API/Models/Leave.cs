@@ -12,7 +12,9 @@ namespace API.Models
         [Required, Column("end_date")]
         public DateTime EndDate { get; set; }
         [Required, Column("description", TypeName = "nvarchar(max)")]
-        public string Description { get; set; }
+        public string Description { get; set; } 
+        [Column("document", TypeName = "nvarchar(max)")]
+        public string? Document { get; set; }
         [Required, Column("status")]
         public StatusLevel Status { get; set; }
         [Required, Column("remarks_by_manager", TypeName = "nvarchar(max)")]
