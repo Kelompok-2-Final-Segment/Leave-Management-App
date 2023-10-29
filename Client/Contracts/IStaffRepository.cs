@@ -2,7 +2,7 @@
 
 namespace Client.Contracts;
 
-public interface IStaffRepository : IRepository<EmployeeDto, Guid>
+public interface IStaffRepository
 {
 
 }

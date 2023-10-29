@@ -6,6 +6,7 @@ using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Security.Principal;
 
 namespace API.Controllers
 {
@@ -30,6 +31,16 @@ namespace API.Controllers
             _accountRoleRepository = accountRoleRepository;
             _roleRepository = roleRepository;
             _departmentRepository = departmentRepository;
+        }
+        [HttpGet("ExtractToken/{Token}")]
+        public IActionResult GetExtractJwt(string Token)
+        {
+            var claimDto = _tokenHandler.ExtractClaimsFromJwt(Token);
+            if (claimDto == null)
+            {
+                return NotFound(new ResponseNotFoundHandler("Wrong Token"));
+            }
+            return Ok(new ResponseOkHandler<ClaimsDto>(claimDto));
         }
 
         [HttpPost("ForgotPassword")]
@@ -122,8 +133,9 @@ namespace API.Controllers
             }
             //pembuatan payload untuk jwt tokens
             var claims = new List<Claim>();
-            claims.Add(new Claim("Email", employee.Email));
-            claims.Add(new Claim("Fullname", string.Concat(employee.FirstName + " " + employee.LastName)));
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, employee.Guid.ToString()));
+            claims.Add(new Claim(ClaimTypes.Email, employee.Email));
+            claims.Add(new Claim(ClaimTypes.Name, string.Concat(employee.FirstName + " " + employee.LastName)));
 
             var getRoleName = from ar in _accountRoleRepository.GetAll()
                               join r in _roleRepository.GetAll() on ar.RoleGuid equals r.Guid

@@ -3,7 +3,7 @@ using Client.Contracts;
 
 namespace Client.Repositories;
 
-public class StaffRepository : GeneralRepository<EmployeeDto, Guid>, IStaffRepository
+public class StaffRepository : GeneralRepository , IStaffRepository
 {
     public StaffRepository(string request = "") : base(request)
     {

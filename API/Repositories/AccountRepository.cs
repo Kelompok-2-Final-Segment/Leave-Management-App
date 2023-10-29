@@ -1,5 +1,6 @@
 ﻿using API.Contracts;
 using API.Data;
+using API.DTOs.Accounts;
 using API.Models;
 
 namespace API.Repositories
@@ -12,10 +13,12 @@ namespace API.Repositories
             _context = context;
         }
 
+
         public LeaveManagementDbContext GetContext()
         {
             return _context;
         }
+
     }
 
 }
