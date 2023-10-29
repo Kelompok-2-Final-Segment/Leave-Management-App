@@ -9,29 +9,31 @@
             <div class="card-header pb-0 ps-0" bg-white>
                 <h5>STAFF FORM</h5>
             </div>
-        <form asp-action="RequestALeave" method="POST" enctype="">
-            <input asp-for="Leave.EmployeeGuid" class="form-control" hidden/>
+        <form asp-action="RequestALeave" method="post" >
             <div class="form-group">
+                <input asp-for="Leave.EmployeeGuid" value="@Model.Leave.EmployeeGuid" hidden />
                 <label asp-for="Leave.Description">Deskripsi</label>
-                <textarea asp-for="Leave.Description" class="form-control"
+                <textarea asp-for="Leave.Description"  class="form-control"
                           id="alasan"
-                          rows="3"
-                          name="deskripsi"
+                          rows="3"                       
                           required></textarea>
+                <span asp-validation-for="Leave.Description" class="text-danger"></span>
             </div>
             <div class="row">
                 <div class="col-md-12 col-sm-12">
                     <div class="form-group">
                         <label asp-for="Leave.LeaveTypeGuid">Leave Type</label>
-                        <select asp-for="Leave.LeaveTypeGuid" name="leave_type" id="leave_type" class="custom-select form-control" required="true" autocomplete="off">
-                            @foreach (var item in Model.LeaveType){
-                                @if(item != null)
+                        <select asp-for="Leave.LeaveTypeGuid" id="leave_type" class="custom-select form-control" required="true" autocomplete="off">
+                            @if (Model.LeaveType.Any())
+                            {
+                                @foreach (var item in Model.LeaveType)
                                 {
-                                    <option value="@item.LeaveTypeGuid">@item.Name</option>
+                                    <option value="@item.LeaveTypeGuid">@item.LeaveTypeGuid</option>
                                 }
                             }
                             
                         </select>
+                        <span asp-validation-for="Leave.LeaveTypeGuid" class="text-danger"></span>
                     </div>
                 </div>
             </div>
@@ -43,18 +45,20 @@
                        class="form-control"
                        id="mulai"
                        aria-describedby="mulai"
-                       name="mulai"
+   
                        required />
+                <span asp-validation-for="Leave.StartDate" class="text-danger"></span>
+
             </div>
             <div class="form-group">
-                <label asp-for="Leave.StartDate">Berakhir Cuti</label>
-                <input asp-for="Leave.StartDate"
+                <label asp-for="Leave.EndDate">Berakhir Cuti</label>
+                <input asp-for="Leave.EndDate"
                         type="date"
                        class="form-control"
                        id="berakhir"
                        aria-describedby="berakhir"
-                       name="berakhir"
                        required />
+                <span asp-validation-for="Leave.EndDate" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>

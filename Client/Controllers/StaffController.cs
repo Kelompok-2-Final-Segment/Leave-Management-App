@@ -31,17 +31,17 @@ public class StaffController : Controller
     {
         var result = _staffRepository.GetAvailableLeaves(guid).Result;
         var AvailableLeaves = result.Data;
-        RequestLeaveDto requestLeaveDto = new RequestLeaveDto { LeaveType = AvailableLeaves};
+        RequestLeaveDto requestLeaveDto = new RequestLeaveDto { LeaveType = AvailableLeaves , Leave = new CreateLeaveDto { EmployeeGuid = guid } };
         return View(requestLeaveDto);
     }
 
-      [HttpPost]
-    public async Task<IActionResult> RequestALeave(CreateLeaveDto createLeaveDto)
+    [HttpPost]
+    public async Task<IActionResult> RequestALeave(RequestLeaveDto requestLeaveDto)
     {
-        var result = await _staffRepository.RequestALeave(createLeaveDto);
+        var result = await _staffRepository.RequestALeave(requestLeaveDto.Leave);
         if(result.Status == "OK")
         {
-            RedirectToAction("Index");
+           return RedirectToAction("Index");
         }
         return View();
     }
