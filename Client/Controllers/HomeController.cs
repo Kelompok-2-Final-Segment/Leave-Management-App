@@ -39,9 +39,10 @@ namespace Client_API.Controllers
                 if (claimsResponse.Status == "OK" && claimsResponse.Data != null)
                 {
                     var role = (claimsResponse.Data.Role[0]);
+                    var identifier = claimsResponse.Data.NameIdentifier;
                     if (role == "Staff")
                     {
-                        return RedirectToAction("Index", "Staff");
+                        return RedirectToAction("Index", "Staff", new { guid = identifier });
                     } else if (role == "Manager")
                     {
                         return RedirectToAction("Index", "Manager");

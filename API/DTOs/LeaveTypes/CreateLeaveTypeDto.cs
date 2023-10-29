@@ -7,6 +7,7 @@ namespace API.DTOs.LeaveTypes
         public string Name { get; set; }
         public int Balance { get; set; }
         public bool FemaleOnly { get; set; }
+        public string? Remarks { get; set; }
         public int MinDuration { get; set; }
         public int MaxDuration { get; set; }
 
@@ -18,6 +19,7 @@ namespace API.DTOs.LeaveTypes
                 Name = dto.Name,
                 Balance = dto.Balance,
                 FemaleOnly = dto.FemaleOnly,
+                Remarks = dto.Remarks,
                 MinDuration = dto.MinDuration,
                 MaxDuration = dto.MaxDuration,
                 CreatedDate = DateTime.Now,

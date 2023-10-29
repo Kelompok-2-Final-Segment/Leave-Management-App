@@ -1,18 +1,48 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using API.DTOs.Leaves;
+using Client.Contracts;
+using Client.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Client.Controllers;
 
 public class StaffController : Controller
 {
-    public IActionResult Index()
+    private readonly IStaffRepository _staffRepository;
+
+    public StaffController(IStaffRepository staffRepository)
     {
-        return View();
+        _staffRepository = staffRepository;
+    }
+
+    [HttpGet]
+    public IActionResult Index(Guid guid)
+    {
+
+        var result = _staffRepository.GetAvailableLeaves(guid).Result;
+        var AvailbleLeaves = result.Data;
+        return View(AvailbleLeaves);
     }
 
     // Leaves Management
-    public IActionResult RequestLeave()
+    [HttpGet]
+    public IActionResult RequestALeave(Guid guid)
     {
+        var result = _staffRepository.GetAvailableLeaves(guid).Result;
+        var AvailableLeaves = result.Data;
+        RequestLeaveDto requestLeaveDto = new RequestLeaveDto { LeaveType = AvailableLeaves};
+        return View(requestLeaveDto);
+    }
+
+      [HttpPost]
+    public async Task<IActionResult> RequestALeave(CreateLeaveDto createLeaveDto)
+    {
+        var result = await _staffRepository.RequestALeave(createLeaveDto);
+        if(result.Status == "OK")
+        {
+            RedirectToAction("Index");
+        }
         return View();
     }
 
@@ -21,9 +51,12 @@ public class StaffController : Controller
         return View();
     }
 
-    public IActionResult LeaveHistories()
+    [HttpGet]
+    public IActionResult LeaveHistories(Guid guid)
     {
-        return View();
+        var result = _staffRepository.GetAvailableLeaves(guid).Result;
+        var AvailbleLeaves = result.Data;
+        return View(AvailbleLeaves);
     }
 
 }
