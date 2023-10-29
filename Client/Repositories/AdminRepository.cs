@@ -1,5 +1,7 @@
 ﻿using API.DTOs.Accounts;
 using API.DTOs.Employees;
+using API.DTOs.Leaves;
+using API.DTOs.LeaveTypes;
 using API.Utilities.Handlers;
 using Client.Contracts;
 using Newtonsoft.Json;
@@ -70,6 +72,22 @@ public class AdminRepository : IAdminRepository
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<string>>(apiResponse);
+        }
+
+        return entityVM;
+    }
+
+    // LEAVE REPOSITORY
+
+    public async Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetAllLeave()
+    {
+        ResponseOkHandler<IEnumerable<LeaveDto>> entityVM = null;
+
+
+        using (var response = await httpClient.GetAsync("Leaves/"))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<IEnumerable<LeaveDto>>>(apiResponse);
         }
 
         return entityVM;
