@@ -9,7 +9,7 @@ using API.DTOs.LeaveTypes;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/Admin/[controller]")]
     public class LeaveTypesController : ControllerBase
     {
         private readonly ILeaveTypeRepository _leavetyperepository;

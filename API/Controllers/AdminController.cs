@@ -247,30 +247,68 @@ namespace API.Controllers
         {
 
             var leaves = _leaveRepository.GetAll();
-
-            if (!leaves.Any())
+            var leaveTypes = _leaveTypeRepository.GetAll();
+            var employees = _employeeRepository.GetAll();
+            if (!leaves.Any() &&!leaveTypes.Any() &&!employees.Any() )
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
+            var leavesDto = from l in leaves
+                            join lt in leaveTypes on l.LeaveTypeGuid equals lt.Guid
+                            join emp in employees on l.EmployeeGuid equals emp.Guid
+                            select LeaveDto.ConvertToLeaveDto(l, lt, emp);
+                           
+            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(leavesDto));
 
-            var approvedLeaves = leaves.Select(l => (LeaveDto)l);
-            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(approvedLeaves));
+        }
+
+        [HttpGet("Leaves/Details/{guid}")]
+        public IActionResult GetLeaveDetails(Guid guid)
+        {
+            var leave = _leaveRepository.GetByGuid(guid);
+            if (leave == null)
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var leaveType = _leaveTypeRepository.GetByGuid(leave.LeaveTypeGuid);
+            var employee = _employeeRepository.GetByGuid(leave.EmployeeGuid);
+            if (employee == null || leaveType == null)
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var department = _departmentRepository.GetByGuid(employee.DepartmentGuid);
+            if (department == null)
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var leaveDetailAdminDto = LeaveDetailAdminDto.ConvertToLeaveDetailAdminDto(leave,leaveType,department,employee);
+
+
+            return Ok(new ResponseOkHandler<LeaveDetailAdminDto>(leaveDetailAdminDto));
 
         }
 
         [HttpGet("Leaves/Pending")]
         public IActionResult GetPendingLeaves()
         {
-
             var leaves = _leaveRepository.GetAll();
-
-            if (!leaves.Any())
+            var leaveTypes = _leaveTypeRepository.GetAll();
+            var employees = _employeeRepository.GetAll();
+            if (!leaves.Any() && !leaveTypes.Any() && !employees.Any())
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
+            var leavesDto = from l in leaves
+                            where l.Status.ToString() == "Pending"
+                            join lt in leaveTypes on l.LeaveTypeGuid equals lt.Guid
+                            join emp in employees on l.EmployeeGuid equals emp.Guid
+                            select LeaveDto.ConvertToLeaveDto(l, lt, emp);
 
-            var approvedLeaves = leaves.Where(l => l.Status.ToString() == "Pending").Select(l => (LeaveDto)l);
-            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(approvedLeaves));
+            if (!leavesDto.Any())
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(leavesDto));
 
         }
 
@@ -278,27 +316,45 @@ namespace API.Controllers
         public IActionResult GetRejectedLeaves()
         {
             var leaves = _leaveRepository.GetAll();
-
-            if (!leaves.Any())
+            var leaveTypes = _leaveTypeRepository.GetAll();
+            var employees = _employeeRepository.GetAll();
+            if (!leaves.Any() && !leaveTypes.Any() && !employees.Any())
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
-
-            var approvedLeaves = leaves.Where(l => l.Status.ToString() == "Rejected").Select(l => (LeaveDto)l);
-            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(approvedLeaves));
+            var leavesDto = from l in leaves
+                            where l.Status.ToString() == "Rejected"
+                            join lt in leaveTypes on l.LeaveTypeGuid equals lt.Guid
+                            join emp in employees on l.EmployeeGuid equals emp.Guid
+                            select LeaveDto.ConvertToLeaveDto(l, lt, emp);
+        
+            if (!leavesDto.Any())
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(leavesDto));
         }
         [HttpGet("Leaves/Approved")]
         public IActionResult GetApprovedLeaves(Guid guid)
         {
             var leaves = _leaveRepository.GetAll();
-
-            if (!leaves.Any())
+            var leaveTypes = _leaveTypeRepository.GetAll();
+            var employees = _employeeRepository.GetAll();
+            if (!leaves.Any() && !leaveTypes.Any() && !employees.Any())
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
-
-            var approvedLeaves = leaves.Where(l => l.Status.ToString() == "Approved").Select(l => (LeaveDto)l);
-            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(approvedLeaves));
+            var leavesDto = from l in leaves
+                            where l.Status.ToString() == "Approved"
+                            join lt in leaveTypes on l.LeaveTypeGuid equals lt.Guid
+                            join emp in employees on l.EmployeeGuid equals emp.Guid
+                            select LeaveDto.ConvertToLeaveDto(l, lt, emp);
+   
+            if (!leavesDto.Any())
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            return Ok(new ResponseOkHandler<IEnumerable<LeaveDto>>(leavesDto));
         }
 
         [HttpPut("Leaves/Edit")]
@@ -325,7 +381,7 @@ namespace API.Controllers
                     }
                     TimeSpan leaveDuration = entity.StartDate - entity.EndDate;
                     int leaveLength = leaveDuration.Days;
-                    leaveBalance.UsedBalance = leaveBalance.UsedBalance + leaveLength;
+                    leaveBalance.UsedBalance += leaveLength;
                     _leaveBalanceRepository.Update(leaveBalance);
                 }
                 var result = _leaveRepository.Update(entity);

@@ -1,22 +1,25 @@
-﻿using Client_API.Models;
+﻿using Client.Contracts;
+using API.DTOs.Accounts;
+using Client_API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace Client_API.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IAccountRepository _accountRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IAccountRepository accountRepository)
         {
-            _logger = logger;
+            _accountRepository = accountRepository;
         }
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Login");
         }
 
         // Auth
@@ -25,11 +28,39 @@ namespace Client_API.Controllers
         {
             return View("login");
         }
+        [HttpPost("/login")]
+        public async Task<IActionResult> Login(LoginDto loginDto)
+        {
+            var result = await _accountRepository.Login(loginDto);
+            if (result.Status == "OK")
+            {
+                HttpContext.Session.SetString("JWToken", result.Data.Token);
+                var claimsResponse = await _accountRepository.GetClaims(result.Data.Token);
+                if (claimsResponse.Status == "OK" && claimsResponse.Data != null)
+                {
+                    var role = (claimsResponse.Data.Role[0]);
+                    if (role == "Staff")
+                    {
+                        return RedirectToAction("Index", "Staff");
+                    } else if (role == "Manager")
+                    {
+                        return RedirectToAction("Index", "Manager");
+                    } else if (role == "Admin")
+                    {
+                        return RedirectToAction("Index", "Admin");
+                    }
+                }
+               
+            }
+           
+            return View("login");
+        }
 
         [HttpGet("/logout")]
         public IActionResult Logout()
         {
-            return View("logout");
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
         }
 
         [AllowAnonymous]
