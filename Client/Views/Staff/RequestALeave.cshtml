@@ -1,19 +1,19 @@
-﻿﻿@{
+﻿@{
     ViewData["Title"] = "RequestLeave";
     Layout = "~/Views/Shared/_LayoutDashboardEmployee.cshtml";
 }
-
+@model Client.DTOs.RequestLeaveDto;
 
 <div class="card mb-4">
     <div class="container-fluid">
             <div class="card-header pb-0 ps-0" bg-white>
                 <h5>STAFF FORM</h5>
             </div>
-        <form id="staffForm" action="" method="POST" enctype="">
-            <input type="text" value="" name="" hidden />
+        <form asp-action="RequestALeave" method="POST" enctype="">
+            <input asp-for="Leave.EmployeeGuid" class="form-control" hidden/>
             <div class="form-group">
-                <label for="alasan">Deskripsi</label>
-                <textarea class="form-control"
+                <label asp-for="Leave.Description">Deskripsi</label>
+                <textarea asp-for="Leave.Description" class="form-control"
                           id="alasan"
                           rows="3"
                           name="deskripsi"
@@ -22,19 +22,24 @@
             <div class="row">
                 <div class="col-md-12 col-sm-12">
                     <div class="form-group">
-                        <label for="leave_type">Leave Type</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option value="" disabled selected>Select leave type...</option>
-                            <option value="Annual Leave">Annual Leave</option>
-                            <option value="Sick Leave">Sick Leave</option>
-                            <option value="Personal Leave">Personal Leave</option>
+                        <label asp-for="Leave.LeaveTypeGuid">Leave Type</label>
+                        <select asp-for="Leave.LeaveTypeGuid" name="leave_type" id="leave_type" class="custom-select form-control" required="true" autocomplete="off">
+                            @foreach (var item in Model.LeaveType){
+                                @if(item != null)
+                                {
+                                    <option value="@item.LeaveTypeGuid">@item.Name</option>
+                                }
+                            }
+                            
                         </select>
                     </div>
                 </div>
             </div>
+
             <div class="form-group">
-                <label for="mulai">Mulai Cuti</label>
-                <input type="date"
+                <label asp-for="Leave.StartDate">Mulai Cuti</label>
+                <input asp-for="Leave.StartDate" 
+                       type="date"
                        class="form-control"
                        id="mulai"
                        aria-describedby="mulai"
@@ -42,8 +47,9 @@
                        required />
             </div>
             <div class="form-group">
-                <label for="berakhir">Berakhir Cuti</label>
-                <input type="date"
+                <label asp-for="Leave.StartDate">Berakhir Cuti</label>
+                <input asp-for="Leave.StartDate"
+                        type="date"
                        class="form-control"
                        id="berakhir"
                        aria-describedby="berakhir"
@@ -56,6 +62,7 @@
 </div>
 
 @section Scripts{
-    <script src="~/js/employee.js" asp-append-version="true"></script>
+    <script src="~/js/leave.js" asp-append-version="true"></script>
 }
+
 

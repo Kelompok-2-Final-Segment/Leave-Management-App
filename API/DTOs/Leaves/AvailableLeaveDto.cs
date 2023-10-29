@@ -2,18 +2,20 @@
 
 namespace API.DTOs.Leaves
 {
-    public class LeaveDetailsDto
+    public class AvailableLeaveDto
     {
+        public Guid LeaveTypeGuid { get; set; }
         public string Name { get; set; }
         public int Balance { get; set; }
         public int UsedBalance { get; set; }
         public int MinDuration { get; set; }
         public int MaxDuration { get; set; }
 
-        public static LeaveDetailsDto ConvertToLeaveDetailsDto(LeaveType leaveType, LeaveBalance leaveBalance)
+        public static AvailableLeaveDto ConvertToAvailableLeaveDto(LeaveType leaveType, LeaveBalance leaveBalance)
         {
-            return new LeaveDetailsDto
+            return new AvailableLeaveDto
             {
+                LeaveTypeGuid = leaveType.Guid,
                 Name = leaveType.Name,
                 Balance = leaveType.Balance,
                 UsedBalance = leaveBalance.UsedBalance,
