@@ -26,7 +26,7 @@ public class AdminRepository : IAdminRepository
     {
         ResponseOkHandler<string> entityVM = null;
 
-        using (var response = httpClient.DeleteAsync("Employees/Delete/" + guid).Result)
+        using (var response = httpClient.DeleteAsync("Admin/Employees/Delete/" + guid).Result)
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<string>>(apiResponse);

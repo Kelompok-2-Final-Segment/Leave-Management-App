@@ -1,7 +1,103 @@
+/* Delete Confirmation Dialog */
+async function deleteLeaveType(guid) {
+    const result = await Swal.fire({
+        title: 'Delete Leave Type',
+        text: 'Are you sure you want to delete this leave\'s data?',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Delete',
+        cancelButtonText: 'Cancel',
+    });
+
+    if (result.isConfirmed) {
+        console.log(guid);
+
+        $.ajax({
+            url: "/admin/leave/type/delete/" + guid,
+            type: 'DELETE'
+        })
+            .done((data, textStatus, errorThrown) => {
+                if (data.code >= 300) {
+                    console.log("Error bang");
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed to Delete Leave Type Data',
+                        text: 'Oops! Something went wrong while trying to delete leave type data. Please double-check your information.',
+                        footer: '<a href="">Why do I have this issue?</a>'
+                    });
+                }
+
+                if (data.code >= 200 && data.code < 300) {
+                    console.log(data);
+
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Leave Type Data Successfully Deleted',
+                        showConfirmButton: false,
+                        timer: 2500
+                    });
+                }
+
+                $('#table-leave-type').DataTable().ajax.reload();
+            });
+    }
+}
+
+/* Create Leave Type Event */
+$('#button-create').on('click', () => {
+    var leaveTypeData = {
+        name: $('#input-name').val(),
+        balance: $('#input-balance').val(),
+        femaleOnly: $('#select-female-only').val(),
+        minDuration: $('#input-min-duration').val(),
+        nmaxDuration: $('#input-max-duration').val(),
+        remarks: $('#input-remarks').val(),
+    }
+
+    let json = JSON.stringify(leaveTypeData);
+    //console.log(createAction);
+    console.log(json);
+
+    
+    $.ajax({
+        type: 'POST',
+        url: "admin/leave/type/create",
+        data: { entity: json },
+        dataType: "json",
+    })
+        .done((data, textStatus, errorThrown) => {
+            $('#modal-create').modal('hide');
+            console.log(data);
+            if (data.code >= 300) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed to Create Leave Type',
+                    text: 'Oops! Something went wrong while trying to create employee data. Please double-check your information.',
+                    footer: '<a href="">Why do I have this issue?</a>'
+                });
+            }
+
+            if (data.code >= 200 && data.code < 300) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Leave Type Created Successfully',
+                    showConfirmButton: false,
+                    timer: 2500
+                });
+            }
+
+            $('#table-leave-type').DataTable().ajax.reload();
+        });
+});
+
 /* Employee Data Table */
 $("#table-leave-type").DataTable({
     ajax: {
-        url: 'https://localhost:7054/admin/leave/all',
+        url: 'https://localhost:7054/admin/leave/type/all',
         dataSrc: 'data',
         dataType: 'JSON'
     },
@@ -24,7 +120,7 @@ function columnConfig() {
         { data: "minDuration" },
         { data: "maxDuration" },
         { data: "femaleOnly" },
-        { data: null },
+        { data: "remarks" },
         {
             data: null,
             render: function (data, type, row, meta) {

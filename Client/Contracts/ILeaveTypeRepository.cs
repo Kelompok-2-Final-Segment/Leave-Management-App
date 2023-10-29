@@ -5,5 +5,7 @@ namespace Client.Contracts;
 
 public interface ILeaveTypeRepository
 {
-    Task<ResponseOkHandler<IEnumerable<LeaveTypeDto>>> GetAllLeaveType();
+    Task<ResponseOkHandler<IEnumerable<LeaveTypeDto>>> GetAll();
+    Task<ResponseOkHandler<string>> Delete(Guid guid);
+    Task<ResponseOkHandler<string>> Create(CreateLeaveTypeDto entity);
 }

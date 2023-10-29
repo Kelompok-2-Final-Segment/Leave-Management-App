@@ -1,4 +1,5 @@
 ﻿using API.DTOs.Accounts;
+using API.DTOs.LeaveTypes;
 using API.Models;
 using API.Utilities.Handlers;
 using API.Utilities.Handlers.Exceptions;
@@ -22,16 +23,17 @@ public class AdminController : Controller
         this.leaveTypeRepository = leaveTypeRepository;
     }
 
+    // Main Admin Dashboard
     public IActionResult Index()
     {
         return View();
     }
 
-    // Leaves Management
+    // Get All Leave in JSON
     [HttpGet("/admin/leave/all")]
     public async Task<IActionResult> GetAllLeave()
     {
-        var result = await leaveTypeRepository.GetAllLeaveType();
+        var result = await adminRepository.GetAllLeave();
 
         if (result == null)
         {
@@ -63,6 +65,49 @@ public class AdminController : Controller
     public IActionResult ManageLeaveTypes()
     {
         return View("leave-type");
+    }
+
+    [HttpGet("admin/leave/type/all")]
+    public async Task<IActionResult> GetAllLeaveType()
+    {
+        var result = await leaveTypeRepository.GetAll();
+
+        if (result == null)
+        {
+            return Json(NotFound());
+        }
+
+        return Json(result);
+    }
+
+    [HttpDelete("admin/leave/type/delete/{guid}")]
+    public async Task<IActionResult> DeleteLeaveType(Guid guid)
+    {
+        var result = await leaveTypeRepository.Delete(guid);
+
+        return Json(result);
+    }
+
+    [HttpPost("admin/leave/type/create")]
+    public async Task<IActionResult> CreateLeaveType(string entity)
+    {
+        Debug.WriteLine("Cek disini");
+        Debug.WriteLine(entity);
+        try
+        {
+            var createData = JsonConvert.DeserializeObject<CreateLeaveTypeDto>(entity);
+
+            var result = await leaveTypeRepository.Create(createData);
+
+            return Json(result);
+
+        }
+        catch
+        {
+            var errorResponse = new ResponseBadRequestHandler("Input Data must not be null");
+
+            return Json(errorResponse);
+        }
     }
 
     [HttpGet("admin/leave/history")]
