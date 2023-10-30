@@ -242,14 +242,14 @@ namespace API.Controllers
             return Ok(new ResponseOkHandler<LeaveStatisticDto>(leaveStatistic));
         }
 
-        [HttpGet("Leaves")]
+        [HttpGet("Leaves/Histories")]
         public IActionResult GetAllLeaves()
         {
 
             var leaves = _leaveRepository.GetAll();
             var leaveTypes = _leaveTypeRepository.GetAll();
             var employees = _employeeRepository.GetAll();
-            if (!leaves.Any() &&!leaveTypes.Any() &&!employees.Any() )
+            if (!leaves.Any() &&!leaveTypes.Any() &&!employees.Any())
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
@@ -299,7 +299,7 @@ namespace API.Controllers
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
             var leavesDto = from l in leaves
-                            where l.Status.ToString() == "Pending"
+                            where l.Status.ToString() == "Accepted"
                             join lt in leaveTypes on l.LeaveTypeGuid equals lt.Guid
                             join emp in employees on l.EmployeeGuid equals emp.Guid
                             select LeaveDto.ConvertToLeaveDto(l, lt, emp);
@@ -323,7 +323,7 @@ namespace API.Controllers
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
             var leavesDto = from l in leaves
-                            where l.Status.ToString() == "Rejected"
+                            where l.Status.ToString() == "RejectedHR"
                             join lt in leaveTypes on l.LeaveTypeGuid equals lt.Guid
                             join emp in employees on l.EmployeeGuid equals emp.Guid
                             select LeaveDto.ConvertToLeaveDto(l, lt, emp);

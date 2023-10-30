@@ -5,6 +5,8 @@
         Pending,
         Rejected,
         Accepted,
-        Approved
+        RejectedHR,
+        Approved,
+        Cancelled
     }
 }
