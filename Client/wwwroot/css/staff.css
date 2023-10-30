@@ -1,0 +1,32 @@
+body {
+    background-color: #172b4d !important;
+}
+
+#sidenav-main {
+    background-color: #051139 !important;
+}
+
+.nav-link {
+    color: #fff !important;
+}
+
+.nav-label {
+    color: #fff !important;
+}
+
+.navbar-vertical.bg-white .navbar-nav > .nav-item .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+.nav-link.active {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+}
+
+.modal-footer {
+    border-top: none !important;
+}
+
+#detail-employee-card {
+    min-height: 600px;
+}
+
