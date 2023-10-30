@@ -1,15 +1,15 @@
-﻿@{
+﻿﻿@{
     ViewData["Title"] = "RequestLeave";
-    Layout = "~/Views/Shared/_LayoutDashboardEmployee.cshtml";
+    Layout = "~/Views/Shared/_LayoutDashboardStaff.cshtml";
 }
 
 
 <div class="card mb-4">
     <div class="container-fluid">
             <div class="card-header pb-0 ps-0" bg-white>
-                <h5>STAFF FORM</h5>
+                <h5>STAFF FORM</h5> 
             </div>
-        <form action="" method="POST" enctype="">
+        <form id="staffForm" action="" method="POST" enctype="">
             <input type="text" value="" name="" hidden />
             <div class="form-group">
                 <label for="alasan">Deskripsi</label>
@@ -23,8 +23,8 @@
                 <div class="col-md-12 col-sm-12">
                     <div class="form-group">
                         <label for="leave_type">Leave Type</label>
-                        <select name="leave_type" id="leave_type" class="custom-select form-control" required="true" autocomplete="off">
-                            <option value="">Select leave type...</option>
+                        <select class="form-select" aria-label="Default select example">
+                            <option value="" disabled selected>Select leave type...</option>
                             <option value="Annual Leave">Annual Leave</option>
                             <option value="Sick Leave">Sick Leave</option>
                             <option value="Personal Leave">Personal Leave</option>
@@ -32,7 +32,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="form-group">
                 <label for="mulai">Mulai Cuti</label>
                 <input type="date"
@@ -57,7 +56,6 @@
 </div>
 
 @section Scripts{
-    <script src="~/js/leave.js" asp-append-version="true"></script>
+    <script src="~/js/employee.js" asp-append-version="true"></script>
 }
-
 
