@@ -36,8 +36,8 @@ namespace API.DTOs.Leaves
                 StartDate = leave.StartDate,
                 EndDate = leave.EndDate,
                 Description = leave.Description,
-                RemarkManager = leave.RemarksManager
-                RemarkAdmin
+                RemarkManager = leave.RemarksManager,
+                RemarkAdmin = leave.RemarksHR
             };
         }
     }
