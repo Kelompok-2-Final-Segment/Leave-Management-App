@@ -18,4 +18,6 @@ public interface IAdminRepository
     Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetAllLeave();
     Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetRejectedLeave();
     Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetApprovedLeave();
+    Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetPendingLeave();
+
 }

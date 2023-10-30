@@ -112,6 +112,21 @@ public class AdminController : Controller
         return Json(result);
     }
 
+    // GET All Pending Leave in JSON
+    [HttpGet("/admin/leave/pending/all")]
+    public async Task<IActionResult> GetPendingLeave()
+    {
+        var result = await adminRepository.GetPendingLeave();
+
+        if (result == null)
+        {
+            return NotFound();
+        }
+
+        return Json(result);
+    }
+
+
 
 
     /*

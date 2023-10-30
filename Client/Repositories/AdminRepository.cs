@@ -120,4 +120,18 @@ public class AdminRepository : IAdminRepository
 
         return entityVM;
     }
+
+    public async Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetPendingLeave()
+    {
+        ResponseOkHandler<IEnumerable<LeaveDto>> entityVM = null;
+
+
+        using (var response = await httpClient.GetAsync("Leaves/Pending"))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<IEnumerable<LeaveDto>>>(apiResponse);
+        }
+
+        return entityVM;
+    }
 }

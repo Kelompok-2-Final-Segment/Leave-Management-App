@@ -9,7 +9,7 @@
     <div class="col-12">
         <div class="card mb-4">
             <div class="card-header pb-0" bg-white>
-                <h3>Pending Leave</h3>
+                <h3>All Pending Leave</h3>
             </div>
             <div class="card-body px-3 pt-0 pb-2">
                 <div class="table-responsive p-0">
@@ -21,7 +21,8 @@
                                 <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Employee</th>
                                 <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">NIK</th>
                                 <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Leave Type</th>
-                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Leave Date</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Start Date</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">End Date</th>
                                 <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Status</th>
                                 <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Action</th>
                             </tr>
@@ -126,5 +127,6 @@
 </div>
 
 @section Scripts{
-    <script src="~/js/admin/PendingPage.js" asp-append-version="true"></script>
+    <script src="~/js/utilities//DateTime.js" asp-append-version="true"></script>
+    <script src="~/js/admin/PendingLeavePage.js" asp-append-version="true"></script>
 }

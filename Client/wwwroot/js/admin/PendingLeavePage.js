@@ -1,12 +1,7 @@
-﻿// Function for showing detail leave modal
-function showDetailModal(guid) {
-    $('#modal-pending-leave').modal('show');
-}
-
-// Setting Up Data Table
+﻿// Setting Up Data Table
 $("#table-pending-leave").DataTable({
     ajax: {
-        url: getAllAction,
+        url: '/admin/leave/pending/all',
         dataSrc: 'data',
         dataType: 'JSON'
     },
@@ -24,33 +19,41 @@ function columnConfig() {
                 return meta.row + meta.settings._iDisplayStart + 1;
             }
         },
-        { data: "nik" },
-        {
-            data: "fullName",
-            render: function (data, type, row, meta) {
-                return row.firstName + ' ' + row.lastName;
-            }
-        },
-        { data: "gender" },
-        { data: "email" },
-        { data: "role" },
-        { data: "department" },
         {
             data: null,
             render: function (data, type, row, meta) {
-                const deleteButton = document.createElement('button');
-                deleteButton.type = 'button';
-                deleteButton.className = 'btn btn-primary btn-delete-employee';
-                deleteButton.innerText = 'SET STATUS';
-                deleteButton.setAttribute('onclick', `showDetailModal("${row.guid}")`);
+                return simplyDateTime(row.createdDate);
+            }
+        },
+        { data: "fullName" },
+        { data: "nik" },
+        { data: "leaveName" },
+        {
+            data: null,
+            render: function (data, type, row, meta) {
+                return simplyDateTime(row.startDate);
+            }
+        },
+        {
+            data: null,
+            render: function (data, type, row, meta) {
+                return simplyDateTime(row.endDate);
+            }
+        },
+        { data: "status" },
+        {
+            data: null,
+            render: function (data, type, row, meta) {
+                const detailButton = document.createElement('button');
+                detailButton.type = 'submit';
+                detailButton.className = 'btn btn-primary';
+                detailButton.innerText = 'Detail';
+                detailButton.id = 'button-leave-detail';
+                detailButton.setAttribute('onclick', `detailLeave("${row.guid}")`);
+                detailButton.setAttribute('data-bs-toggle', 'modal');
+                detailButton.setAttribute('data-bs-target', '#modal-leave-detail');
 
-                document.addEventListener('DOMContentLoaded', function () {
-                    deleteButton.addEventListener('click', function () {
-                        console.log(row.guid);
-                    });
-                });
-
-                return deleteButton.outerHTML;
+                return detailButton.outerHTML;
             }
         },
 
