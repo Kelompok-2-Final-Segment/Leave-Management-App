@@ -15,6 +15,7 @@ namespace API.DTOs.Leaves
         {
             return new AvailableLeaveDto
             {
+
                 LeaveTypeGuid = leaveType.Guid,
                 Name = leaveType.Name,
                 Balance = leaveType.Balance,
