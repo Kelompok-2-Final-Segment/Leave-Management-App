@@ -1,6 +1,6 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Client.Models;
+@model AdminDashboardModels
+
 @{
     ViewData["Title"] = "Admin Dashboard";
     Layout = "~/Views/Shared/_LayoutDashboardAdmin.cshtml";
@@ -14,9 +14,9 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
-                            <p class="text-sm mb-0 text-uppercase font-weight-bold">Pending Leave</p>
+                            <p class="text-sm mb-0 text-uppercase font-weight-bold">PENDING LEAVE</p>
                             <h5 class="font-weight-bolder">
-                                4
+                                @Model.Statistic.PendingLeaves
                             </h5>
                         </div>
                     </div>
@@ -37,7 +37,7 @@
                         <div class="numbers">
                             <p class="text-sm mb-0 text-uppercase font-weight-bold">All Leave</p>
                             <h5 class="font-weight-bolder">
-                                20
+                                @(Model.Statistic.PendingLeaves + Model.Statistic.RejectedLeaves + Model.Statistic.ApprovedLeaves)
                             </h5>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                         <div class="numbers">
                             <p class="text-sm mb-0 text-uppercase font-weight-bold">All Employee</p>
                             <h5 class="font-weight-bolder">
-                                8
+                                @Model.Statistic.TotalEmployees
                             </h5>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                         <div class="numbers">
                             <p class="text-sm mb-0 text-uppercase font-weight-bold">Department</p>
                             <h5 class="font-weight-bolder">
-                                8
+                                @Model.Statistic.TotalDepartments
                             </h5>
                         </div>
                     </div>

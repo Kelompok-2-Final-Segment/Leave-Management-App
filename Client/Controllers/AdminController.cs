@@ -1,4 +1,5 @@
 ﻿using API.DTOs.Accounts;
+using API.DTOs.Leaves;
 using API.DTOs.LeaveTypes;
 using API.Models;
 using API.Utilities.Handlers;
@@ -25,9 +26,14 @@ public class AdminController : Controller
 
     /*
      * MAIN DASHBOARD ACTION */
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        AdminDashboardModels models = new AdminDashboardModels();
+        var getStatistics = await adminRepository.GetStatistic();
+
+        models.Statistic = getStatistics.Data;
+        
+        return View(models);
     }
 
 
@@ -78,7 +84,7 @@ public class AdminController : Controller
 
         if (result == null)
         {
-            return NotFound();
+            return Json(NotFound());
         }
 
         return Json(result);
@@ -106,6 +112,7 @@ public class AdminController : Controller
 
         if (result == null)
         {
+
             return NotFound();
         }
 
@@ -120,13 +127,45 @@ public class AdminController : Controller
 
         if (result == null)
         {
-            return NotFound();
+            string[] emptyArray = { };
+            var emptyResponse = new ResponseOkHandler<string[]>(emptyArray);
+            return Json(emptyResponse);
         }
 
         return Json(result);
     }
 
+    // GET Leave Type by Guid
+    [HttpGet("admin/leave/{guid}")]
+    public async Task<IActionResult> GetLeaveDetailByGuid(Guid guid)
+    {
+        var result = await adminRepository.GetLeaveDetail(guid);
 
+        return Json(result);
+    }
+
+    // PUT or Update Leave Status
+    [HttpPut("admin/leave/update/")]
+    public async Task<IActionResult> UpdateLeaveStatus(string entity)
+    {
+        Debug.WriteLine("Cek disini");
+        Debug.WriteLine(entity);
+        try
+        {
+            var updateData = JsonConvert.DeserializeObject<EditLeaveDto>(entity);
+
+            var result = await adminRepository.UpdateLeaveStatus(updateData);
+
+            return Json(result);
+
+        }
+        catch
+        {
+            var errorResponse = new ResponseBadRequestHandler("Input Data must not be empty");
+
+            return Json(errorResponse);
+        }
+    }
 
 
     /*

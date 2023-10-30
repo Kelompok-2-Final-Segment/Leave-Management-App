@@ -84,7 +84,7 @@ public class AdminRepository : IAdminRepository
         ResponseOkHandler<IEnumerable<LeaveDto>> entityVM = null;
 
 
-        using (var response = await httpClient.GetAsync("Leaves/"))
+        using (var response = await httpClient.GetAsync("Leaves/Histories"))
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<IEnumerable<LeaveDto>>>(apiResponse);
@@ -130,6 +130,48 @@ public class AdminRepository : IAdminRepository
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<IEnumerable<LeaveDto>>>(apiResponse);
+        }
+
+        return entityVM;
+    }
+
+    public async Task<ResponseOkHandler<LeaveDetailAdminDto>> GetLeaveDetail(Guid guid)
+    {
+        ResponseOkHandler<LeaveDetailAdminDto> entityVM = null;
+
+
+        using (var response = await httpClient.GetAsync("Leaves/Details/" + guid))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<LeaveDetailAdminDto>>(apiResponse);
+        }
+
+        return entityVM;
+    }
+
+    public async Task<ResponseOkHandler<string>> UpdateLeaveStatus(EditLeaveDto entity)
+    {
+        ResponseOkHandler<string> entityVM = null;
+        StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+
+        using (var response = httpClient.PutAsync("Leaves/Edit", content).Result)
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<string>>(apiResponse);
+        }
+
+        return entityVM;
+    }
+
+    public async Task<ResponseOkHandler<LeaveStatisticDto>> GetStatistic()
+    {
+        ResponseOkHandler<LeaveStatisticDto> entityVM = null;
+
+
+        using (var response = await httpClient.GetAsync("Leaves/Statistics"))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<LeaveStatisticDto>>(apiResponse);
         }
 
         return entityVM;

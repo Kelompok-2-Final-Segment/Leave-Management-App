@@ -89,7 +89,7 @@
                             </div>
                             <div class="col">
                                 <label class="form-label">TYPE</label>
-                                <input type="text" id="input-leave-type" class="form-control" value="LEAVE TYPE" aria-label="FULLNAME" disabled>
+                                <input type="text" id="input-type" class="form-control" value="LEAVE TYPE" aria-label="FULLNAME" disabled>
                             </div>
                         </div>
                     </div>
@@ -101,7 +101,7 @@
                             </div>
                             <div class="col">
                                 <label class="form-label">END DATE</label>
-                                <input type="text" id="input-end-type" class="form-control" value="END DATE" aria-label="FULLNAME" disabled>
+                                <input type="text" id="input-end-date" class="form-control" value="END DATE" aria-label="FULLNAME" disabled>
                             </div>
                         </div>
                     </div>
@@ -135,6 +135,6 @@
     <script>
         let getAllAction = "@Url.Action("GetAllLeave")";
     </script>
-    <script src="~/js/utilities//DateTime.js" asp-append-version="true"></script>
+    <script src="~/js/utilities/DataHandler.js" asp-append-version="true"></script>
     <script src="~/js/admin/LeavePages.js" asp-append-version="true"></script>
 }

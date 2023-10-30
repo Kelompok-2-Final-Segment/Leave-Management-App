@@ -16,8 +16,14 @@ public interface IAdminRepository
 
     // Leave Repository
     Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetAllLeave();
+    Task<ResponseOkHandler<LeaveDetailAdminDto>> GetLeaveDetail(Guid guid);
     Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetRejectedLeave();
     Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetApprovedLeave();
     Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetPendingLeave();
+    Task<ResponseOkHandler<string>> UpdateLeaveStatus(EditLeaveDto entity);
+
+    // Statistic
+    Task<ResponseOkHandler<LeaveStatisticDto>> GetStatistic();
+
 
 }

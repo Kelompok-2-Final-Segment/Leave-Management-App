@@ -1,22 +1,26 @@
 ﻿/* Detail Button Event */
 function detailLeave(guid) {
     $.ajax({
-        url: '/admin/leave-type/' + guid,
+        url: '/admin/leave/' + guid,
         method: 'GET'
     })
         .done((data, textStatus, errorThrown) => {
             let result = data.data;
+            $('#input-nik').val(result.nik);
+            $('#input-department').val(result.departmentName);
             $('#input-fullname').val(result.fullName);
             $('#input-phone-number').val(result.phoneNumber);
             $('#input-email').val(result.email);
             $('#input-department').val(result.departmentName);
-            $('#input-apply-date').val(result.createdDate);
+            $('#input-apply-date').val(simplyDateTime(result.createdDate));
             $('#input-type').val(result.leaveName);
-            $('#input-start-date').val(result.startDate);
-            $('#input-end-date').val(result.endDate);
+            $('#input-start-date').val(simplyDateTime(result.startDate));
+            $('#input-end-date').val(simplyDateTime(result.startDate));
             $('#input-description').val(result.description);
-            $('#select-leave-status').val().change();
-            $('#input-remarks').val(result.remarkManager);
+            $('#input-leave-status').val(describeLeaveStatus(result.leaveStatus));
+            $('#input-manager-remark').val(result.remarkManager);
+            $('#input-admin-remark').val(result.remarkAdmin);
+
         });
 }
 
@@ -127,7 +131,12 @@ function columnConfig() {
                 return simplyDateTime(row.endDate);
             }
         },
-        { data: "status" },
+        {
+            data: null,
+            render: function (data, type, row, meta) {
+                return describeLeaveStatus(row.status);
+            }
+        },
         {
             data: null,
             render: function (data, type, row, meta) {
@@ -187,4 +196,3 @@ function buttonConfig() {
 document.getElementById('excel-btn').classList.remove('dt-button', 'buttons-pdf', 'buttons-html5');
 document.getElementById('pdf-btn').classList.remove('dt-button', 'buttons-pdf', 'buttons-html5');
 document.getElementById('colvis-btn').classList.remove('dt-button');
-console.log("testing");

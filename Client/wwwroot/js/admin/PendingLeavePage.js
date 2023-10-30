@@ -1,7 +1,76 @@
-﻿// Setting Up Data Table
-$("#table-pending-leave").DataTable({
+﻿/* Detail Button Event */
+function detailLeave(guid) {
+    $.ajax({
+        url: '/admin/leave/' + guid,
+        method: 'GET'
+    })
+        .done((data, textStatus, errorThrown) => {
+            let result = data.data;
+            $('#input-guid').val(result.leaveGuid);
+            $('#input-nik').val(result.nik);
+            $('#input-department').val(result.departmentName);
+            $('#input-fullname').val(result.fullName);
+            $('#input-phone-number').val(result.phoneNumber);
+            $('#input-email').val(result.email);
+            $('#input-department').val(result.departmentName);
+            $('#input-apply-date').val(simplyDateTime(result.createdDate));
+            $('#input-type').val(result.leaveName);
+            $('#input-start-date').val(simplyDateTime(result.startDate));
+            $('#input-end-date').val(simplyDateTime(result.startDate));
+            $('#input-description').val(result.description);
+            $('#input-leave-status').val(describeLeaveStatus(result.leaveStatus));
+            $('#input-manager-remark').val(result.remarkManager);
+            $('#input-admin-remark').val(result.remarkAdmin);
+
+        });
+}
+
+/* Button Edit Leave Type Event */
+$('#button-save').on('click', () => {
+    var leaveStatusData = {
+        guid: $('#input-guid').val(),
+        status: parseInt($('#select-status').val()),
+        remarks: $('#input-admin-remark').val()
+    }
+
+    let json = JSON.stringify(leaveStatusData);
+
+    $.ajax({
+        type: 'PUT',
+        url: updateAction,
+        data: { entity: json },
+        dataType: "json",
+    })
+        .done((data, textStatus, errorThrown) => {
+            $('#modal-leave-detail').modal('hide');
+            console.log(data);
+            if (data.code >= 300) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed to Update Leave Status',
+                    text: 'Oops! Something went wrong while trying to update leave status. Please double-check your information.',
+                    footer: '<a href="">Why do I have this issue?</a>'
+                });
+            }
+
+            if (data.code >= 200 && data.code < 300) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Leave Status Updated Successfully',
+                    showConfirmButton: false,
+                    timer: 2500
+                });
+            }
+
+            $('#table-leave').DataTable().ajax.reload();
+        });
+});
+
+// Setting Up Data Table
+$("#table-leave").DataTable({
     ajax: {
-        url: '/admin/leave/pending/all',
+        url: getAllAction,
         dataSrc: 'data',
         dataType: 'JSON'
     },
@@ -40,7 +109,12 @@ function columnConfig() {
                 return simplyDateTime(row.endDate);
             }
         },
-        { data: "status" },
+        {
+            data: null,
+            render: function (data, type, row, meta) {
+                return describeLeaveStatus(row.status);
+            }
+        },
         {
             data: null,
             render: function (data, type, row, meta) {
@@ -100,4 +174,3 @@ function buttonConfig() {
 document.getElementById('excel-btn').classList.remove('dt-button', 'buttons-pdf', 'buttons-html5');
 document.getElementById('pdf-btn').classList.remove('dt-button', 'buttons-pdf', 'buttons-html5');
 document.getElementById('colvis-btn').classList.remove('dt-button');
-console.log("testing");
