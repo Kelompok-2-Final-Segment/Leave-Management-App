@@ -30,3 +30,20 @@ body {
     min-height: 600px;
 }
 
+/* Add this style to your CSS file or style tag */
+.nav-item:hover {
+    background-color: #35424a; /* Change the color as desired */
+}
+
+    .nav-item:hover a,
+    .nav-item:hover h6 {
+        color: #ffd700; /* Change the color as desired */
+    }
+
+.nav-link.active,
+.nav-link.active:hover,
+.nav-item.active {
+    background-color: #35424a; /* Change the color as desired */
+    color: #ffd700; /* Change the color as desired */
+}
+

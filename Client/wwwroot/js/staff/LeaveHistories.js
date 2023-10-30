@@ -1,4 +1,5 @@
-function GetHistoriesStaff(guid) {
+$(document).ready(function () {
+    // Initialize DataTable for the leaves table with Buttons and ColVis
     var leavesTable = $('#tableLeaves').DataTable({
         ajax: {
             url: "https://localhost:7064/api/Staff/Leaves/Histories",
@@ -12,9 +13,12 @@ function GetHistoriesStaff(guid) {
                     return meta.row + 1;
                 }
             },
+            { data: "createdDate" },
+            { data: "fullName" },
+            { data: "nik" },
+            { data: "leaveName" },
             { data: "startDate" },
             { data: "endDate" },
-            { data: "description" },
             { data: "status" },
             {
                 data: null,
@@ -59,9 +63,7 @@ function GetHistoriesStaff(guid) {
             }
         ]
     });
-}
 
-$(document).ready(function () {
-    // Initialize DataTable for the leaves table with Buttons and ColVis
-    GetHistoriesStaff();
+    // Initialize DataTable for the balance table
+    var balanceTable = $('#tableBalance').DataTable();
 });
