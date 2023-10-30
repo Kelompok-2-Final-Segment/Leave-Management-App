@@ -299,7 +299,7 @@ namespace API.Controllers
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
             var leavesDto = from l in leaves
-                            where l.Status.ToString() == "Pending"
+                            where l.Status.ToString() == "Accepted"
                             join lt in leaveTypes on l.LeaveTypeGuid equals lt.Guid
                             join emp in employees on l.EmployeeGuid equals emp.Guid
                             select LeaveDto.ConvertToLeaveDto(l, lt, emp);
@@ -323,7 +323,7 @@ namespace API.Controllers
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
             var leavesDto = from l in leaves
-                            where l.Status.ToString() == "Rejected"
+                            where l.Status.ToString() == "RejectedHR"
                             join lt in leaveTypes on l.LeaveTypeGuid equals lt.Guid
                             join emp in employees on l.EmployeeGuid equals emp.Guid
                             select LeaveDto.ConvertToLeaveDto(l, lt, emp);
