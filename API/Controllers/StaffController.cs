@@ -33,17 +33,11 @@ namespace API.Controllers
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
             leaveBalances = leaveBalances.Where(lb => lb.EmployeeGuid == guid && lb.IsAvailable == true);
-            var leaveDetails = from lb in leaveBalances
-                               join lt in leaveType on lb.LeaveTypeGuid equals lt.Guid
-                               select new LeaveDetailsDto
-                               {
-                                   Name = lt.Name,
-                                   Balance = lt.Balance,
-                                   UsedBalance = lb.UsedBalance,
-                                   MinDuration = lt.MinDuration,
-                                   MaxDuration =lt.MaxDuration
-                               };
-            return Ok(new ResponseOkHandler<IEnumerable<LeaveDetailsDto>>(leaveDetails));
+            var availableLeave = from lb in leaveBalances
+                                 join lt in leaveType on lb.LeaveTypeGuid equals lt.Guid
+                                 select AvailableLeaveDto.ConvertToAvailableLeaveDto(lt, lb);
+
+            return Ok(new ResponseOkHandler<IEnumerable<AvailableLeaveDto>>(availableLeave));
         }
 
         [HttpGet("Leaves/Histories/{guid}")]
@@ -134,6 +128,11 @@ namespace API.Controllers
             try
             {
                 Leave toCreate = createLeaveDto;
+                var leaves = _leaveRepository.GetAll().Where(l => l.EmployeeGuid == toCreate.EmployeeGuid && l.LeaveTypeGuid == toCreate.LeaveTypeGuid && l.Status.ToString() == "Pending");
+                if (leaves.Any())
+                {
+                    return BadRequest(new ResponseBadRequestHandler("Your leave request is not approved/rejected yet"));
+                }
                 var employee = _employeeRepository.GetByGuid(toCreate.EmployeeGuid);
                 var leaveType = _leaveTypeRepository.GetByGuid(toCreate.LeaveTypeGuid);
                 var leaveBalances = _leaveBalanceRepository.GetAll();

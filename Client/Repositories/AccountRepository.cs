@@ -19,7 +19,6 @@ namespace Client.Repositories
         public async Task<ResponseOkHandler<ClaimsDto>> GetClaims(string Token)
         {
             ResponseOkHandler<ClaimsDto> entityVM = null;
-            StringContent content = new StringContent(JsonConvert.SerializeObject(Token), Encoding.UTF8, "application/json");
             using (var response = httpClient.GetAsync(request + "ExtractToken/" + Token).Result)
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();

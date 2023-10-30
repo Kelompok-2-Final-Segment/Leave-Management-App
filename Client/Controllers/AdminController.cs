@@ -14,10 +14,12 @@ namespace Client.Controllers;
 public class AdminController : Controller
 {
     private readonly IAdminRepository adminRepository;
+    private readonly ILeaveTypeRepository leaveTypeRepository;
 
-    public AdminController(IAdminRepository adminRepository)
+    public AdminController(IAdminRepository adminRepository, ILeaveTypeRepository leaveTypeRepository)
     {
         this.adminRepository = adminRepository;
+        this.leaveTypeRepository = leaveTypeRepository;
     }
 
     public IActionResult Index()
@@ -26,8 +28,21 @@ public class AdminController : Controller
     }
 
     // Leaves Management
+    [HttpGet("/admin/leave/all")]
+    public async Task<IActionResult> GetAllLeave()
+    {
+        var result = await leaveTypeRepository.GetAllLeaveType();
+
+        if (result == null)
+        {
+            return NotFound();
+        }
+
+        return Json(result);
+    }
+
     [HttpGet("/admin/leave/pending")]
-    public IActionResult ManagePendingLeaves()
+    public IActionResult PendingLeave()
     {
         return View("pending-leave");
     }

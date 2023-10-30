@@ -1,33 +1,25 @@
-﻿// Main
-setDataTable();
-console.log("Hellow");
-
-// Leave Detail
-function leaveDetail() {
+﻿// Function for showing detail leave modal
+function showDetailModal(guid) {
     $('#modal-pending-leave').modal('show');
 }
 
-// Data Table
-function setDataTable() {
-    $("#table-pending-leave").DataTable({
-        ajax: {
-            url: 'https://localhost:7054/admin/employee/all',
-            dataSrc: 'data',
-            dataType: 'JSON'
-        },
-        columns: columnConfig(),
-        dom: 'Bfrtip',
-        buttons: buttonConfig()
-    });
-
-    setBootstrapToDataTableButton()
-}
+// Setting Up Data Table
+$("#table-pending-leave").DataTable({
+    ajax: {
+        url: 'https://localhost:7054/admin/employee/all',
+        dataSrc: 'data',
+        dataType: 'JSON'
+    },
+    columns: columnConfig(),
+    dom: 'Bfrtip',
+    buttons: buttonConfig()
+});
 
 // Create column configuration for data table
 function columnConfig() {
     return [
         {
-            data: "guid",
+            data: "null",
             render: function (data, type, row, meta) {
                 return meta.row + meta.settings._iDisplayStart + 1;
             }
@@ -50,7 +42,7 @@ function columnConfig() {
                 deleteButton.type = 'button';
                 deleteButton.className = 'btn btn-primary btn-delete-employee';
                 deleteButton.innerText = 'SET STATUS';
-                deleteButton.setAttribute('onclick', `leaveDetail()`);
+                deleteButton.setAttribute('onclick', `showDetailModal("${row.guid}")`);
 
                 document.addEventListener('DOMContentLoaded', function () {
                     deleteButton.addEventListener('click', function () {
@@ -64,8 +56,6 @@ function columnConfig() {
 
     ];
 }
-
-
 
 // Export configuration for data table
 function buttonConfig() {
@@ -104,9 +94,7 @@ function buttonConfig() {
 }
 
 // Remove data table default class for avoiding conflict with bootstrap styles
-function setBootstrapToDataTableButton() {
-    document.getElementById('excel-btn').classList.remove('dt-button', 'buttons-pdf', 'buttons-html5');
-    document.getElementById('pdf-btn').classList.remove('dt-button', 'buttons-pdf', 'buttons-html5');
-    document.getElementById('colvis-btn').classList.remove('dt-button');
-    console.log("testing");
-}
+document.getElementById('excel-btn').classList.remove('dt-button', 'buttons-pdf', 'buttons-html5');
+document.getElementById('pdf-btn').classList.remove('dt-button', 'buttons-pdf', 'buttons-html5');
+document.getElementById('colvis-btn').classList.remove('dt-button');
+console.log("testing");
