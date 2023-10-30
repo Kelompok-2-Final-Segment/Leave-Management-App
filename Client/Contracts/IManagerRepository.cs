@@ -13,5 +13,8 @@ namespace Client.Contracts
         public Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetHistoryLeaves(Guid guid);
         public Task<ResponseOkHandler<LeaveStatisticDto>> GetStatisticLeaves(Guid guid);
         public Task<ResponseOkHandler<IEnumerable<EmployeeDto>>> GetStaffs(Guid guid);
+        public Task<ResponseOkHandler<EmployeeDetailsDto>> GetStaff(Guid guid);
+        public Task<ResponseOkHandler<LeaveDetailManagerDto>> GetLeaveDetails(Guid guid);
+        public Task<ResponseOkHandler<string>> EditLeave(EditLeaveDto editLeaveDto);
     }
 }

@@ -5,6 +5,8 @@ using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Mvc;
 using API.Contracts;
 using System;
+using API.DTOs.Employees;
+using API.Repositories;
 
 namespace API.Controllers
 {
@@ -16,13 +18,15 @@ namespace API.Controllers
         private readonly ILeaveBalanceRepository _leaveBalanceRepository;
         private readonly ILeaveTypeRepository _leaveTypeRepository;
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IDepartmentRepository _departmentRepository;
 
-        public StaffController(ILeaveRepository leaveRepository, ILeaveBalanceRepository leaveBalanceRepository, ILeaveTypeRepository leaveTypeRepository, IEmployeeRepository employeeRepository)
+        public StaffController(ILeaveRepository leaveRepository, ILeaveBalanceRepository leaveBalanceRepository, ILeaveTypeRepository leaveTypeRepository, IEmployeeRepository employeeRepository, IDepartmentRepository departmentRepository)
         {
             _leaveRepository = leaveRepository;
             _leaveBalanceRepository = leaveBalanceRepository;
             _leaveTypeRepository = leaveTypeRepository;
             _employeeRepository = employeeRepository;
+            _departmentRepository = departmentRepository;
         }
         [HttpGet("Leaves/Available/{guid}")]
         public IActionResult GetAvailableLeave(Guid guid) {
@@ -95,7 +99,7 @@ namespace API.Controllers
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
             var leavesDto = from l in leaves
-                            where l.EmployeeGuid == guid && l.Status.ToString() == "Rejected"
+                            where l.EmployeeGuid == guid && l.Status.ToString() == "Rejected" || l.Status.ToString() == "RejectedHR"
                             join lt in leaveTypes on l.LeaveTypeGuid equals lt.Guid
                             select LeaveDto.ConvertToLeaveDto(l, lt, employee);
             if (!leavesDto.Any())
@@ -182,6 +186,22 @@ namespace API.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Create Data", e.Message));
             }
+        }
+        [HttpGet("Profile/{guid}")]
+        public IActionResult GetStaff(Guid guid)
+        {
+            var employee = _employeeRepository.GetByGuid(guid);
+            if (employee is null)
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var department = _departmentRepository.GetByGuid(employee.DepartmentGuid);
+            if (department == null)
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var staff = EmployeeDetailsDto.ConvertToStaffDetails(employee, department);
+            return Ok(new ResponseOkHandler<EmployeeDetailsDto>(staff));
         }
     }
 }

@@ -2,6 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using API.DTOs.Managers;
+using System;
+using API.DTOs.Leaves;
+using Client.Models;
+
 namespace Client.Controllers;
 
 [Route("[controller]/")]
@@ -31,33 +35,68 @@ public class ManagerController : Controller
 
     // Leaves Management
     [HttpGet("leaves/pending")]
-    public IActionResult ManagePendingLeaves()
+    public async Task<IActionResult> ManagePendingLeaves(Guid guid)
     {
-        return View("pending-leave");
+        var result = await _managerRepository.GetPendingLeaves(guid);
+        var leaveDetails = result.Data;
+       
+        if (leaveDetails is null )
+        {
+            leaveDetails = new List<LeaveDto>();
+        }
+
+        return View("pending-leave",leaveDetails);
+    }
+
+    [HttpGet("leaves/pending/edit")]
+    public async Task<IActionResult> ManageLeave(Guid guid)
+    {
+        var result = await _managerRepository.GetLeaveDetails(guid);
+        var leaveDetails = result.Data;
+
+        if (leaveDetails is null)
+        {
+            leaveDetails = new LeaveDetailManagerDto();
+        }
+        var CombinedEmployeeLeave = new EditStatusManagerModel { EmployeeDetail = leaveDetails };
+        return View("pending-leave-edit", CombinedEmployeeLeave);
+    }
+
+    [HttpPost("leaves/pending/edit")]
+    public async Task<IActionResult> ManageLeave(EditStatusManagerModel editStatusManagerModel)
+    {
+        var result = await _managerRepository.EditLeave(editStatusManagerModel.EditLeave);
+
+        if (result.Status == "OK")
+        {
+            RedirectToAction("ManagePendingLeaves", new { guid = editStatusManagerModel.EmployeeDetail.EmployeeGuid });
+        }
+        
+        return View("pending-leave", new { guid = editStatusManagerModel.EmployeeDetail.EmployeeGuid });
     }
 
     [HttpGet("leaves/approved")]
-    public IActionResult ManageApprovedLeaves()
+    public async Task<IActionResult> ManageApprovedLeaves()
     {
         return View("approved-leave");
     }
 
     [HttpGet("leaves/rejected")]
-    public IActionResult ManageRejectedLeaves()
+    public async Task<IActionResult> ManageRejectedLeaves()
     {
         return View("rejected-leave");
     }
 
     [HttpGet("leaves/history")]
 
-    public IActionResult ManageLeaveHistory()
+    public async Task<IActionResult> ManageLeaveHistories()
     {
         return View("leave-history");
     }
 
     [HttpGet("leaves/statistic")]
 
-    public IActionResult ManageLeaveStatistic()
+    public async Task<IActionResult> ManageLeaveStatistics()
     {
         return View("leave-statistic");
     }
@@ -65,7 +104,7 @@ public class ManagerController : Controller
 
     // Employeee Management
     [HttpGet("staff/")]
-    public IActionResult GetAllEmployee()
+    public async Task<IActionResult> GetAllEmployee()
     {
         return View("employee");
     }

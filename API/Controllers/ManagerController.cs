@@ -29,7 +29,7 @@ namespace API.Controllers
             _leaveTypeRepository = leaveTypeRepository;
         }
 
-        [HttpGet("Staffs/{guid}")]
+        [HttpGet("Staffs/All/{guid}")]
         public IActionResult GetStaffs(Guid guid)
         {
             var employees = _employeeRepository.GetAll();
@@ -40,6 +40,23 @@ namespace API.Controllers
             }
             var staffs = employees.Where(e => e.DepartmentGuid == department.Guid).Select(s => EmployeeDetailsDto.ConvertToStaffDetails(s, department));
             return Ok(new ResponseOkHandler<IEnumerable<EmployeeDetailsDto>>(staffs));
+        }
+
+        [HttpGet("Staffs/{guid}")]
+        public IActionResult GetStaff(Guid guid)
+        {
+            var employee = _employeeRepository.GetByGuid(guid);
+            if (employee is null)
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var department = _departmentRepository.GetByGuid(employee.DepartmentGuid);
+            if (department == null)
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var staff = EmployeeDetailsDto.ConvertToStaffDetails(employee, department);
+            return Ok(new ResponseOkHandler<EmployeeDetailsDto>(staff));
         }
 
         [HttpPut("Staffs/Edit")]
@@ -75,6 +92,31 @@ namespace API.Controllers
             var dashboardManagerDto = DashboardManagerDto.ConvertToDashboardManagerDto(leaveCount, employeeCount, pendingLeaveCount , department,recentLeave);
 
             return Ok(new ResponseOkHandler<DashboardManagerDto>(dashboardManagerDto));
+        }
+        [HttpGet("Leaves/Details/{guid}")]
+        public IActionResult GetLeaveDetails(Guid guid)
+        {
+            var leave = _leaveRepository.GetByGuid(guid);
+            if (leave == null)
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var leaveType = _leaveTypeRepository.GetByGuid(leave.LeaveTypeGuid);
+            var employee = _employeeRepository.GetByGuid(leave.EmployeeGuid);
+            if (employee == null || leaveType == null)
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var department = _departmentRepository.GetByGuid(employee.DepartmentGuid);
+            if (department == null)
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var leaveDetailManagerDto = LeaveDetailManagerDto.ConvertToLeaveDetailManagerDto(leave, leaveType, department, employee);
+
+
+            return Ok(new ResponseOkHandler<LeaveDetailManagerDto>(leaveDetailManagerDto));
+
         }
 
         [HttpGet("Leaves/Histories/{guid}")]

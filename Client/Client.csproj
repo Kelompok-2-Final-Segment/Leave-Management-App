@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\js\manager\" />
+    <None Include="wwwroot\js\manager\PendingLeave.js" />
   </ItemGroup>
 
 </Project>

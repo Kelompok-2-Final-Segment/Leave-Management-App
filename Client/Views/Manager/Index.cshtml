@@ -107,22 +107,22 @@
                 <table class="table align-items-center ">
                     <thead>
                         <tr>
-                            <th class= "text-center">NIK</th>
-                            <th class= "text-center">Full Name</th>
-                            <th class= "text-center">Leave Type</th>
-                            <th class= "text-center">Requested Date</th>
-                            <th class= "text-center">Start Date</th>
-                            <th class= "text-center">End Date</th>
-                            <th class= "text-center">Status</th>
+                            <th class="text-center">NIK</th>
+                            <th class="text-center">Full Name</th>
+                            <th class="text-center">Leave Type</th>
+                            <th class="text-center">Requested Date</th>
+                            <th class="text-center">Start Date</th>
+                            <th class="text-center">End Date</th>
+                            <th class="text-center">Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if(Model.RecentLeave != null)
+                        @if (Model.RecentLeave != null)
                         {
-                            @foreach(var item in Model.RecentLeave)
+                            @foreach (var item in Model.RecentLeave)
                             {
                                 <tr>
-                                    <td >
+                                    <td>
                                         <div class="text-center">
                                             <h6 class="text-sm mb-0">@item.NIK</h6>
                                         </div>
@@ -159,14 +159,16 @@
                                     </td>
                                 </tr>
                             }
-                        } else {
-                        <tr>
-                            <td>
-                                <h2> Data Not Found</h2>
-                            </td>
-                        </tr>
                         }
-                       
+                        else
+                        {
+                            <tr>
+                                <td class="text-center">
+                                    <h2> Data Not Found</h2>
+                                </td>
+                            </tr>
+                        }
+
                     </tbody>
                 </table>
             </div>

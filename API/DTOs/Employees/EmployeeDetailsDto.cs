@@ -19,7 +19,7 @@ namespace API.DTOs.Employees
 
 
         //membuat explicit operator untuk response get, create , getbyid
-        public static EmployeeDetailsDto ConvertToEmployeeDetails(Employee employee,Role role, Department department)
+        public static EmployeeDetailsDto ConvertToEmployeeDetails(Employee employee,string roleName, Department department)
         {
             return new EmployeeDetailsDto
             {
@@ -32,7 +32,7 @@ namespace API.DTOs.Employees
                 Email = employee.Email,
                 PhoneNumber = employee.PhoneNumber,
                 DepartmentName = department.Name,
-                RoleName = role.Name
+                RoleName = roleName
             };
         }
         public static EmployeeDetailsDto ConvertToStaffDetails(Employee employee,Department department)

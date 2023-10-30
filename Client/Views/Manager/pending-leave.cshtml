@@ -1,8 +1,207 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<API.DTOs.Leaves.LeaveDto>;
 @{
     ViewData["Page"] = "Pending Leave";
     Layout = "~/Views/Shared/_LayoutDashboardManager.cshtml";
+    string format = "dd - MM - yyyy";
+    int index = 0;
 }
-<h1>Pending Leave Page</h1>
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header pb-0" bg-white>
+                <h3>Pending Leave</h3>
+            </div>
+            <div class="card-body px-3 pt-0 pb-2">
+                <div class="table-responsive p-0">
+                    <table class="table table-striped" id="table-leave">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">No.</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Apply Date</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Employee</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">NIK</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Leave Type</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Start Date</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">End Date</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Status</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Any())
+                            {
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="text-center">
+                                                <h6 class="text-sm mb-0">@(index + 1)</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-center">
+                                                <h6 class="text-sm mb-0">@item.NIK</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-center">
+                                                <h6 class="text-sm mb-0">@item.FullName</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-center">
+                                                <h6 class="text-sm mb-0">@item.LeaveName</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class=" text-center">
+                                                <h6 class="text-sm mb-0">@item.CreatedDate.ToString(format)</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class=" text-center">
+                                                <h6 class="text-sm mb-0">@item.StartDate.ToString(format)</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class=" text-center">
+                                                <h6 class="text-sm mb-0">@item.EndDate.ToString(format)</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class=" text-center">
+                                                <h6 class="text-sm mb-0">@item.Status</h6>
+                                            </div>
+                                        </td>  
+                                        <td>
+                                            <div class=" text-center">
+                                                <a class="btn btn-primary" id="button-leave-detail" asp-action="ManageLeave" asp-route-guid="@item.Guid">Detail</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    index++;
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td class="text-center col-12">
+                                        <h2> Data Not Found</h2>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Leave Detail Modal-->
+<div class="modal fade" id="modal-leave-detail" tabindex="-1" aria-labelledby="modal-pending-leave" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">LEAVE APPLICATION DETAIL</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-action="Manage">
+                    <div class="mb-2">
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label">EMPLOYEE ID</label>
+                                <input type="text" id="input-guid" val="" hidden>
+                                <input type="text" id="input-nik" class="form-control" value="EMPLOYEE ID" aria-label="EMPLOYEE ID" disabled>
+                            </div>
+                            <div class="col">
+                                <label class="form-label">DEPARTMENT</label>
+                                <input type="text" id="input-department" class="form-control" value="DEPARTMENT" aria-label="DEPARTMENT" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label">FULL NAME</label>
+                                <input type="text" id="input-fullname" class="form-control" value="FULL NAME" aria-label="FULLNAME" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label">PHONE NUMBER</label>
+                                <input type="text" id="input-phone-number" class="form-control" value="PHONE NUMBER" aria-label="NIK" disabled>
+                            </div>
+                            <div class="col">
+                                <label class="form-label">EMAIL ADDRESS</label>
+                                <input type="text" id="input-email" class="form-control" value="EMAIL ADDRESS" aria-label="FULLNAME" disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="bg-danger border-2 border-top border-secondary" />
+                    <div class="mb-2">
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label">APPLY DATE</label>
+                                <input type="text" id="input-apply-date" class="form-control" value="APPLY DATE" aria-label="NIK" disabled>
+                            </div>
+                            <div class="col">
+                                <label class="form-label">TYPE</label>
+                                <input type="text" id="input-type" class="form-control" value="LEAVE TYPE" aria-label="FULLNAME" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label">START DATE</label>
+                                <input type="text" id="input-start-date" class="form-control" value="START DATE" aria-label="NIK" disabled>
+                            </div>
+                            <div class="col">
+                                <label class="form-label">END DATE</label>
+                                <input type="text" id="input-end-date" class="form-control" value="END DATE" aria-label="FULLNAME" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">DESCRIPTION</label>
+                        <textarea id="input-description" class="form-control" aria-label="With textarea" disabled>Description</textarea>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">MANAGER REMARK</label>
+                        <textarea id="input-manager-remark" class="form-control" aria-label="With textarea" placeholder="Remarks" disabled></textarea>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">SET STATUS</label>
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="select-status">
+                            <option>Select Leave Status</option>
+                            <option value="4">Approve</option>
+                            <option value="3">Reject</option>
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">HR REMARK</label>
+                        <textarea id="input-admin-remark" class="form-control" aria-label="With textarea" placeholder="Remarks"></textarea>
+                    </div>
+                    <div class="modal-footer mb-0 pb-0">
+                        <button type="button" class="btn btn-secondary mb-0" data-bs-dismiss="modal">Close</button>
+                        <button type="button" id="button-save" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        let getAllAction = "@Url.Action("GetPendingLeave")";
+        let updateAction = "@Url.Action("UpdateLeaveStatus")";
+    </script>
+    <script src="~/js/utilities/DataHandler.js" asp-append-version="true"></script>
+    <script src="~/js/manager/PendingLeave.js" asp-append-version="true"></script>
+}

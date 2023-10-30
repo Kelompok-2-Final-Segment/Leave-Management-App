@@ -47,12 +47,14 @@ namespace API.Controllers
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
+          
             var employeeDetails = from emp in employees
                                   join ar in accountRoles on emp.Guid equals ar.AccountGuid
                                   join d in departments on emp.DepartmentGuid equals d.Guid
                                   select new EmployeeDetailsDto
                                   {
                                       Guid = emp.Guid,
+                                      NIK = emp.NIK,
                                       FullName = string.Concat(emp.FirstName, " ", emp.LastName),
                                       BirthDate = emp.BirthDate,
                                       HiringDate = emp.HiringDate,
@@ -60,7 +62,7 @@ namespace API.Controllers
                                       Email = emp.Email,
                                       PhoneNumber = emp.PhoneNumber,
                                       DepartmentName = d.Name,
-                                      RoleName = _roleRepository.GetRoleName(ar.RoleGuid) ?? throw new Exception("no role ")
+                                      RoleName = _roleRepository.GetRoleName(ar.RoleGuid) ?? "No role"
                                   };
 
             return Ok(new ResponseOkHandler<IEnumerable<EmployeeDetailsDto>>(employeeDetails));
@@ -80,18 +82,8 @@ namespace API.Controllers
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
-            var employeeDetail = new EmployeeDetailsDto
-            {
-                Guid = employee.Guid,
-                FullName = string.Concat(employee.FirstName, " ", employee.LastName),
-                BirthDate = employee.BirthDate,
-                HiringDate = employee.HiringDate,
-                Gender = employee.Gender.ToString(),
-                Email = employee.Email,
-                PhoneNumber = employee.PhoneNumber,
-                DepartmentName = department.Name,
-                RoleName = _roleRepository.GetRoleName(accountRole.RoleGuid) ?? throw new Exception("no role ")
-            };
+            var roleName = _roleRepository.GetRoleName(accountRole.RoleGuid) ?? "no Role";
+            var employeeDetail = EmployeeDetailsDto.ConvertToEmployeeDetails(employee, roleName, department);
 
             return Ok(new ResponseOkHandler<EmployeeDetailsDto>(employeeDetail));
         }
