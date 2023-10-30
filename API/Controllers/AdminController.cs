@@ -242,14 +242,14 @@ namespace API.Controllers
             return Ok(new ResponseOkHandler<LeaveStatisticDto>(leaveStatistic));
         }
 
-        [HttpGet("Leaves")]
+        [HttpGet("Leaves/Histories")]
         public IActionResult GetAllLeaves()
         {
 
             var leaves = _leaveRepository.GetAll();
             var leaveTypes = _leaveTypeRepository.GetAll();
             var employees = _employeeRepository.GetAll();
-            if (!leaves.Any() &&!leaveTypes.Any() &&!employees.Any() )
+            if (!leaves.Any() &&!leaveTypes.Any() &&!employees.Any())
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
