@@ -1,7 +1,7 @@
 function GetHistoriesStaff(guid) {
     var leavesTable = $('#tableLeaves').DataTable({
         ajax: {
-            url: "https://localhost:7064/api/Staff/Leaves/Histories" +,
+            url: "https://localhost:7064/api/Staff/Leaves/Histories",
             dataSrc: "data",
             dataType: "JSON"
         },
@@ -63,5 +63,5 @@ function GetHistoriesStaff(guid) {
 
 $(document).ready(function () {
     // Initialize DataTable for the leaves table with Buttons and ColVis
-    
+    GetHistoriesStaff();
 });

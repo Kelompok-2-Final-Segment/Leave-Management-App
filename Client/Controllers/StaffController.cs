@@ -46,7 +46,7 @@ public class StaffController : Controller
         return View();
     }
 
-    public IActionResult LeaveBalance()
+    public IActionResult Profile()
     {
         return View();
     }
