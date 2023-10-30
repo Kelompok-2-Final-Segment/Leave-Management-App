@@ -11,16 +11,12 @@ async function deleteLeaveType(guid) {
     });
 
     if (result.isConfirmed) {
-        console.log(guid);
-
         $.ajax({
-            url: "/admin/leave/type/delete/" + guid,
+            url: "/admin/leave-type/delete/" + guid,
             type: 'DELETE'
         })
             .done((data, textStatus, errorThrown) => {
                 if (data.code >= 300) {
-                    console.log("Error bang");
-
                     Swal.fire({
                         icon: 'error',
                         title: 'Failed to Delete Leave Type Data',
@@ -30,8 +26,6 @@ async function deleteLeaveType(guid) {
                 }
 
                 if (data.code >= 200 && data.code < 300) {
-                    console.log(data);
-
                     Swal.fire({
                         position: 'top-end',
                         icon: 'success',
@@ -47,30 +41,28 @@ async function deleteLeaveType(guid) {
 }
 
 /* Create Leave Type Event */
-$('#button-create').on('click', () => {
+$('#button-save').on('click', () => {
+    $('#modal-h5-title').text("CREATE LEAVE TYPE");
+
     var leaveTypeData = {
         name: $('#input-name').val(),
         balance: $('#input-balance').val(),
         femaleOnly: $('#select-female-only').val(),
         minDuration: $('#input-min-duration').val(),
-        nmaxDuration: $('#input-max-duration').val(),
+        maxDuration: $('#input-max-duration').val(),
         remarks: $('#input-remarks').val(),
     }
 
     let json = JSON.stringify(leaveTypeData);
-    //console.log(createAction);
-    console.log(json);
 
-    
     $.ajax({
         type: 'POST',
-        url: "admin/leave/type/create",
+        url: createAction,
         data: { entity: json },
         dataType: "json",
     })
         .done((data, textStatus, errorThrown) => {
-            $('#modal-create').modal('hide');
-            console.log(data);
+            $('#modal-leave-type').modal('hide');
             if (data.code >= 300) {
                 Swal.fire({
                     icon: 'error',
@@ -94,10 +86,75 @@ $('#button-create').on('click', () => {
         });
 });
 
+/* Button Edit Leave Type Event */
+function editLeaveType(guid) {
+    $('#modal-h5-title').text("UPDATE LEAVE TYPE");
+
+    $.ajax({
+        url: '/admin/leave-type/' + guid,
+        method: 'GET'
+    })
+        .done((data, textStatus, errorThrown) => {
+            let result = data.data;
+            $('#input-guid').val(result.guid);
+            $('#input-name').val(result.name);
+            $('#input-balance').val(result.balance);
+            $('#select-female-only').val(result.femaleOnly.toString()).change();
+            $('#input-min-duration').val(result.minDuration);
+            $('#input-max-duration').val(result.maxDuration);
+            $('#input-remarks').val(result.remarks);
+        });
+
+    $('#button-save').on('click', () => {
+        var leaveTypeData = {
+            guid: $('#input-guid').val(), 
+            name: $('#input-name').val(),
+            balance: $('#input-balance').val(),
+            femaleOnly: $('#select-female-only').val(),
+            minDuration: $('#input-min-duration').val(),
+            maxDuration: $('#input-max-duration').val(),
+            remarks: $('#input-remarks').val(),
+        }
+
+        let json = JSON.stringify(leaveTypeData);
+
+        $.ajax({
+            type: 'PUT',
+            url: updateAction,
+            data: { entity: json },
+            dataType: "json",
+        })
+            .done((data, textStatus, errorThrown) => {
+                $('#modal-leave-type').modal('hide');
+                if (data.code >= 300) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed to Update Leave Type',
+                        text: 'Oops! Something went wrong while trying to update employee data. Please double-check your information.',
+                        footer: '<a href="">Why do I have this issue?</a>'
+                    });
+                }
+
+                if (data.code >= 200 && data.code < 300) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Leave Type Updated Successfully',
+                        showConfirmButton: false,
+                        timer: 2500
+                    });
+                }
+
+                $('#table-leave-type').DataTable().ajax.reload();
+            });
+    });
+    
+}
+
 /* Employee Data Table */
 $("#table-leave-type").DataTable({
     ajax: {
-        url: 'https://localhost:7054/admin/leave/type/all',
+        url: 'https://localhost:7054/admin/leave-type/all',
         dataSrc: 'data',
         dataType: 'JSON'
     },
@@ -130,12 +187,16 @@ function columnConfig() {
                 deleteButton.innerText = 'Delete';
                 deleteButton.setAttribute('onclick', `deleteLeaveType("${row.guid}")`);
 
-                const detailButton = document.createElement('button');
-                detailButton.type = 'submit';
-                detailButton.className = 'btn btn-primary';
-                detailButton.innerText = 'Edit';
+                const editButton = document.createElement('button');
+                editButton.type = 'submit';
+                editButton.className = 'btn btn-primary';
+                editButton.innerText = 'Edit';
+                editButton.id = 'button-edit-leave-type';
+                editButton.setAttribute('onclick', `editLeaveType("${row.guid}")`);
+                editButton.setAttribute('data-bs-toggle', 'modal');
+                editButton.setAttribute('data-bs-target', '#modal-leave-type');
 
-                return `${detailButton.outerHTML} ${deleteButton.outerHTML}`;
+                return `${editButton.outerHTML} ${deleteButton.outerHTML}`;
             }
         },
 
@@ -151,7 +212,7 @@ function buttonConfig() {
                 title: 'Copy',
                 id: 'create-btn',
                 'data-bs-toggle': 'modal',
-                'data-bs-target': '#modal-create'
+                'data-bs-target': '#modal-leave-type'
             },
             className: 'btn btn-primary',
             action: function (e, dt, node, config) {

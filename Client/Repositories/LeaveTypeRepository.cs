@@ -58,4 +58,32 @@ public class LeaveTypeRepository : ILeaveTypeRepository
 
         return entityVM;
     }
+
+    public async Task<ResponseOkHandler<LeaveTypeDto>> GetByGuid(Guid guid)
+    {
+        ResponseOkHandler<LeaveTypeDto> entityVM = null;
+
+
+        using (var response = await httpClient.GetAsync("Admin/LeaveTypes/" + guid))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<LeaveTypeDto>>(apiResponse);
+        }
+
+        return entityVM;
+    }
+
+    public async Task<ResponseOkHandler<string>> Update(LeaveTypeDto entity)
+    {
+        ResponseOkHandler<string> entityVM = null;
+        StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+
+        using (var response = httpClient.PutAsync("Admin/LeaveTypes", content).Result)
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<string>>(apiResponse);
+        }
+
+        return entityVM;
+    }
 }

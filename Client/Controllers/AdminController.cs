@@ -61,13 +61,13 @@ public class AdminController : Controller
         return View("rejected-leave");
     }
 
-    [HttpGet("admin/leave/type")]
-    public IActionResult ManageLeaveTypes()
+    [HttpGet("admin/leave-type/")]
+    public IActionResult PageLeaveType()
     {
         return View("leave-type");
     }
 
-    [HttpGet("admin/leave/type/all")]
+    [HttpGet("admin/leave-type/all")]
     public async Task<IActionResult> GetAllLeaveType()
     {
         var result = await leaveTypeRepository.GetAll();
@@ -80,7 +80,15 @@ public class AdminController : Controller
         return Json(result);
     }
 
-    [HttpDelete("admin/leave/type/delete/{guid}")]
+    [HttpGet("admin/leave-type/{guid}")]
+    public async Task<IActionResult> GetLeaveTypeByGuid(Guid guid)
+    {
+        var result = await leaveTypeRepository.GetByGuid(guid);
+
+        return Json(result);
+    }
+
+    [HttpDelete("admin/leave-type/delete/{guid}")]
     public async Task<IActionResult> DeleteLeaveType(Guid guid)
     {
         var result = await leaveTypeRepository.Delete(guid);
@@ -88,7 +96,29 @@ public class AdminController : Controller
         return Json(result);
     }
 
-    [HttpPost("admin/leave/type/create")]
+    [HttpPut("admin/leave-type/update/")]
+    public async Task<IActionResult> UpdateLeaveType(string entity)
+    {
+        Debug.WriteLine("Cek disini");
+        Debug.WriteLine(entity);
+        try
+        {
+            var updateData = JsonConvert.DeserializeObject<LeaveTypeDto>(entity);
+
+            var result = await leaveTypeRepository.Update(updateData);
+
+            return Json(result);
+
+        }
+        catch
+        {
+            var errorResponse = new ResponseBadRequestHandler("Input Data must not be null");
+
+            return Json(errorResponse);
+        }
+    }
+
+    [HttpPost("admin/leave-type/create")]
     public async Task<IActionResult> CreateLeaveType(string entity)
     {
         Debug.WriteLine("Cek disini");

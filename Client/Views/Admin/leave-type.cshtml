@@ -36,40 +36,44 @@
 </div>
 
 <!-- Create Employee Modal-->
-<div class="modal fade" id="modal-create" tabindex="-1" aria-labelledby="modal-create" aria-hidden="true">
+<div class="modal fade" id="modal-leave-type" tabindex="-1" aria-labelledby="modal-create" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Create New Leave Type</h5>
+                <h5 class="modal-title" id="modal-h5-title">Leave Type</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form method="post" asp-action="CreateEmployee" id="form-registration">
                     <div class="mb-3">
-                        <label for="input-birthdate" class="form-label">Name</label>
+                        <label for="input-name" class="form-label">Name</label>
+                        <input type="text" id="input-guid" val="" hidden>
                         <input type="text" id="input-name" class="form-control" placeholder="NAME" aria-label="Name">
 
                     </div>
                     <div class="mb-3">
                         <div class="row">
                             <div class="col">
+                                <label for="input-min-duration" class="form-label">MIN DURATION</label>
                                 <input type="number" id="input-min-duration" class="form-control" placeholder="MIN DURATION" aria-label="First name">
                             </div>
                             <div class="col">
+                                <label for="input-max-duration" class="form-label">MAX DURATION</label>
                                 <input type="number" id="input-max-duration" class="form-control" placeholder="MAX DURATION" aria-label="Last name">
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
+                        <label for="select-female-only" class="form-label">FEMALE ONLY</label>
                         <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="select-female-only">
                             <option>Female Only</option>
-                            <option value="1">Yes</option>
-                            <option value="0">No</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="input-balance" class="form-label">STANDARD BALANCE</label>
-                        <input type="number" id="input-standard-balance" class="form-control" placeholder="" aria-label="Name">
+                        <input type="number" id="input-balance" class="form-control" placeholder="" aria-label="Name">
                     </div>
                     <div class="mb-2">
                         <label for="input-remarks" class="form-label">REMARK</label>
@@ -78,32 +82,17 @@
                 </form>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" id="button-create" class="btn btn-primary">Create</button>
+                    <button type="submit" id="button-save" class="btn btn-primary">Save</button>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-
-<!-- Delete Employee Modal -->
-<div id="modal-delete" class="modal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Are you sure to delete this type?</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="delete-form" type="post" asp-action="Delete">
-                <input id="delete-form-input" hidden />
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Confirm Delete</button>
-                </div>
-            </form>
         </div>
     </div>
 </div>
 
 @section Scripts{
+    <script>
+        let createAction = "@Url.Action("CreateLeaveType")";
+        let updateAction = "@Url.Action("UpdateLeaveType")";
+    </script>
     <script src="~/js/admin/LeaveTypePage.js" asp-append-version="true"></script>
 }
