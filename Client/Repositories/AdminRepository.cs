@@ -92,4 +92,32 @@ public class AdminRepository : IAdminRepository
 
         return entityVM;
     }
+
+    public async Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetRejectedLeave()
+    {
+        ResponseOkHandler<IEnumerable<LeaveDto>> entityVM = null;
+
+
+        using (var response = await httpClient.GetAsync("Leaves/Rejected"))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<IEnumerable<LeaveDto>>>(apiResponse);
+        }
+
+        return entityVM;
+    }
+
+    public async Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetApprovedLeave()
+    {
+        ResponseOkHandler<IEnumerable<LeaveDto>> entityVM = null;
+
+
+        using (var response = await httpClient.GetAsync("Leaves/Approved"))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<IEnumerable<LeaveDto>>>(apiResponse);
+        }
+
+        return entityVM;
+    }
 }

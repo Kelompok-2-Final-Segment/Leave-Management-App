@@ -23,13 +23,54 @@ public class AdminController : Controller
         this.leaveTypeRepository = leaveTypeRepository;
     }
 
-    // Main Admin Dashboard
+    /*
+     * MAIN DASHBOARD ACTION */
     public IActionResult Index()
     {
         return View();
     }
 
-    // Get All Leave in JSON
+
+
+    /* 
+     * LEAVE RECORDS ACTIONS */
+
+    // PAGE : Return Pending Leave Page
+    [HttpGet("/admin/leave/pending")]
+    public IActionResult PendingLeave()
+    {
+        return View("pending-leave");
+    }
+
+    // PAGE : Return Approved Leave Page
+    [HttpGet("/admin/leave/approved")]
+    public IActionResult ManageApprovedLeaves()
+    {
+        return View("approved-leave");
+    }
+
+    // PAGE : Return Rejected Leave Page
+    [HttpGet("admin/leave/rejected")]
+    public IActionResult ManageRejectedLeaves()
+    {
+        return View("rejected-leave");
+    }
+
+    // PAGE : Return Pending Leave Page
+    [HttpGet("admin/leave/history")]
+    public IActionResult ManageLeaveHistory()
+    {
+        return View("leave-history");
+    }
+
+    [HttpGet("admin/leave/statistic")]
+
+    public IActionResult ManageLeaveStatistic()
+    {
+        return View("leave-statistic");
+    }
+
+    // GET All Leave Record in JSON
     [HttpGet("/admin/leave/all")]
     public async Task<IActionResult> GetAllLeave()
     {
@@ -43,81 +84,47 @@ public class AdminController : Controller
         return Json(result);
     }
 
-    [HttpGet("/admin/leave/pending")]
-    public IActionResult PendingLeave()
+    // GET All Rejected Leave in JSON
+    [HttpGet("/admin/leave/rejected/all")]
+    public async Task<IActionResult> GetRejectedLeave()
     {
-        return View("pending-leave");
+        var result = await adminRepository.GetRejectedLeave();
+
+        if (result == null)
+        {
+            return NotFound();
+        }
+
+        return Json(result);
     }
 
-    [HttpGet("/admin/leave/approved")]
-    public IActionResult ManageApprovedLeaves()
+    // GET All Rejected Leave in JSON
+    [HttpGet("/admin/leave/approved/all")]
+    public async Task<IActionResult> GetApprovedLeave()
     {
-        return View("approved-leave");
+        var result = await adminRepository.GetApprovedLeave();
+
+        if (result == null)
+        {
+            return NotFound();
+        }
+
+        return Json(result);
     }
 
-    [HttpGet("admin/leave/rejected")]
-    public IActionResult ManageRejectedLeaves()
-    {
-        return View("rejected-leave");
-    }
 
+
+    /*
+     * LEAVE TYPE ACTIONS */
+
+    // Return Leave Type Page HTML
     [HttpGet("admin/leave-type/")]
     public IActionResult PageLeaveType()
     {
         return View("leave-type");
     }
 
-    [HttpGet("admin/leave-type/all")]
-    public async Task<IActionResult> GetAllLeaveType()
-    {
-        var result = await leaveTypeRepository.GetAll();
-
-        if (result == null)
-        {
-            return Json(NotFound());
-        }
-
-        return Json(result);
-    }
-
-    [HttpGet("admin/leave-type/{guid}")]
-    public async Task<IActionResult> GetLeaveTypeByGuid(Guid guid)
-    {
-        var result = await leaveTypeRepository.GetByGuid(guid);
-
-        return Json(result);
-    }
-
-    [HttpDelete("admin/leave-type/delete/{guid}")]
-    public async Task<IActionResult> DeleteLeaveType(Guid guid)
-    {
-        var result = await leaveTypeRepository.Delete(guid);
-
-        return Json(result);
-    }
-
-    [HttpPut("admin/leave-type/update/")]
-    public async Task<IActionResult> UpdateLeaveType(string entity)
-    {
-        Debug.WriteLine("Cek disini");
-        Debug.WriteLine(entity);
-        try
-        {
-            var updateData = JsonConvert.DeserializeObject<LeaveTypeDto>(entity);
-
-            var result = await leaveTypeRepository.Update(updateData);
-
-            return Json(result);
-
-        }
-        catch
-        {
-            var errorResponse = new ResponseBadRequestHandler("Input Data must not be null");
-
-            return Json(errorResponse);
-        }
-    }
-
+    // POST or Create New Leave Type
     [HttpPost("admin/leave-type/create")]
     public async Task<IActionResult> CreateLeaveType(string entity)
     {
@@ -140,51 +147,49 @@ public class AdminController : Controller
         }
     }
 
-    [HttpGet("admin/leave/history")]
-
-    public IActionResult ManageLeaveHistory()
+    // GET All Leave Type
+    [HttpGet("admin/leave-type/all")]
+    public async Task<IActionResult> GetAllLeaveType()
     {
-        return View("leave-history");
-    }
+        var result = await leaveTypeRepository.GetAll();
 
-    [HttpGet("admin/leave/statistic")]
-
-    public IActionResult ManageLeaveStatistic()
-    {
-        return View("leave-statistic");
-    }
-
-
-    // Employeee Management 
-    [HttpGet("admin/employee/")] 
-    public IActionResult Employee()
-    {
-        return View("employee");
-    }
-
-    [HttpGet("admin/employee/all")]
-    public async Task<IActionResult> GetAllEmployee()
-    {
-        var result = await adminRepository.GetAllEmployee();
-        
         if (result == null)
         {
-            return NotFound();
+            return Json(NotFound());
         }
 
         return Json(result);
     }
 
-    [HttpPost("admin/employee/new")]
-    public async Task<IActionResult> CreateEmployee(string entity)
+    // GET Leave Type by Guid
+    [HttpGet("admin/leave-type/{guid}")]
+    public async Task<IActionResult> GetLeaveTypeByGuid(Guid guid)
+    {
+        var result = await leaveTypeRepository.GetByGuid(guid);
+
+        return Json(result);
+    }
+
+    // DELETE Leave Type by Guid
+    [HttpDelete("admin/leave-type/delete/{guid}")]
+    public async Task<IActionResult> DeleteLeaveType(Guid guid)
+    {
+        var result = await leaveTypeRepository.Delete(guid);
+
+        return Json(result);
+    }
+
+    // PUT or Update Leave Type
+    [HttpPut("admin/leave-type/update/")]
+    public async Task<IActionResult> UpdateLeaveType(string entity)
     {
         Debug.WriteLine("Cek disini");
         Debug.WriteLine(entity);
         try
         {
-            RegisterDto registerData = JsonConvert.DeserializeObject<RegisterDto>(entity);
+            var updateData = JsonConvert.DeserializeObject<LeaveTypeDto>(entity);
 
-            var result = await adminRepository.RegisterEmployee(registerData);
+            var result = await leaveTypeRepository.Update(updateData);
 
             return Json(result);
 
@@ -197,31 +202,24 @@ public class AdminController : Controller
         }
     }
 
+    
+    /*
+     * EMPLOYEE ACTIONS */
+
+    // PAGE : Return Employee Page
+    [HttpGet("admin/employee/")] 
+    public IActionResult Employee()
+    {
+        return View("employee");
+    }
+
+    // PAGE : Return to Employee Page
     [HttpGet("/admin/employee/detail")]
     public IActionResult GetEmployeeDetail()
     {
         return RedirectToAction("Employee");
     }
-
-    [HttpDelete("admin/employee/delete/{guid}")]
-    public async Task<IActionResult> DeleteEmployee(string guid)
-    {
-        try
-        {
-            Guid employeeGuid = Guid.Parse(guid);
-
-            var result = await adminRepository.DeleteEmployee(employeeGuid);
-
-            return Json(result);
-        }
-        catch
-        {
-            var errorResponse = new ResponseBadRequestHandler("ID is Invalid or Not Found");
-
-            return Json(errorResponse);
-        }
-    }
-
+    // PAGE : Return Employee Detail Page
     [HttpPost("admin/employee/detail")]
     public async Task<IActionResult> EmployeeDetail(string guid)
     {
@@ -245,4 +243,63 @@ public class AdminController : Controller
             return NotFound();
         }
     }
+
+    // POST or Create New Employee
+    [HttpPost("admin/employee/new")]
+    public async Task<IActionResult> CreateEmployee(string entity)
+    {
+        Debug.WriteLine("Cek disini");
+        Debug.WriteLine(entity);
+        try
+        {
+            RegisterDto registerData = JsonConvert.DeserializeObject<RegisterDto>(entity);
+
+            var result = await adminRepository.RegisterEmployee(registerData);
+
+            return Json(result);
+
+        }
+        catch
+        {
+            var errorResponse = new ResponseBadRequestHandler("Input Data must not be null");
+
+            return Json(errorResponse);
+        }
+    }
+
+    // GET All Employee Data
+    [HttpGet("admin/employee/all")]
+    public async Task<IActionResult> GetAllEmployee()
+    {
+        var result = await adminRepository.GetAllEmployee();
+        
+        if (result == null)
+        {
+            return NotFound();
+        }
+
+        return Json(result);
+    }
+
+    // DELETE Employee Data by Guid
+    [HttpDelete("admin/employee/delete/{guid}")]
+    public async Task<IActionResult> DeleteEmployee(string guid)
+    {
+        try
+        {
+            Guid employeeGuid = Guid.Parse(guid);
+
+            var result = await adminRepository.DeleteEmployee(employeeGuid);
+
+            return Json(result);
+        }
+        catch
+        {
+            var errorResponse = new ResponseBadRequestHandler("ID is Invalid or Not Found");
+
+            return Json(errorResponse);
+        }
+    }
+
+    
 }

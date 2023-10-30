@@ -5,4 +5,137 @@
     ViewData["Title"] = "Admin Dashboard";
     Layout = "~/Views/Shared/_LayoutDashboardAdmin.cshtml";
 }
-<h1>Approved Leave Page</h1>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header pb-0" bg-white>
+                <h3>All Approved Leave</h3>
+            </div>
+            <div class="card-body px-3 pt-0 pb-2">
+                <div class="table-responsive p-0">
+                    <table class="table table-striped" id="table-leave">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">No.</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Apply Date</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Employee</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">NIK</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Leave Type</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Start Date</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">End Date</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Status</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Leave Detail Modal-->
+<div class="modal fade" id="modal-leave-detail" tabindex="-1" aria-labelledby="modal-pending-leave" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">LEAVE APPLICATION DETAIL</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="Add">
+                    <div class="mb-2">
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label">EMPLOYEE ID</label>
+                                <input type="text" id="input-nik" class="form-control" value="EMPLOYEE ID" aria-label="EMPLOYEE ID" disabled>
+                            </div>
+                            <div class="col">
+                                <label class="form-label">DEPARTMENT</label>
+                                <input type="text" id="input-department" class="form-control" value="DEPARTMENT" aria-label="DEPARTMENT" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label">FULL NAME</label>
+                                <input type="text" id="input-fullname" class="form-control" value="FULL NAME" aria-label="FULLNAME" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label">PHONE NUMBER</label>
+                                <input type="text" id="input-phone-number" class="form-control" value="PHONE NUMBER" aria-label="NIK" disabled>
+                            </div>
+                            <div class="col">
+                                <label class="form-label">EMAIL ADDRESS</label>
+                                <input type="text" id="input-email" class="form-control" value="EMAIL ADDRESS" aria-label="FULLNAME" disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="bg-danger border-2 border-top border-secondary" />
+                    <div class="mb-2">
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label">APPLY DATE</label>
+                                <input type="text" id="input-apply-date" class="form-control" value="APPLY DATE" aria-label="NIK" disabled>
+                            </div>
+                            <div class="col">
+                                <label class="form-label">TYPE</label>
+                                <input type="text" id="input-leave-type" class="form-control" value="LEAVE TYPE" aria-label="FULLNAME" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label">START DATE</label>
+                                <input type="text" id="input-start-date" class="form-control" value="START DATE" aria-label="NIK" disabled>
+                            </div>
+                            <div class="col">
+                                <label class="form-label">END DATE</label>
+                                <input type="text" id="input-end-type" class="form-control" value="END DATE" aria-label="FULLNAME" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">DESCRIPTION</label>
+                        <textarea id="input-description" class="form-control" aria-label="With textarea" disabled>Description</textarea>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">LEAVE STATUS</label>
+                        <input type="text" id="input-leave-status" class="form-control" value="LEAVE STATUS" aria-label="LEAVE STATUS" disabled>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">MANAGER REMARK</label>
+                        <textarea id="input-manager-remark" class="form-control" aria-label="With textarea" placeholder="Remarks" disabled></textarea>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">HR REMARK</label>
+                        <textarea id="input-admin-remark" class="form-control" aria-label="With textarea" placeholder="Remarks" disabled></textarea>
+                    </div>
+                    <div class="modal-footer mb-0 pb-0">
+                        <button type="button" class="btn btn-secondary mb-0" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        let getAllAction = "@Url.Action("GetApprovedLeave")";
+        console.log(getAllAction)
+    </script>
+    <script src="~/js/utilities//DateTime.js" asp-append-version="true"></script>
+    <script src="~/js/admin/LeavePages.js" asp-append-version="true"></script>
+}

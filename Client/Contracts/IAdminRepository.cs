@@ -5,7 +5,7 @@ using API.DTOs.LeaveTypes;
 using API.Utilities.Handlers;
 
 namespace Client.Contracts;
- 
+
 public interface IAdminRepository
 {
     // Employee Repository
@@ -16,4 +16,6 @@ public interface IAdminRepository
 
     // Leave Repository
     Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetAllLeave();
+    Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetRejectedLeave();
+    Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetApprovedLeave();
 }

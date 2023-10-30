@@ -6,7 +6,7 @@ function showDetailModal(guid) {
 // Setting Up Data Table
 $("#table-pending-leave").DataTable({
     ajax: {
-        url: 'https://localhost:7054/admin/employee/all',
+        url: getAllAction,
         dataSrc: 'data',
         dataType: 'JSON'
     },
