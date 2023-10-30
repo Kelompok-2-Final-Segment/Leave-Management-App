@@ -1,42 +1,61 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Client.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using API.DTOs.Managers;
 namespace Client.Controllers;
 
+[Route("[controller]/")]
 public class ManagerController : Controller
 {
-    public IActionResult Index()
+    private readonly IManagerRepository _managerRepository;
+
+    public ManagerController(IManagerRepository managerRepository)
     {
-        return View();
+        _managerRepository = managerRepository;
     }
 
+    //Dashboard
+    public async Task<IActionResult> Index(Guid guid)
+    {
+        var result = await _managerRepository.GetDashboardDetails(guid);
+        var ManagerDashboardDto = result.Data;
+        if (result.Data is null)
+        {
+            ManagerDashboardDto = new DashboardManagerDto();
+        }
+        return View(ManagerDashboardDto);
+    }
+    
+
+
+
     // Leaves Management
-    [HttpGet("/manager/leave/pending")]
+    [HttpGet("leaves/pending")]
     public IActionResult ManagePendingLeaves()
     {
         return View("pending-leave");
     }
 
-    [HttpGet("/manager/leave/approved")]
+    [HttpGet("leaves/approved")]
     public IActionResult ManageApprovedLeaves()
     {
         return View("approved-leave");
     }
 
-    [HttpGet("manager/leave/rejected")]
+    [HttpGet("leaves/rejected")]
     public IActionResult ManageRejectedLeaves()
     {
         return View("rejected-leave");
     }
 
-    [HttpGet("manager/leave/history")]
+    [HttpGet("leaves/history")]
 
     public IActionResult ManageLeaveHistory()
     {
         return View("leave-history");
     }
 
-    [HttpGet("manager/leave/statistic")]
+    [HttpGet("leaves/statistic")]
 
     public IActionResult ManageLeaveStatistic()
     {
@@ -45,7 +64,7 @@ public class ManagerController : Controller
 
 
     // Employeee Management
-    [HttpGet("manager/staff/")]
+    [HttpGet("staff/")]
     public IActionResult GetAllEmployee()
     {
         return View("employee");

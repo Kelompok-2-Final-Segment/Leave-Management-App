@@ -9,7 +9,6 @@ public class GeneralRepository
     protected readonly string request;
     protected HttpClient httpClient;
     protected readonly string urlEmployees = "Employees/";
-    protected readonly string urlDepartments = "Employees/";
     protected readonly string urlLeaves = "Leaves/";
 
     public GeneralRepository(string request)

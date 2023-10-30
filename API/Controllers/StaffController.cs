@@ -45,14 +45,15 @@ namespace API.Controllers
         {
             var leaves = _leaveRepository.GetAll();
             var leaveTypes = _leaveTypeRepository.GetAll();
-            if (!leaves.Any() && !leaveTypes.Any())
+            var employee = _employeeRepository.GetByGuid(guid);
+            if (!leaves.Any() && !leaveTypes.Any() || employee is null)
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
             var leavesDto = from l in leaves
                             where l.EmployeeGuid == guid
                             join lt in leaveTypes on l.LeaveTypeGuid equals lt.Guid
-                            select LeaveDto.ConvertToLeaveStaff(l, lt);
+                            select LeaveDto.ConvertToLeaveDto(l, lt, employee);
             if (!leavesDto.Any())
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
@@ -66,14 +67,15 @@ namespace API.Controllers
         {
             var leaves = _leaveRepository.GetAll();
             var leaveTypes = _leaveTypeRepository.GetAll();
-            if (!leaves.Any() && !leaveTypes.Any())
+            var employee = _employeeRepository.GetByGuid(guid);
+            if (!leaves.Any() && !leaveTypes.Any() || employee is null)
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
             var leavesDto = from l in leaves
                             where l.EmployeeGuid == guid && l.Status.ToString() == "Pending"
                             join lt in leaveTypes on l.LeaveTypeGuid equals lt.Guid
-                            select LeaveDto.ConvertToLeaveStaff(l, lt);
+                            select LeaveDto.ConvertToLeaveDto(l, lt, employee);
             if (!leavesDto.Any())
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
@@ -87,14 +89,15 @@ namespace API.Controllers
         {
             var leaves = _leaveRepository.GetAll();
             var leaveTypes = _leaveTypeRepository.GetAll();
-            if (!leaves.Any() && !leaveTypes.Any())
+            var employee = _employeeRepository.GetByGuid(guid);
+            if (!leaves.Any() && !leaveTypes.Any() || employee is null)
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
             var leavesDto = from l in leaves
                             where l.EmployeeGuid == guid && l.Status.ToString() == "Rejected"
                             join lt in leaveTypes on l.LeaveTypeGuid equals lt.Guid
-                            select LeaveDto.ConvertToLeaveStaff(l, lt);
+                            select LeaveDto.ConvertToLeaveDto(l, lt, employee);
             if (!leavesDto.Any())
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
@@ -107,14 +110,15 @@ namespace API.Controllers
         {
             var leaves = _leaveRepository.GetAll();
             var leaveTypes = _leaveTypeRepository.GetAll();
-            if (!leaves.Any() && !leaveTypes.Any())
+            var employee = _employeeRepository.GetByGuid(guid);
+            if (!leaves.Any() && !leaveTypes.Any() || employee is null)
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
             var leavesDto = from l in leaves
                             where l.EmployeeGuid == guid && l.Status.ToString() == "Approved"
                             join lt in leaveTypes on l.LeaveTypeGuid equals lt.Guid
-                            select LeaveDto.ConvertToLeaveStaff(l, lt);
+                            select LeaveDto.ConvertToLeaveDto(l, lt, employee);
             if (!leavesDto.Any())
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));

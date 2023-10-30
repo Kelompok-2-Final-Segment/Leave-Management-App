@@ -30,18 +30,7 @@ namespace API.DTOs.Leaves
                 Status = leave.Status.ToString(),
             };
         } 
-        public static LeaveDto ConvertToLeaveStaff(Leave leave, LeaveType leaveType)
-        {
-            return new LeaveDto
-            {
-                Guid = leave.Guid,
-                CreatedDate = leave.CreatedDate,
-                LeaveName = leaveType.Name,
-                StartDate = leave.StartDate,
-                EndDate = leave.EndDate,
-                Status = leave.Status.ToString(),
-            };
-        }
+      
 
     }
 }

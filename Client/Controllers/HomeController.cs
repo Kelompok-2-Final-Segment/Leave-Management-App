@@ -45,7 +45,7 @@ namespace Client_API.Controllers
                         return RedirectToAction("Index", "Staff", new { guid = identifier });
                     } else if (role == "Manager")
                     {
-                        return RedirectToAction("Index", "Manager");
+                        return RedirectToAction("Index", "Manager", new {guid = identifier });
                     } else if (role == "Admin")
                     {
                         return RedirectToAction("Index", "Admin");
