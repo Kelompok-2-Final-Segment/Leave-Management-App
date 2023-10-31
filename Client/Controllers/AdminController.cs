@@ -30,9 +30,31 @@ public class AdminController : Controller
     {
         AdminDashboardModels models = new AdminDashboardModels();
         var getStatistics = await adminRepository.GetStatistic();
+        var getAllLeave = await adminRepository.GetAllLeave();
+        var getAllDepartment = await adminRepository.GetAllDepartment();
+        var getAllEmployee = await adminRepository.GetAllEmployee();
+
+        var employees = getAllEmployee.Data;
+        var departments = getAllDepartment.Data;
+        var departmentDetails = from department in departments
+                                join employee in employees on department.ManagerGuid equals employee.Guid
+                                select new DepartmentManager
+                                {
+                                    Guid = department.Guid,
+                                    Name = department.Name,
+                                    Manager = employee.FullName
+                                };
 
         models.Statistic = getStatistics.Data;
+        models.LeaveHistory = getAllLeave.Data;
+        models.DepartmentManagers = departmentDetails.ToList();
         
+        if(models.LeaveHistory != null)
+        {
+            models.LeaveHistory = models.LeaveHistory.OrderByDescending(item => item.CreatedDate);
+            models.LeaveHistory = models.LeaveHistory.Take(10);
+        }
+
         return View(models);
     }
 
@@ -282,13 +304,18 @@ public class AdminController : Controller
             Guid employeeGuid = Guid.Parse(guid);
             Debug.WriteLine("Cek disini");
             Debug.WriteLine(guid);
-            var result = await adminRepository.GetEmployeeByGuid(employeeGuid);
+            var getEmployeeDetail = await adminRepository.GetEmployeeByGuid(employeeGuid);
+            var getEmployeeLeave = await adminRepository.GetAllLeave();
 
-            EmployeeCombinedModel model = new EmployeeCombinedModel();
-            model.EmployeeDetail = result.Data;
-
-            Debug.WriteLine("Cek disini");
-            Debug.WriteLine(model.EmployeeDetail.FullName);
+            AdminDashboardModels model = new AdminDashboardModels();
+            model.EmployeeDetail = getEmployeeDetail.Data;
+            model.LeaveHistory = getEmployeeLeave.Data;
+            
+            if(model.LeaveHistory != null)
+            {
+                model.LeaveHistory = model.LeaveHistory.Where(item => item.NIK == model.EmployeeDetail.NIK);
+            }
+            
 
             return View("employee-detail", model);
         }

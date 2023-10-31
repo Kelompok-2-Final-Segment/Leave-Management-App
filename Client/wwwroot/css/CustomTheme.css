@@ -1,13 +1,13 @@
-body {
-    background-color: #FAFAFA !important;
+﻿body {
+    background-color: #ECEFF1 !important;
 }
 
 #sidenav-main {
-    background-color: #252525 !important;
+    background-color: #263238 !important;
 }
 
 #div-top-background {
-    background-color: #757575!important;
+    background-color: #546E74 !important;
 }
 
 .nav-link {
@@ -33,4 +33,3 @@ body {
 #detail-employee-card {
     min-height: 600px;
 }
-

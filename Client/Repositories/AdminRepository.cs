@@ -1,4 +1,5 @@
 ﻿using API.DTOs.Accounts;
+using API.DTOs.Departments;
 using API.DTOs.Employees;
 using API.DTOs.Leaves;
 using API.DTOs.LeaveTypes;
@@ -18,7 +19,7 @@ public class AdminRepository : IAdminRepository
     {
         this.httpClient = new HttpClient
         {
-            BaseAddress = new Uri("https://localhost:7064/api/Admin/")
+            BaseAddress = new Uri("https://localhost:7064/api/")
         };
     }
 
@@ -40,7 +41,7 @@ public class AdminRepository : IAdminRepository
         ResponseOkHandler<IEnumerable<EmployeeDetailsDto>> entityVM = null;
 
 
-        using (var response = await httpClient.GetAsync("Employees/"))
+        using (var response = await httpClient.GetAsync("Admin/Employees/"))
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<IEnumerable<EmployeeDetailsDto>>>(apiResponse);
@@ -54,7 +55,7 @@ public class AdminRepository : IAdminRepository
         ResponseOkHandler<EmployeeDetailsDto> entityVM = null;
 
 
-        using (var response = await httpClient.GetAsync("Employees/" + guid))
+        using (var response = await httpClient.GetAsync("Admin/Employees/" + guid))
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<EmployeeDetailsDto>>(apiResponse);
@@ -68,7 +69,7 @@ public class AdminRepository : IAdminRepository
         ResponseOkHandler<string> entityVM = null;
         StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
 
-        using (var response = httpClient.PostAsync("Employees/Register", content).Result)
+        using (var response = httpClient.PostAsync("Admin/Employees/Register", content).Result)
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<string>>(apiResponse);
@@ -84,7 +85,7 @@ public class AdminRepository : IAdminRepository
         ResponseOkHandler<IEnumerable<LeaveDto>> entityVM = null;
 
 
-        using (var response = await httpClient.GetAsync("Leaves/Histories"))
+        using (var response = await httpClient.GetAsync("Admin/Leaves/Histories"))
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<IEnumerable<LeaveDto>>>(apiResponse);
@@ -98,7 +99,7 @@ public class AdminRepository : IAdminRepository
         ResponseOkHandler<IEnumerable<LeaveDto>> entityVM = null;
 
 
-        using (var response = await httpClient.GetAsync("Leaves/Rejected"))
+        using (var response = await httpClient.GetAsync("Admin/Leaves/Rejected"))
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<IEnumerable<LeaveDto>>>(apiResponse);
@@ -112,7 +113,7 @@ public class AdminRepository : IAdminRepository
         ResponseOkHandler<IEnumerable<LeaveDto>> entityVM = null;
 
 
-        using (var response = await httpClient.GetAsync("Leaves/Approved"))
+        using (var response = await httpClient.GetAsync("Admin/Leaves/Approved"))
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<IEnumerable<LeaveDto>>>(apiResponse);
@@ -126,7 +127,7 @@ public class AdminRepository : IAdminRepository
         ResponseOkHandler<IEnumerable<LeaveDto>> entityVM = null;
 
 
-        using (var response = await httpClient.GetAsync("Leaves/Pending"))
+        using (var response = await httpClient.GetAsync("Admin/Leaves/Pending"))
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<IEnumerable<LeaveDto>>>(apiResponse);
@@ -140,7 +141,7 @@ public class AdminRepository : IAdminRepository
         ResponseOkHandler<LeaveDetailAdminDto> entityVM = null;
 
 
-        using (var response = await httpClient.GetAsync("Leaves/Details/" + guid))
+        using (var response = await httpClient.GetAsync("Admin/Leaves/Details/" + guid))
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<LeaveDetailAdminDto>>(apiResponse);
@@ -154,7 +155,7 @@ public class AdminRepository : IAdminRepository
         ResponseOkHandler<string> entityVM = null;
         StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
 
-        using (var response = httpClient.PutAsync("Leaves/Edit", content).Result)
+        using (var response = httpClient.PutAsync("Admin/Leaves/Edit", content).Result)
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<string>>(apiResponse);
@@ -168,10 +169,24 @@ public class AdminRepository : IAdminRepository
         ResponseOkHandler<LeaveStatisticDto> entityVM = null;
 
 
-        using (var response = await httpClient.GetAsync("Leaves/Statistics"))
+        using (var response = await httpClient.GetAsync("Admin/Leaves/Statistics"))
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<LeaveStatisticDto>>(apiResponse);
+        }
+
+        return entityVM;
+    }
+
+    public async Task<ResponseOkHandler<IEnumerable<DepartmentDto>>> GetAllDepartment()
+    {
+        ResponseOkHandler<IEnumerable<DepartmentDto>> entityVM = null;
+
+
+        using (var response = await httpClient.GetAsync("Admin/Departments"))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<IEnumerable<DepartmentDto>>>(apiResponse);
         }
 
         return entityVM;

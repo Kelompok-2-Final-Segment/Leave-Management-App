@@ -1,4 +1,5 @@
 ﻿using API.DTOs.Accounts;
+using API.DTOs.Departments;
 using API.DTOs.Employees;
 using API.DTOs.Leaves;
 using API.DTOs.LeaveTypes;
@@ -24,6 +25,9 @@ public interface IAdminRepository
 
     // Statistic
     Task<ResponseOkHandler<LeaveStatisticDto>> GetStatistic();
+
+    // Department
+    Task<ResponseOkHandler<IEnumerable<DepartmentDto>>> GetAllDepartment();
 
 
 }

@@ -1,6 +1,6 @@
 ﻿@using Client.Models;
 
-@model EmployeeCombinedModel
+@model AdminDashboardModels
 @{
     ViewData["Title"] = "Employee Detail - Admin";
     Layout = "~/Views/Shared/_LayoutDashboardAdmin.cshtml";
@@ -72,22 +72,48 @@
                 <h4 class="mb-0">Employee Leave Records</h4>
             </div>
             <div class="card-body px-0">
-                <div class="table-responsive p-0">
-                    <table class="table align-items-center mb-0e">
+                <div class="table-responsive px-2">
+                    <table class="table align-items-center mb-0">
                         <thead>
                             <tr>
-                                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">NO.</th>
-                                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">APPLY DATE</th>
-                                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">LEAVE TYPE</th>
-                                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">DESCRIPTION</th>
-                                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">START DATE</th>
-                                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">END DATE</th>
-                                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">DESCRIPTION</th>
-                                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">STATUS</th>
-                                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">REMARK</th>
+                                <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-9">NO.</th>
+                                <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-9 ps-2">APPLY DATE </th>
+                                <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-9">LEAVE TYPE</th>
+                                <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-9">START DATE</th>
+                                <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-9">END DATE</th>
+                                <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-9">STATUS</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @{
+                                var counter = 1;
+                            }
+                            @foreach (var item in Model.LeaveHistory)
+                            {
+                                <tr>
+                                    <td class="align-middle text-center">
+                                        <span class="text-secondary text-sm font-weight-bold">@counter</span>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <span class="text-secondary text-sm font-weight-bold">@item.CreatedDate</span>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <span class="text-secondary text-sm font-weight-bold">@item.LeaveName</span>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <span class="text-secondary text-sm font-weight-bold">@item.StartDate.ToString("dddd, dd/MM/yyyy")</span>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <span class="text-secondary text-sm font-weight-bold">@item.EndDate.ToString("dddd, dd/MM/yyyy")</span>
+                                    </td>
+                                    <td class="align-middle text-center text-sm">
+                                        <span class="badge badge-sm bg-gradient-success">@item.Status</span>
+                                    </td>
+                                </tr>
+
+                                counter++;
+                            }
+
                         </tbody>
                     </table>
                 </div>
