@@ -196,6 +196,7 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Update Data", e.Message));
             }
         }
+
         [HttpDelete("Employees/Delete/{guid}")]
         public IActionResult DeleteEmployee(Guid guid)
         {

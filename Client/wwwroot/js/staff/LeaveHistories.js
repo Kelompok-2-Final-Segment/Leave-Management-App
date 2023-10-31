@@ -2,9 +2,8 @@ $(document).ready(function () {
     // Initialize DataTable for the leaves table with Buttons and ColVis
     var leavesTable = $('#tableLeaves').DataTable({
         ajax: {
-            url: "https://localhost:7064/api/Staff/Leaves/Histories",
-            dataSrc: "data",
-            dataType: "JSON"
+            url: "/staffs/leaves/history/" + employeeGuid,
+            method: "GET", 
         },
         columns: [
             {

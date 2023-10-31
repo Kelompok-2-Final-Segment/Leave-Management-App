@@ -1,6 +1,7 @@
 ﻿using API.DTOs.Leaves;
 using Client.Contracts;
 using Client.DTOs;
+using Client.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -31,6 +32,10 @@ public class StaffController : Controller
     {
         var result = _staffRepository.GetAvailableLeaves(guid).Result;
         var AvailableLeaves = result.Data;
+        if (AvailableLeaves == null)
+        {
+            return View(new RequestLeaveDto());
+        }
         RequestLeaveDto requestLeaveDto = new RequestLeaveDto { LeaveType = AvailableLeaves , Leave = new CreateLeaveDto { EmployeeGuid = guid } };
         return View(requestLeaveDto);
     }
@@ -62,11 +67,29 @@ public class StaffController : Controller
     }
 
     [HttpGet]
-    public IActionResult LeaveHistories(Guid guid)
+    public async Task<IActionResult> LeaveHistories(Guid guid)
     {
-        var result = _staffRepository.GetAvailableLeaves(guid).Result;
-        var AvailbleLeaves = result.Data;
-        return View(AvailbleLeaves);
+        var result = await _staffRepository.GetStatisticLeaves(guid);
+        ViewBag.EmployeeGuid = guid;
+        if (result.Status == "OK")
+        {
+            var statisticDto = result.Data;
+            return View(statisticDto);
+        }
+        return View();
+    }
+
+    [HttpGet("/staffs/leaves/history/{guid}")]
+    public async Task<IActionResult> GetLeaveHistories(Guid guid)
+    {
+        var result = await _staffRepository.GetHistoryLeaves(guid);
+
+        if (result == null)
+        {
+            return Json(NotFound());
+        }
+
+        return Json(result);
     }
 
 }

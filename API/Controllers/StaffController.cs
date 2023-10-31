@@ -28,7 +28,29 @@ namespace API.Controllers
             _employeeRepository = employeeRepository;
             _departmentRepository = departmentRepository;
         }
-        [HttpGet("Leaves/Available/{guid}")]
+        [HttpGet("Leaves/Statistics/{guid}")]
+        public IActionResult GetLeaveBreakdown(Guid guid) {
+            var leaves = _leaveRepository.GetAll().Where(l =>l.EmployeeGuid == guid);
+            if (!leaves.Any())
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            int requestCount = leaves.Count();
+            int approvedCount = leaves.Count(l => l.Status.ToString() == "Approved");
+            int rejectedCount = leaves.Count(l => l.Status.ToString() == "Rejected" || l.Status.ToString() == "RejectedHR");
+            int pendingCount = leaves.Count(l => l.Status.ToString() == "Pending" || l.Status.ToString() == "Accepted");
+            int cancelledCount = leaves.Count(l => l.Status.ToString() == "Cancelled");
+            var leavestatisticDto = new LeaveStatisticStaffDto { 
+                TotalRequest = requestCount,
+                Approved = approvedCount,
+                Rejected = rejectedCount,
+                Pending = pendingCount,
+                Cancelled = cancelledCount
+            };
+            return Ok(new ResponseOkHandler<LeaveStatisticStaffDto>(leavestatisticDto));
+        }
+
+         [HttpGet("Leaves/Available/{guid}")]
         public IActionResult GetAvailableLeave(Guid guid) {
             var leaveBalances = _leaveBalanceRepository.GetAll();
             var leaveType = _leaveTypeRepository.GetAll();
