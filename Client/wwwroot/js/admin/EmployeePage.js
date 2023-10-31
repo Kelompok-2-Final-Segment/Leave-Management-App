@@ -180,3 +180,11 @@ $.ajax({
             $('#select-department').append(`<option value="${item.name}">${item.name}</option>`);
         }
     });
+
+/* Clear Form Registration When Modal Show */
+$('#modal-create').on('show.bs.modal', function () {
+    $('#form-registration :input').val('');
+    $('#select-gender').val($('#select-gender option:first').val());
+    $('#select-role').val($('#select-role option:first').val());
+    $('#select-department').val($('#select-department option:first').val());
+});
