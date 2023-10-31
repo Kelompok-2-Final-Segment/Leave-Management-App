@@ -76,29 +76,68 @@ public class ManagerController : Controller
     }
 
     [HttpGet("leaves/approved")]
-    public async Task<IActionResult> ManageApprovedLeaves()
+    public IActionResult ManageApprovedLeaves(Guid guid)
     {
+        ViewBag.guidManager = guid;
         return View("approved-leave");
     }
 
     [HttpGet("leaves/rejected")]
-    public async Task<IActionResult> ManageRejectedLeaves()
+    public IActionResult ManageRejectedLeaves(Guid guid)
     {
+        ViewBag.guidManager = guid;
         return View("rejected-leave");
     }
 
     [HttpGet("leaves/history")]
 
-    public async Task<IActionResult> ManageLeaveHistories()
+    public IActionResult ManageLeaveHistories(Guid guid)
     {
+        ViewBag.guidManager = guid;
         return View("leave-history");
     }
 
-    [HttpGet("leaves/statistic")]
-
-    public async Task<IActionResult> ManageLeaveStatistics()
+    // GET All Leave Record in JSON
+    [HttpGet("Leaves/Histories/{guid}")]
+    public async Task<IActionResult> GetAllLeave(Guid guid)
     {
-        return View("leave-statistic");
+        var result = await _managerRepository.GetHistoryLeaves(guid);
+
+        if (result == null)
+        {
+            return Json(NotFound());
+        }
+
+        return Json(result);
+    }
+
+    // GET All Rejected Leave in JSON
+    [HttpGet("Leaves/Rejected/{guid}")]
+    public async Task<IActionResult> GetRejectedLeave(Guid guid)
+    {
+        var result = await _managerRepository.GetRejectedLeaves(guid);
+
+        if (result == null)
+        {
+            return NotFound();
+        }
+
+        return Json(result);
+    }
+
+    // GET All Rejected Leave in JSON
+    [HttpGet("Leaves/Approved/{guid}")]
+    public async Task<IActionResult> GetApprovedLeave(Guid guid)
+    {
+        var result = await _managerRepository.GetApprovedLeaves(guid);
+
+        if (result == null)
+        {
+
+            return NotFound();
+        }
+
+        return Json(result);
     }
 
 
