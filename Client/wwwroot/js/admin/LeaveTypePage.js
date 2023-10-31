@@ -1,3 +1,11 @@
+/* Create Button Event */
+function createButton() {
+    $('#modal-h5-title').text("CREATE LEAVE TYPE");
+    $('#button-save').attr('hidden', false);
+    $('#button-update').attr('hidden', true);
+
+}
+
 /* Delete Confirmation Dialog */
 async function deleteLeaveType(guid) {
     const result = await Swal.fire({
@@ -42,7 +50,6 @@ async function deleteLeaveType(guid) {
 
 /* Create Leave Type Event */
 $('#button-save').on('click', () => {
-    $('#modal-h5-title').text("CREATE LEAVE TYPE");
 
     var leaveTypeData = {
         name: $('#input-name').val(),
@@ -63,6 +70,7 @@ $('#button-save').on('click', () => {
     })
         .done((data, textStatus, errorThrown) => {
             $('#modal-leave-type').modal('hide');
+            console.log("Create");
             if (data.code >= 300) {
                 Swal.fire({
                     icon: 'error',
@@ -89,6 +97,8 @@ $('#button-save').on('click', () => {
 /* Button Edit Leave Type Event */
 function editLeaveType(guid) {
     $('#modal-h5-title').text("UPDATE LEAVE TYPE");
+    $('#button-save').attr('hidden', true);
+    $('#button-update').attr('hidden', false);
 
     $.ajax({
         url: '/admin/leave-type/' + guid,
@@ -105,7 +115,7 @@ function editLeaveType(guid) {
             $('#input-remarks').val(result.remarks);
         });
 
-    $('#button-save').on('click', () => {
+    $('#button-update').on('click', () => {
         var leaveTypeData = {
             guid: $('#input-guid').val(), 
             name: $('#input-name').val(),
@@ -126,6 +136,9 @@ function editLeaveType(guid) {
         })
             .done((data, textStatus, errorThrown) => {
                 $('#modal-leave-type').modal('hide');
+
+                console.log(data);
+                console.log("Update");
                 if (data.code >= 300) {
                     Swal.fire({
                         icon: 'error',
@@ -146,9 +159,9 @@ function editLeaveType(guid) {
                 }
 
                 $('#table-leave-type').DataTable().ajax.reload();
+                $('#button-update').attr('id', 'button-save');
             });
     });
-    
 }
 
 /* Employee Data Table */
@@ -212,7 +225,8 @@ function buttonConfig() {
                 title: 'Copy',
                 id: 'create-btn',
                 'data-bs-toggle': 'modal',
-                'data-bs-target': '#modal-leave-type'
+                'data-bs-target': '#modal-leave-type',
+                'onclick': 'createButton()'
             },
             className: 'btn btn-primary',
             action: function (e, dt, node, config) {
@@ -257,3 +271,4 @@ document.getElementById('create-btn').classList.remove('dt-button', 'buttons-pdf
 document.getElementById('excel-btn').classList.remove('dt-button', 'buttons-pdf', 'buttons-html5');
 document.getElementById('pdf-btn').classList.remove('dt-button', 'buttons-pdf', 'buttons-html5');
 document.getElementById('colvis-btn').classList.remove('dt-button');
+
