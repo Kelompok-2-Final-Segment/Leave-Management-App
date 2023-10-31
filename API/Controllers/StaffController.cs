@@ -174,7 +174,7 @@ namespace API.Controllers
                 {
                     return NotFound(new ResponseNotFoundHandler("Employee or leaveType Not Found"));
                 }
-                TimeSpan leaveDuration = toCreate.StartDate - toCreate.EndDate;
+                TimeSpan leaveDuration = toCreate.EndDate - toCreate.StartDate;
                 int leaveLength = leaveDuration.Days;
                 if (leaveLength <= 0) {
                     return BadRequest(new ResponseBadRequestHandler("Your leave date plan is wrong"));

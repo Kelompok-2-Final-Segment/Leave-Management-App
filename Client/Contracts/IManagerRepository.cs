@@ -11,6 +11,8 @@ namespace Client.Contracts
         public Task<ResponseOkHandler<DashboardManagerDto>> GetDashboardDetails(Guid guid);
         public Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetPendingLeaves(Guid guid);
         public Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetHistoryLeaves(Guid guid);
+        public Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetApprovedLeaves(Guid guid);
+        public Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetRejectedLeaves(Guid guid);
         public Task<ResponseOkHandler<LeaveStatisticDto>> GetStatisticLeaves(Guid guid);
         public Task<ResponseOkHandler<IEnumerable<EmployeeDto>>> GetStaffs(Guid guid);
         public Task<ResponseOkHandler<EmployeeDetailsDto>> GetStaff(Guid guid);

@@ -5,4 +5,44 @@
     ViewData["Page"] = "Approved Leave";
     Layout = "~/Views/Shared/_LayoutDashboardManager.cshtml";
 }
-<h1>Approved Leave Page</h1>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header pb-0" bg-white>
+                <h3>Leave History</h3>
+            </div>
+            <div class="card-body px-3 pt-0 pb-2">
+                <div class="table-responsive p-0">
+                    <table class="table table-striped" id="table-leave">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">No.</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Apply Date</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Employee</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">NIK</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Leave Type</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Start Date</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">End Date</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Status</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="_ModalLeaveDetailsPartial" />
+
+@section Scripts{
+    <script>
+        let getAllAction = "@Url.Action("GetApprovedLeave", new{guid = ViewBag.guidManager})";
+    </script>
+    <script src="~/js/utilities/DataHandler.js" asp-append-version="true"></script>
+    <script src="~/js/admin/LeavePages.js" asp-append-version="true"></script>
+}

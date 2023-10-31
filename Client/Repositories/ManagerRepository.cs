@@ -59,6 +59,26 @@ namespace Client.Repositories
             }
             return entityVM;
         }
+        public async Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetApprovedLeaves(Guid guid)
+        {
+            ResponseOkHandler<IEnumerable<LeaveDto>> entityVM = null;
+            using (var response = httpClient.GetAsync(request + urlLeaves + "Approved/" + guid).Result)
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<IEnumerable<LeaveDto>>>(apiResponse);
+            }
+            return entityVM;
+        }
+        public async Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetRejectedLeaves(Guid guid)
+        {
+            ResponseOkHandler<IEnumerable<LeaveDto>> entityVM = null;
+            using (var response = httpClient.GetAsync(request + urlLeaves + "Rejected/" + guid).Result)
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<IEnumerable<LeaveDto>>>(apiResponse);
+            }
+            return entityVM;
+        }
 
         public async Task<ResponseOkHandler<IEnumerable<EmployeeDto>>> GetStaffs(Guid guid)
         {
