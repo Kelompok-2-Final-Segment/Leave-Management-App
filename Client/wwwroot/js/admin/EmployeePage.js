@@ -167,3 +167,16 @@ $('#button-register').on('click', () => {
             $('#table-employee').DataTable().ajax.reload();
         });
 });
+
+/* Generate Department Option */
+$.ajax({
+    url: '/admin/department/all',
+    method: 'GET'
+})
+    .done((data, textStatus, errorThrown) => {
+        let result = data.data;
+
+        for (let item of result) {
+            $('#select-department').append(`<option value="${item.name}">${item.name}</option>`);
+        }
+    });

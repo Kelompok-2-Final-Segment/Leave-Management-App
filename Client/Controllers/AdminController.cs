@@ -311,10 +311,12 @@ public class AdminController : Controller
             Debug.WriteLine(guid);
             var getEmployeeDetail = await adminRepository.GetEmployeeByGuid(employeeGuid);
             var getEmployeeLeave = await adminRepository.GetAllLeave();
+            var getDepartment = await adminRepository.GetAllDepartment();
 
             AdminDashboardModels model = new AdminDashboardModels();
             model.EmployeeDetail = getEmployeeDetail.Data;
             model.LeaveHistory = getEmployeeLeave.Data;
+            model.Departments = getDepartment.Data;
             
             if(model.LeaveHistory != null)
             {
@@ -327,6 +329,29 @@ public class AdminController : Controller
         catch
         {
             return NotFound();
+        }
+    }
+
+    // PUT or Update Employee 
+    [HttpPut("admin/employee/update/")]
+    public async Task<IActionResult> UpdateEmployee(string entity)
+    {
+        Debug.WriteLine("Cek disini");
+        Debug.WriteLine(entity);
+        try
+        {
+            var updateData = JsonConvert.DeserializeObject<RegisterDto>(entity);
+
+            var result = await adminRepository.UpdateEmployee(updateData);
+
+            return Json(result);
+
+        }
+        catch
+        {
+            var errorResponse = new ResponseBadRequestHandler("Input Data must not be null");
+
+            return Json(errorResponse);
         }
     }
 
@@ -387,5 +412,18 @@ public class AdminController : Controller
         }
     }
 
-    
+    [HttpGet("admin/department/all")]
+    public async Task<IActionResult> GetAllDepartment()
+    {
+        var result = await adminRepository.GetAllDepartment();
+
+        if (result == null)
+        {
+            return NotFound();
+        }
+
+        return Json(result);
+    }
+
+
 }

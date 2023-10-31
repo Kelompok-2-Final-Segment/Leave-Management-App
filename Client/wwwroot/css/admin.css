@@ -2,6 +2,10 @@
     height: auto;
 }
 
-#card-department {
+#card-department-dashboard {
     height: 100% !important;
+}
+
+#card-employee-dashboard {
+    height: 500px !important;
 }
