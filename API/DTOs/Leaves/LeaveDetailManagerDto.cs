@@ -4,7 +4,7 @@ namespace API.DTOs.Leaves
 {
     public class LeaveDetailManagerDto
     {
-        public Guid EmployeeGuid { get; set; }
+        public Guid? ManagerGuid { get; set; }
         public Guid LeaveGuid { get; set; }
         public string NIK { get; set; }
         public string FullName { get; set; }
@@ -20,7 +20,7 @@ namespace API.DTOs.Leaves
         {
             return new LeaveDetailManagerDto
             {
-                EmployeeGuid = employee.Guid,
+                ManagerGuid = department.ManagerGuid,
                 LeaveGuid = leave.Guid,
                 NIK = employee.NIK,
                 FullName = string.Concat(employee.FirstName + " " + employee.LastName),

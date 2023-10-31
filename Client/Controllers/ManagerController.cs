@@ -69,10 +69,10 @@ public class ManagerController : Controller
 
         if (result.Status == "OK")
         {
-            RedirectToAction("ManagePendingLeaves", new { guid = editStatusManagerModel.EmployeeDetail.EmployeeGuid });
+            return RedirectToAction("ManagePendingLeaves", new { guid = editStatusManagerModel.EmployeeDetail.ManagerGuid });
         }
         
-        return View("pending-leave", new { guid = editStatusManagerModel.EmployeeDetail.EmployeeGuid });
+        return RedirectToAction("Index", new { guid = editStatusManagerModel.EmployeeDetail.ManagerGuid });
     }
 
     [HttpGet("leaves/approved")]

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model API.DTOs.Employees.EmployeeDto;
+@{
     ViewData["Title"] = "Profile";
     Layout = "~/Views/Shared/_LayoutDashboardStaff.cshtml";
 }
@@ -8,40 +9,47 @@
         <div class="card-header pb-0 ps-0" bg-white>
             <h5>PROFILE</h5>
         </div>
+        @if (Model is not null)
+        {
             <div class="profile-item">
                 <label for="nik" class="form-label">NIK</label>
-                <span id="nik" class="form-control">1234567890</span>
+                <span id="nik" class="form-control">@Model.NIK</span>
             </div>
 
             <div class="profile-item">
                 <label for="name" class="form-label">Name</label>
-                <span id="name" class="form-control">John Doe</span>
+                <span id="name" class="form-control">@Model.FirstName @Model.LastName</span>
             </div>
 
             <div class="profile-item">
                 <label for="birthdate" class="form-label">Birth Date</label>
-                <span id="birthdate" class="form-control">January 1, 1990</span>
+                <span id="birthdate" class="form-control">@Model.BirthDate</span>
             </div>
 
             <div class="profile-item">
                 <label for="gender" class="form-label">Gender</label>
-                <span id="gender" class="form-control">Male</span>
+                <span id="gender" class="form-control">@Model.Gender.ToString()</span>
             </div>
 
             <div class="profile-item">
                 <label for="email" class="form-label">Email</label>
-                <span id="email" class="form-control">john.doe@example.com</span>
+                <span id="email" class="form-control">@Model.Email</span>
             </div>
 
             <div class="profile-item">
                 <label for="phone" class="form-label">Phone Number</label>
-                <span id="phone" class="form-control">123-456-7890</span>
+                <span id="phone" class="form-control">@Model.PhoneNumber</span>
             </div>
 
-        <div class="profile-item mb-4">
+            <div class="profile-item mb-4">
                 <label for="department" class="form-label">Department</label>
                 <span id="department" class="form-control">IT Department</span>
             </div>
-        </div>
+        } else
+        {
+            <h2 class="text-center">Data Empty</h2>
+        }
+
     </div>
+</div>
 

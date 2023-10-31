@@ -1,8 +1,9 @@
-﻿@{
+﻿@model Client.DTOs.RequestLeaveDto;
+@{
     ViewData["Title"] = "RequestLeave";
     Layout = "~/Views/Shared/_LayoutDashboardStaff.cshtml";
+    ViewBag.Guid = Model.Leave.EmployeeGuid;
 }
-@model Client.DTOs.RequestLeaveDto;
 
 <div class="card mb-4">
     <div class="container-fluid">
@@ -28,7 +29,7 @@
                             {
                                 @foreach (var item in Model.LeaveType)
                                 {
-                                    <option value="@item.LeaveTypeGuid">@item.LeaveTypeGuid</option>
+                                    <option value="@item.LeaveTypeGuid">@item.Name</option>
                                 }
                             }
                             

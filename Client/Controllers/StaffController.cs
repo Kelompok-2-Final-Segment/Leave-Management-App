@@ -41,13 +41,23 @@ public class StaffController : Controller
         var result = await _staffRepository.RequestALeave(requestLeaveDto.Leave);
         if(result.Status == "OK")
         {
-           return RedirectToAction("Index");
+           return RedirectToAction("Index", new {guid = requestLeaveDto.Leave.EmployeeGuid});
+        } else if(result.Code == 400)
+        {
+            return RedirectToAction("Index", new { guid = requestLeaveDto.Leave.EmployeeGuid });
         }
-        return View();
+        return RedirectToAction("Index", new { guid = requestLeaveDto.Leave.EmployeeGuid });
     }
 
-    public IActionResult Profile()
+    [HttpGet]
+    public async Task<IActionResult> Profile(Guid guid)
     {
+        var result = await _staffRepository.Profile(guid);
+        if (result.Status == "OK")
+        {
+            var EmployeeDto = result.Data;
+            return View(EmployeeDto);
+        }
         return View();
     }
 

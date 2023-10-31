@@ -25,6 +25,17 @@ public class StaffRepository : GeneralRepository , IStaffRepository
         return entityVM;
     }
 
+    public async Task<ResponseOkHandler<EmployeeDto>> Profile(Guid guid)
+    {
+        ResponseOkHandler<EmployeeDto> entityVM = null;
+        using (var response = httpClient.GetAsync(request  + "Profile/" + guid).Result)
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<EmployeeDto>>(apiResponse);
+        }
+        return entityVM;
+    }
+
     public async Task<ResponseOkHandler<string>> RequestALeave(CreateLeaveDto createLeaveDto)
     {
             ResponseOkHandler<string> entityVM = null;

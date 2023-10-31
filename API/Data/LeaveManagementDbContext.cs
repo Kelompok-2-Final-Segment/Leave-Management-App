@@ -76,13 +76,17 @@ namespace API.Data
             modelBuilder.Entity<Department>().HasData(
                 new Department { Guid = Guid.NewGuid(), Name = "Finance", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now },
 
-                new Department { Guid = Guid.NewGuid(), Name = "HR", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now },
+                new Department { Guid = Guid.NewGuid(), Name = "Marketing", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now },
 
-                new Department { Guid = Guid.NewGuid(), Name = "IT", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now },
+                new Department { Guid = Guid.NewGuid(), Name = "Operational", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now },
 
-                new Department { Guid = Guid.NewGuid(), Name = "Sales and Marketing", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now },
+                new Department { Guid = Guid.NewGuid(), Name = "Information Technology", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now },
 
-                new Department { Guid = Guid.NewGuid(), Name = "Customer Support", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now }
+                new Department { Guid = Guid.NewGuid(), Name = "Legal", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now },
+
+                new Department { Guid = Guid.NewGuid(), Name = "Public Relation", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now },
+
+                new Department { Guid = Guid.NewGuid(), Name = "Human Resource", CreatedDate = DateTime.Now, ModifiedDate = DateTime.Now }
                 );
 
             modelBuilder.Entity<LeaveType>().HasData(
