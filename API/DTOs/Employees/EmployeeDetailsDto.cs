@@ -8,7 +8,8 @@ namespace API.DTOs.Employees
     {
         public Guid Guid { get; set; }
         public string NIK { get; set; }
-        public string FullName { get; set; }
+        public string FirstName { get; set; }
+        public string? LastName { get; set; }
         public DateTime BirthDate { get; set; }
         public string Gender { get; set; }
         public DateTime HiringDate { get; set; }
@@ -25,7 +26,8 @@ namespace API.DTOs.Employees
             {
                 Guid = employee.Guid,
                 NIK = employee.NIK,
-                FullName = employee.FirstName + " " + employee.LastName,
+                FirstName = employee.FirstName ,
+                LastName = employee.LastName ,
                 BirthDate = employee.BirthDate,
                 Gender = employee.Gender.ToString(),
                 HiringDate = employee.HiringDate,
@@ -41,7 +43,8 @@ namespace API.DTOs.Employees
             {
                 Guid = employee.Guid,
                 NIK = employee.NIK,
-                FullName = employee.FirstName + " " + employee.LastName,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName ,
                 BirthDate = employee.BirthDate,
                 Gender = employee.Gender.ToString(),
                 HiringDate = employee.HiringDate,

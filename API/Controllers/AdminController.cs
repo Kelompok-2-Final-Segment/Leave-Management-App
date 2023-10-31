@@ -55,7 +55,8 @@ namespace API.Controllers
                                   {
                                       Guid = emp.Guid,
                                       NIK = emp.NIK,
-                                      FullName = string.Concat(emp.FirstName, " ", emp.LastName),
+                                      FirstName = emp.FirstName,
+                                      LastName = emp.LastName,
                                       BirthDate = emp.BirthDate,
                                       HiringDate = emp.HiringDate,
                                       Gender = emp.Gender.ToString(),

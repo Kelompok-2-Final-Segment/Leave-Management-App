@@ -42,7 +42,7 @@ public class AdminController : Controller
                                 {
                                     Guid = department.Guid,
                                     Name = department.Name,
-                                    Manager = employee.FullName
+                                    Manager = string.Concat(employee.FirstName+ " "+ employee.LastName) 
                                 };
 
         models.Statistic = getStatistics.Data;

@@ -19,7 +19,7 @@
                     <div class="mb-2">
                         <input type="text" id="input-guid" value="@Model.EmployeeDetail.Guid" hidden>
                         <label for="input-birthdate" class="form-label">FULL NAME</label>
-                        <input type="text" id="input-firstname" class="form-control" placeholder="FIRST NAME" aria-label="First name" value="@Model.EmployeeDetail.FullName">
+                        <input type="text" id="input-firstname" class="form-control" placeholder="FIRST NAME" aria-label="First name" value="@(Model.EmployeeDetail.FirstName + " " +Model.EmployeeDetail.LastName)">
                     </div>
                     <div class="mb-2">
                         <label for="input-birthdate" class="form-label">BIRTHDATE</label>
