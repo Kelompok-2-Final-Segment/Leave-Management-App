@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Client.Models;
+
+@model AdminDashboardModels
+@{
     ViewData["Title"] = "Admin Dashboard";
     Layout = "~/Views/Shared/_LayoutDashboardAdmin.cshtml";
 }
@@ -12,7 +15,7 @@
                         <div class="numbers">
                             <p class="text-sm mb-0 text-uppercase font-weight-bold">All Employee</p>
                             <h5 class="font-weight-bolder">
-                                8
+                                @Model.Statistic.TotalEmployees
                             </h5>
                         </div>
                     </div>
@@ -33,7 +36,7 @@
                         <div class="numbers">
                             <p class="text-sm mb-0 text-uppercase font-weight-bold">Department</p>
                             <h5 class="font-weight-bolder">
-                                8
+                                @Model.Statistic.TotalDepartments
                             </h5>
                         </div>
                     </div>
@@ -129,12 +132,6 @@
                     <div class="mb-3">
                         <select  class="form-select form-select-sm" aria-label=".form-select-sm example" id="select-department">
                             <option>Select Department</option>
-                            <option value="Sales and Marketing">Sales and Marketing</option>
-                            <option value="HR">Human Resources</option>
-                            <option value="IT">Information Technology</option>
-                            <option value="Finance">Finance</option>
-                            <option value="Customer Support">Customer Support</option>
-
                         </select>
                     </div>
                     <div class="mb-3">

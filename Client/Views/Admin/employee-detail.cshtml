@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_LayoutDashboardAdmin.cshtml";
 }
 
-<div class="row mt-4 h-100">
+<div class="row h-100">
     <div class="col-lg-3 mb-lg-0 mb-4">
         <div id="detail-employee-card" class="card ">
             <div class="card-header pb-0 p-3">
@@ -17,16 +17,17 @@
             <div class="px-3 pb-3">
                 <form method="post" asp-action="CreateEmployee" id="form-registration">
                     <div class="mb-2">
+                        <input type="text" id="input-guid" value="@Model.EmployeeDetail.Guid" hidden>
                         <label for="input-birthdate" class="form-label">FULL NAME</label>
                         <input type="text" id="input-firstname" class="form-control" placeholder="FIRST NAME" aria-label="First name" value="@Model.EmployeeDetail.FullName">
                     </div>
                     <div class="mb-2">
                         <label for="input-birthdate" class="form-label">BIRTHDATE</label>
-                        <input type="date" class="form-control" id="input-birthdate" placeholder="BIRTHDATE" value="">
+                        <input type="date" class="form-control" id="input-birthdate" placeholder="BIRTHDATE" value="@Model.EmployeeDetail.BirthDate.ToString("yyyy-MM-dd")">
                     </div>
                     <div class="mb-2">
                         <label for="input-hiring-date" class="form-label">HIRING DATE</label>
-                        <input type="date" class="form-control" id="input-hiring-date" placeholder="HIRING DATE">
+                        <input type="date" class="form-control" id="input-hiring-date" placeholder="HIRING DATE" value="@Model.EmployeeDetail.HiringDate.ToString("yyyy-MM-dd")">
                     </div>
                     <div class="mb-2">
                         <label for="input-hiring-date" class="form-label">GENDER</label>
@@ -55,15 +56,22 @@
                     <div class="mb-2">
                         <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="select-department">
                             <option>Select Department</option>
-                            <option value="Sales and Marketing">Sales and Marketing</option>
-                            <option value="HR">Human Resources</option>
-                            <option value="IT">Information Technology</option>
-                            <option value="Finance">Finance</option>
-                            <option value="
-er Support">Customer Support</option>
+                            @foreach(var item in Model.Departments)
+                            {
+                                <option value="@item.Name">@item.Name</option>
+
+                            }
                         </select>
                     </div>
+                    <div class="mb-3">
+                        <label for="input-hiring-date" class="form-label">NEW PASSWORD</label>
+                        <input type="password" id="input-password" class="form-control" placeholder="PASSWORD" aria-describedby="passwordHelpBlock">
+                    </div>
+                    <div class="mb-3">
+                        <input type="password" id="input-confirm-password" class="form-control" placeholder="CONFIRM PASSWORD" aria-describedby="passwordHelpBlock">
+                    </div>
                 </form>
+                <button id="button-update" class="btn btn-primary">Update</button>
             </div>
         </div>
     </div>
@@ -73,8 +81,8 @@ er Support">Customer Support</option>
                 <h4 class="mb-0">Employee Leave Records</h4>
             </div>
             <div class="card-body px-0">
-                <div class="table-responsive p-0">
-                    <table class="table align-items-center mb-0e">
+                <div class="table-responsive px-2">
+                    <table class="table align-items-center">
                         <thead>
                             <tr>
                                 <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">NO.</th>
@@ -89,6 +97,80 @@ er Support">Customer Support</option>
                             </tr>
                         </thead>
                         <tbody>
+                            @functions {
+                                public string describeLeaveStatus(string status)
+                                {
+                                    switch (status)
+                                    {
+                                        case "Pending":
+                                            return "Waiting Manager Approval";
+                                        case "Rejected":
+                                            return "Rejected by Manager";
+                                        case "Accepted":
+                                            return "Accepted by Manager";
+                                        case "RejectedHR":
+                                            return "Rejected by HR";
+                                        case "Approved":
+                                            return "Approved by HR";
+                                        case "Cancelled":
+                                            return "Cancelled by Employee";
+                                        default:
+                                            return "Error! Something wrong.";
+                                    }
+                                }
+                            }
+
+                            @functions {
+                                public string setLeaveStatusBackground(string status)
+                                {
+                                    switch (status)
+                                    {
+                                        case "Pending":
+                                            return "bg-gradient-success";
+                                        case "Rejected":
+                                            return "bg-gradient-danger";
+                                        case "Accepted":
+                                            return "bg-gradient-success";
+                                        case "RejectedHR":
+                                            return "bg-gradient-danger";
+                                        case "Approved":
+                                            return "bg-gradient-info";
+                                        case "Cancelled":
+                                            return "bg-gradient-danger";
+                                        default:
+                                            return "bg-gradient-danger";
+                                    }
+                                }
+                            }
+                            @{
+                                var counter = 1;
+                            }
+                            @foreach (var item in Model.LeaveHistory)
+                            {
+                                <tr>
+                                    <td class="align-middle text-center">
+                                        <span class="text-secondary text-sm font-weight-bold">@counter</span>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <span class="text-secondary text-sm font-weight-bold">@item.CreatedDate</span>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <span class="text-secondary text-sm font-weight-bold">@item.LeaveName</span>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <span class="text-secondary text-sm font-weight-bold">@item.StartDate.ToString("dddd, dd/MM/yyyy")</span>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <span class="text-secondary text-sm font-weight-bold">@item.EndDate.ToString("dddd, dd/MM/yyyy")</span>
+                                    </td>
+                                    <td class="align-middle text-center text-sm">
+                                        <span class="badge badge-sm @setLeaveStatusBackground(item.Status)">@describeLeaveStatus(item.Status)</span>
+                                    </td>
+                                </tr>
+
+                                counter++;
+                            }
+
                         </tbody>
                     </table>
                 </div>
@@ -99,25 +181,14 @@ er Support">Customer Support</option>
 
 @section Scripts{
     <script>
+        let updateAction = "@Url.Action("UpdateEmployee")";
+    </script>
+    <script type="module" src="~/js/admin/EmployeeDetailPage.js" asp-append-version="true"></script>
+    <script>
         $("#select-role").val("@Model.EmployeeDetail.RoleName").change();
         $("#select-department").val("@Model.EmployeeDetail.DepartmentName").change();
 
         let gender = "@Model.EmployeeDetail.Gender" === "Female" ? "0" : "1";
         $("#select-gender").val(gender).change();
-
-        $("#input-birthdate").attr('value', toDateHTML("@Model.EmployeeDetail.BirthDate"));
-        $("#input-hiring-date").attr('value', toDateHTML("@Model.EmployeeDetail.HiringDate"));
-
-        function toDateHTML(date) { 
-            let splitBySpace = date.split(' ');
-            let originalDate = splitBySpace[0];
-            let parts = originalDate.split('/');
-            return `${parts[02]}-${addZero(parts[0])}-${addZero(parts[1])}`;
-        }
-
-        function addZero(obj) {
-            return obj.length == 1 ? "0" + obj : obj;
-        }
-
     </script>
 }

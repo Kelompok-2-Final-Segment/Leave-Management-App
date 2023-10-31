@@ -191,4 +191,18 @@ public class AdminRepository : IAdminRepository
 
         return entityVM;
     }
+
+    public async Task<ResponseOkHandler<string>> UpdateEmployee(RegisterDto entity)
+    {
+        ResponseOkHandler<string> entityVM = null;
+        StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+
+        using (var response = httpClient.PutAsync("Admin/Employees/Edit", content).Result)
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<string>>(apiResponse);
+        }
+
+        return entityVM;
+    }
 }

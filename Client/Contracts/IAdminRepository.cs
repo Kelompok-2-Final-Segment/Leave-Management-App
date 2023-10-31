@@ -14,6 +14,7 @@ public interface IAdminRepository
     Task<ResponseOkHandler<EmployeeDetailsDto>> GetEmployeeByGuid(Guid guid);
     Task<ResponseOkHandler<string>> RegisterEmployee(RegisterDto entity);
     Task<ResponseOkHandler<string>> DeleteEmployee(Guid guid);
+    Task<ResponseOkHandler<string>> UpdateEmployee(RegisterDto entity);
 
     // Leave Repository
     Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetAllLeave();
