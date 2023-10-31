@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Client.Models;
+
+@model AdminDashboardModels
+@{
     ViewData["Title"] = "Admin Dashboard";
     Layout = "~/Views/Shared/_LayoutDashboardAdmin.cshtml";
 }
@@ -12,7 +15,7 @@
                         <div class="numbers">
                             <p class="text-sm mb-0 text-uppercase font-weight-bold">All Employee</p>
                             <h5 class="font-weight-bolder">
-                                8
+                                @Model.Statistic.TotalEmployees
                             </h5>
                         </div>
                     </div>
@@ -33,7 +36,7 @@
                         <div class="numbers">
                             <p class="text-sm mb-0 text-uppercase font-weight-bold">Department</p>
                             <h5 class="font-weight-bolder">
-                                8
+                                @Model.Statistic.TotalDepartments
                             </h5>
                         </div>
                     </div>

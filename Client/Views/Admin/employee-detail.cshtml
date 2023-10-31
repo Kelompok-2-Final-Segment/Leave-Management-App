@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_LayoutDashboardAdmin.cshtml";
 }
 
-<div class="row mt-4 h-100">
+<div class="row h-100">
     <div class="col-lg-3 mb-lg-0 mb-4">
         <div id="detail-employee-card" class="card ">
             <div class="card-header pb-0 p-3">
@@ -73,7 +73,7 @@
             </div>
             <div class="card-body px-0">
                 <div class="table-responsive px-2">
-                    <table class="table align-items-center mb-0">
+                    <table class="table align-items-center">
                         <thead>
                             <tr>
                                 <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-9">NO.</th>
@@ -85,6 +85,51 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @functions {
+                                public string describeLeaveStatus(string status)
+                                {
+                                    switch (status)
+                                    {
+                                        case "Pending":
+                                            return "Waiting Manager Approval";
+                                        case "Rejected":
+                                            return "Rejected by Manager";
+                                        case "Accepted":
+                                            return "Accepted by Manager";
+                                        case "RejectedHR":
+                                            return "Rejected by HR";
+                                        case "Approved":
+                                            return "Approved by HR";
+                                        case "Cancelled":
+                                            return "Cancelled by Employee";
+                                        default:
+                                            return "Error! Something wrong.";
+                                    }
+                                }
+                            }
+
+                            @functions {
+                                public string setLeaveStatusBackground(string status)
+                                {
+                                    switch (status)
+                                    {
+                                        case "Pending":
+                                            return "bg-gradient-success";
+                                        case "Rejected":
+                                            return "bg-gradient-danger";
+                                        case "Accepted":
+                                            return "bg-gradient-success";
+                                        case "RejectedHR":
+                                            return "bg-gradient-danger";
+                                        case "Approved":
+                                            return "bg-gradient-info";
+                                        case "Cancelled":
+                                            return "bg-gradient-danger";
+                                        default:
+                                            return "bg-gradient-danger";
+                                    }
+                                }
+                            }
                             @{
                                 var counter = 1;
                             }
@@ -107,7 +152,7 @@
                                         <span class="text-secondary text-sm font-weight-bold">@item.EndDate.ToString("dddd, dd/MM/yyyy")</span>
                                     </td>
                                     <td class="align-middle text-center text-sm">
-                                        <span class="badge badge-sm bg-gradient-success">@item.Status</span>
+                                        <span class="badge badge-sm @setLeaveStatusBackground(item.Status)">@describeLeaveStatus(item.Status)</span>
                                     </td>
                                 </tr>
 

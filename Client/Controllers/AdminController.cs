@@ -52,7 +52,7 @@ public class AdminController : Controller
         if(models.LeaveHistory != null)
         {
             models.LeaveHistory = models.LeaveHistory.OrderByDescending(item => item.CreatedDate);
-            models.LeaveHistory = models.LeaveHistory.Take(10);
+            models.LeaveHistory = models.LeaveHistory.Take(7);
         }
 
         return View(models);
@@ -284,9 +284,14 @@ public class AdminController : Controller
 
     // PAGE : Return Employee Page
     [HttpGet("admin/employee/")] 
-    public IActionResult Employee()
+    public async Task<IActionResult> Employee()
     {
-        return View("employee");
+        var getStatistics = await adminRepository.GetStatistic();
+
+        var models = new AdminDashboardModels();
+        models.Statistic = getStatistics.Data;
+
+        return View("employee", models);
     }
 
     // PAGE : Return to Employee Page
