@@ -88,17 +88,19 @@ function editLeaveType(guid) {
     });
 
 }
-
-// Setting Up Data Table
-$("#table-leave").DataTable({
-    ajax: {
-        url: getAllAction,
-        dataSrc: 'data',
-        dataType: 'JSON'
-    },
-    columns: columnConfig(),
-    dom: 'Bfrtip',
-    buttons: buttonConfig()
+$(document).ready(function () {
+    console.log("lewat");
+    // Setting Up Data Table
+    $("#table-leave").DataTable({
+        ajax: {
+            url: getAllAction,
+            dataSrc: 'data',
+            dataType: 'JSON'
+        },
+        columns: columnConfig(),
+        dom: 'Bfrtip',
+        buttons: buttonConfig()
+    });
 });
 
 // Create column configuration for data table
