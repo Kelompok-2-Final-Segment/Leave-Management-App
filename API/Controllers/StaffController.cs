@@ -154,6 +154,9 @@ namespace API.Controllers
                 }
                 TimeSpan leaveDuration = toCreate.StartDate - toCreate.EndDate;
                 int leaveLength = leaveDuration.Days;
+                if (leaveLength <= 0) {
+                    return BadRequest(new ResponseBadRequestHandler("Your leave date plan is wrong"));
+                }
                 if (leaveType.Balance - leaveBalance.UsedBalance <= 0 && leaveLength + leaveBalance.UsedBalance >= leaveType.Balance)
                 {
                     return BadRequest(new ResponseBadRequestHandler("Your leave balance is not enough"));
