@@ -66,13 +66,29 @@ namespace Client_API.Controllers
         [HttpPost("/forgotpassword")]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
         {
-            return View("forgotpassword");
+            var result = await _accountRepository.ForgotPassword(forgotPasswordDto);
+            if (result.Status == "OK")
+            {
+                TempData["forgot"] = "success";
+            }
+            return View("Index");
         }
 
-        [HttpPost("/changepassword")]
+        [HttpGet("/changepassword")]
         public IActionResult ChangePassword()
         {
             return View("changepassword");
+        }
+
+        [HttpPost("/changepassword")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto changePasswordDto)
+        {
+            var result = await _accountRepository.ChangePassword(changePasswordDto);
+            if(result.Status == "OK")
+            {
+                TempData["change"] = "success";
+            }
+            return View("Index");
         }
 
         [HttpGet("/logout")]

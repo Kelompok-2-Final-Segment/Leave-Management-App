@@ -8,5 +8,7 @@ namespace Client.Contracts
     {
         public Task<ResponseOkHandler<TokenDto>> Login(LoginDto login);
         public Task<ResponseOkHandler<ClaimsDto>> GetClaims(string Token);
+        public Task<ResponseOkHandler<string>> ForgotPassword(ForgotPasswordDto forgotPasswordDto);
+        public Task<ResponseOkHandler<string>> ChangePassword(ChangePasswordDto changePasswordDto);
     }
 }
