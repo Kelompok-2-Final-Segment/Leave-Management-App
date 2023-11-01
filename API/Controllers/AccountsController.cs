@@ -64,9 +64,11 @@ namespace API.Controllers
                 account.ExpiredTime = DateTime.Now.AddMinutes(5);
                 account.IsUsed = false;
                 _accountRepository.Update(account);
-                //penggunaan email service 
-                _emailHandler.Send("Forgot Password", $"Your OTP is {account.OTP}", forgotPasswordDto.Email);
-                return Ok(new ResponseOkHandler<ForgotPasswordResponseDto>((ForgotPasswordResponseDto)account));
+                //penggunaan email service
+                var body = $@"<p>Your OTP is {account.OTP}</p>
+                  <p>You can change your password in this <a href='https://localhost:7054/changepassword'>klik this link</a></p>";
+                _emailHandler.Send("Forgot Password", body, forgotPasswordDto.Email);
+                return Ok(new ResponseOkHandler<string>("the OTP has been sent to your email"));
             }
             catch (Exception ex)
             {
@@ -78,38 +80,45 @@ namespace API.Controllers
         [HttpPost("ChangePassword")]
         public IActionResult ChangePassword(ChangePasswordDto changePasswordDto)
         {
-            var employee = _employeeRepository.GetByEmail(changePasswordDto.Email);
-            if (employee == null)
+            try
             {
-                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+                var employee = _employeeRepository.GetByEmail(changePasswordDto.Email);
+                if (employee == null)
+                {
+                    return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+                }
+                //mengambil objek axxount by id employee
+                var account = _accountRepository.GetByGuid(employee.Guid);
+                if (account == null)
+                {
+                    return NotFound(new ResponseNotFoundHandler("Account Not Found"));
+                }
+                if (account.OTP != changePasswordDto.Otp)
+                {
+                    return BadRequest(new ResponseBadRequestHandler("OTP dont Match"));
+                }
+                if (DateTime.Now > account.ExpiredTime)
+                {
+                    return BadRequest(new ResponseBadRequestHandler("OTP is expired"));
+                }
+                if (account.IsUsed == true)
+                {
+                    return BadRequest(new ResponseBadRequestHandler("OTP is already Used"));
+                }
+                if (changePasswordDto.NewPassword != changePasswordDto.ConfirmPassword)
+                {
+                    return BadRequest(new ResponseBadRequestHandler("Password dont Match"));
+                }
+                //hash password baru
+                account.Password = HashHandler.HashPassword(changePasswordDto.NewPassword);
+                account.IsUsed = true;
+                _accountRepository.Update(account);
+                return Ok(new ResponseOkHandler<string>("Your Password Has been changed successfully"));
             }
-            //mengambil objek axxount by id employee
-            var account = _accountRepository.GetByGuid(employee.Guid);
-            if (account == null)
+            catch (Exception ex)
             {
-                return NotFound(new ResponseNotFoundHandler("Account Not Found"));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to change password", ex.Message));
             }
-            if (account.OTP != changePasswordDto.Otp)
-            {
-                return BadRequest(new ResponseBadRequestHandler("OTP dont Match"));
-            }
-            if (DateTime.Now > account.ExpiredTime)
-            {
-                return BadRequest(new ResponseBadRequestHandler("OTP is expired"));
-            }
-            if (account.IsUsed == true)
-            {
-                return BadRequest(new ResponseBadRequestHandler("OTP is already Used"));
-            }
-            if (changePasswordDto.NewPassword != changePasswordDto.ConfirmPassword)
-            {
-                return BadRequest(new ResponseBadRequestHandler("Password dont Match"));
-            }
-            //hash password baru
-            account.Password = HashHandler.HashPassword(changePasswordDto.NewPassword);
-            account.IsUsed = true;
-            _accountRepository.Update(account);
-            return Ok(new ResponseOkHandler<AccountDto>((AccountDto)account));
         }
 
         [HttpPost("Login")]
@@ -166,18 +175,18 @@ namespace API.Controllers
         //        if (employee != null)
         //        {
         //            return BadRequest(new ResponseBadRequestHandler("Email is Used"));
-                    
+
         //        }
-                
+
         //        Employee employeeCreate = registerDto;
         //        employeeCreate.DepartmentGuid = _departmentRepository.GetDepartmentGuid(registerDto.DepartmentName) ?? throw new Exception("department name tidak ditemukan");
 
         //        _employeeRepository.Create(employeeCreate);
-                
+
 
         //        Account account = registerDto;
         //        account.Guid = employeeCreate.Guid;
-               
+
         //        account.Password = HashHandler.HashPassword(registerDto.Password);
 
         //        _accountRepository.Create(account);
@@ -199,29 +208,29 @@ namespace API.Controllers
         //    }
         //}
 
-        //[HttpGet]
-        //public IActionResult GetAll()
-        //{
-        //    var result = _accountRepository.GetAll();
-        //    if (!result.Any())
-        //    {
-        //        return NotFound(new ResponseNotFoundHandler("Data Not Found"));
-        //    }
-        //    var data = result.Select(i => (AccountDto)i);
-        //    return Ok(new ResponseOkHandler<IEnumerable<AccountDto>>(data));
-        //}
-        ////method get dari http untuk getByGuid account
-        //[HttpGet("{guid}")]
-        //public IActionResult GetByGuid(Guid guid)
-        //{
-        //    var result = _accountRepository.GetByGuid(guid);
-        //    if (result is null)
-        //    {
-        //        return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var result = _accountRepository.GetAll();
+            if (!result.Any())
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var data = result.Select(i => (AccountDto)i);
+            return Ok(new ResponseOkHandler<IEnumerable<AccountDto>>(data));
+        }
+        //method get dari http untuk getByGuid account
+        [HttpGet("{guid}")]
+        public IActionResult GetByGuid(Guid guid)
+        {
+            var result = _accountRepository.GetByGuid(guid);
+            if (result is null)
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
 
-        //    }
-        //    return Ok(new ResponseOkHandler<AccountDto>((AccountDto)result));
-        //}
+            }
+            return Ok(new ResponseOkHandler<AccountDto>((AccountDto)result));
+        }
         ////method post dari http untuk create account
         //[HttpPost]
         //public IActionResult Create(CreateAccountDto createAccountDto)
