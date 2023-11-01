@@ -13,4 +13,5 @@ public interface IStaffRepository
     public Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetPendingLeaves(Guid guid);
     public Task<ResponseOkHandler<LeaveDetailAdminDto>> GetLeaveDetail(Guid guid);
     public Task<ResponseOkHandler<LeaveStatisticStaffDto>> GetStatisticLeaves(Guid guid);
+    public Task<ResponseOkHandler<string>> CancelRequestLeave(Guid guid);
 }

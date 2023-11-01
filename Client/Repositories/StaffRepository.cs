@@ -95,4 +95,18 @@ public class StaffRepository : GeneralRepository , IStaffRepository
 
             return entityVM;
     }
+
+    public async Task<ResponseOkHandler<string>> CancelRequestLeave(Guid guid)
+    {
+        ResponseOkHandler<string> entityVM = null;
+        StringContent content = new StringContent(JsonConvert.SerializeObject(guid), Encoding.UTF8, "application/json");
+
+        using (var response = httpClient.PutAsync(request + urlLeaves , content).Result)
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<string>>(apiResponse);
+        }
+
+        return entityVM;
+    }
 }

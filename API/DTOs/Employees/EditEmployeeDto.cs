@@ -5,6 +5,7 @@ namespace API.DTOs.Employees
 {
     public class EditEmployeeDto
     {
+        public Guid Guid { get; set; }
         public string FirstName { get; set; }
         public string? LastName { get; set; }
         public DateTime BirthDate { get; set; }
@@ -15,18 +16,18 @@ namespace API.DTOs.Employees
         public string DepartmentName { get; set; }
         public string RoleName { get; set; }
 
-        public static Employee ConvertToEmployee(EditEmployeeDto editEmployeeDto)
+        public static Employee ConvertToEmployee(EditEmployeeDto editEmployeeDto, Employee employee)
         {
-            return new Employee
-            {
-                FirstName = editEmployeeDto.FirstName,
-                LastName = editEmployeeDto.LastName,
-                BirthDate = editEmployeeDto.BirthDate,
-                HiringDate = editEmployeeDto.HiringDate,
-                Gender = editEmployeeDto.Gender,
-                Email = editEmployeeDto.Email,
-                PhoneNumber = editEmployeeDto.PhoneNumber,
-            };
+
+            employee.FirstName = editEmployeeDto.FirstName;
+            employee.LastName = editEmployeeDto.LastName;
+            employee.BirthDate = editEmployeeDto.BirthDate;
+            employee.HiringDate = editEmployeeDto.HiringDate;
+            employee.Gender = editEmployeeDto.Gender;
+            employee.Email = editEmployeeDto.Email;
+            employee.PhoneNumber = editEmployeeDto.PhoneNumber;
+            return employee;
+
         }
     }
 }

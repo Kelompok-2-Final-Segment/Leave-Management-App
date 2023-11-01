@@ -181,7 +181,7 @@ namespace API.Controllers
         {
             try
             {
-                var entity = _employeeRepository.GetByEmail(editDto.Email);
+                var entity = _employeeRepository.GetByGuid(editDto.Guid);
                 if (entity is null)
                 {
                     return NotFound(new ResponseNotFoundHandler("Data Not Found"));
@@ -193,7 +193,7 @@ namespace API.Controllers
                     return NotFound(new ResponseNotFoundHandler("Department Not Found"));
                 }
                 
-                entity = EditEmployeeDto.ConvertToEmployee(editDto);
+                entity = EditEmployeeDto.ConvertToEmployee(editDto, entity);
                 entity.DepartmentGuid = (Guid) departmentGuid;
                 var result = _employeeRepository.Update(entity);
                 var accountRoleToUpdate = _accountRoleRepository.GetAll().FirstOrDefault(ar => ar.AccountGuid == entity.Guid);

@@ -75,7 +75,7 @@
                                         </td>
                                         <td>
                                             <div class=" text-center">
-                                                <a class="btn btn-primary" id="button-leave-detail" asp-action="CancelLeave" asp-route-guid="@item.Guid">Cancel</a>
+                                                <button class="btn btn-primary" id="button-leave-cancel" data-guid="@item.Guid">Cancel</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -97,3 +97,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script src="~/js/staff/cancelLeave.js"></script>
+}

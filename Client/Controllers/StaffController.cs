@@ -132,10 +132,9 @@ public class StaffController : Controller
     [HttpPost("/staff/leave/{guid}")]
     public async Task<IActionResult> CancelLeave(Guid guid)
     {
-        var result = await _staffRepository.GetLeaveDetail(guid);
+        var result = await _staffRepository.CancelRequestLeave(guid);
         if (result == null)
         {
-
             return NotFound();
         }
         return Json(result);
