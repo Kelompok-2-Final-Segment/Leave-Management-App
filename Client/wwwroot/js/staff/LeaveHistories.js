@@ -33,7 +33,7 @@ $(document).ready(function () {
             {
                 extend: 'excel',
                 text: 'Excel',
-                className: 'btn btn-success btn-sm',
+                className: 'btn btn-success',
                 exportOptions: {
                     columns: ':visible:not(:last-child)'
                 },
@@ -44,7 +44,7 @@ $(document).ready(function () {
             {
                 extend: 'pdfHtml5',
                 text: 'PDF',
-                className: 'btn btn-danger btn-sm',
+                className: 'btn btn-danger',
                 exportOptions: {
                     columns: ':visible:not(:last-child)'
                 },

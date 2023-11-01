@@ -34,6 +34,16 @@ public class StaffRepository : GeneralRepository , IStaffRepository
         }
         return entityVM;
     }
+    public async Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetPendingLeaves(Guid guid)
+    {
+        ResponseOkHandler<IEnumerable<LeaveDto>> entityVM = null;
+        using (var response = httpClient.GetAsync(request + urlLeaves + "Pending/" + guid).Result)
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<IEnumerable<LeaveDto>>>(apiResponse);
+        }
+        return entityVM;
+    }
 
     public async Task<ResponseOkHandler<LeaveStatisticStaffDto>> GetStatisticLeaves(Guid guid)
     {

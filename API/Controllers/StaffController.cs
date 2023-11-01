@@ -228,5 +228,29 @@ namespace API.Controllers
             var staff = EmployeeDetailsDto.ConvertToStaffDetails(employee, department);
             return Ok(new ResponseOkHandler<EmployeeDetailsDto>(staff));
         }
+
+        [HttpPut("Profile/{guid}")]
+        public IActionResult EditStaff(EmployeeDto employeeDto)
+        {
+            try
+            {
+                var entity = _employeeRepository.GetByEmail(employeeDto.Email);
+                if (entity is null)
+                {
+                    return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+                }
+
+                entity = EmployeeDto.ConvertToEMployee(employeeDto, entity);
+
+                var result = _employeeRepository.Update(entity);
+
+                return Ok(new ResponseOkHandler<String>("Data Updated"));
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Update Data", e.Message));
+            }
+        }
     }
 }

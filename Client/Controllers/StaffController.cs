@@ -79,6 +79,19 @@ public class StaffController : Controller
         return View();
     }
 
+    [HttpGet("/staffs/leaves/pending/{guid}")]
+    public async Task<IActionResult> GetLeavePending(Guid guid)
+    {
+        var result = await _staffRepository.GetPendingLeaves(guid);
+
+        if (result == null)
+        {
+            return Json(NotFound());
+        }
+
+        return Json(result);
+    }
+
     [HttpGet("/staffs/leaves/history/{guid}")]
     public async Task<IActionResult> GetLeaveHistories(Guid guid)
     {

@@ -186,9 +186,24 @@ namespace API.Controllers
                 {
                     return NotFound(new ResponseNotFoundHandler("Data Not Found"));
                 }
-
+                var departmentGuid = _departmentRepository.GetDepartmentGuid(registerDto.DepartmentName);
+                if (departmentGuid is null)
+                {
+                    
+                    return NotFound(new ResponseNotFoundHandler("Department Not Found"));
+                }
+                
                 entity = EmployeeDto.ConvertToEMployee(registerDto, entity);
+                entity.DepartmentGuid = (Guid)departmentGuid;
                 var result = _employeeRepository.Update(entity);
+                var accountRoleToUpdate = _accountRoleRepository.GetAll().FirstOrDefault(ar => ar.AccountGuid == entity.Guid);
+                var roleGuid = _roleRepository.GetRoleGuid(registerDto.RoleName);
+                if (roleGuid is null || accountRoleToUpdate is null)
+                { 
+                    return NotFound(new ResponseNotFoundHandler("Role Not Found"));
+                }
+                accountRoleToUpdate.RoleGuid = (Guid) roleGuid;
+                _accountRoleRepository.Update(accountRoleToUpdate);
                 return Ok(new ResponseOkHandler<String>("Data Updated"));
 
             }
