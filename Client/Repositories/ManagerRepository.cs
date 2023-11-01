@@ -83,7 +83,7 @@ namespace Client.Repositories
         public async Task<ResponseOkHandler<IEnumerable<EmployeeDto>>> GetStaffs(Guid guid)
         {
             ResponseOkHandler<IEnumerable<EmployeeDto>> entityVM = null;
-            using (var response = httpClient.GetAsync(request + "Staffs/" + guid).Result)
+            using (var response = httpClient.GetAsync(request + "Staffs/" + "All/"+ guid).Result)
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
                 entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<IEnumerable<EmployeeDto>>>(apiResponse);

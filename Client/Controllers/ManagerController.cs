@@ -79,14 +79,14 @@ public class ManagerController : Controller
     [HttpGet("leaves/approved")]
     public IActionResult ManageApprovedLeaves(Guid guid)
     {
-        ViewBag.guidManager = guid;
+        TempData["guid"] = guid;
         return View("approved-leave");
     }
 
     [HttpGet("leaves/rejected")]
     public IActionResult ManageRejectedLeaves(Guid guid)
     {
-        ViewBag.guidManager = guid;
+        TempData["guid"] = guid;
         return View("rejected-leave");
     }
 
@@ -94,7 +94,7 @@ public class ManagerController : Controller
 
     public IActionResult ManageLeaveHistories(Guid guid)
     {
-        ViewBag.guidManager = guid;
+        TempData["guid"] = guid;
         return View("leave-history");
     }
 
@@ -155,9 +155,14 @@ public class ManagerController : Controller
 
 
     // Employeee Management
-    [HttpGet("staffs/")]
-    public async Task<IActionResult> GetStaffs(Guid guid)
+    [HttpGet("Staffs/{guid}")]
+    public async Task<IActionResult> GetAllStaffs(Guid guid)
     {
+        var result = await _managerRepository.GetStaffs(guid);
+        if(result.Status == "OK")
+        {
+            return View("employee", result.Data);
+        }
         return View("employee");
     }
 }

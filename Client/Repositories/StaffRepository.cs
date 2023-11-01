@@ -87,7 +87,7 @@ public class StaffRepository : GeneralRepository , IStaffRepository
             ResponseOkHandler<string> entityVM = null;
             StringContent content = new StringContent(JsonConvert.SerializeObject(createLeaveDto), Encoding.UTF8, "application/json");
 
-            using (var response = httpClient.PostAsync(request + urlLeaves + "request", content).Result)
+            using (var response = httpClient.PostAsync(request + urlLeaves + "request/", content).Result)
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
                 entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<string>>(apiResponse);
@@ -101,7 +101,7 @@ public class StaffRepository : GeneralRepository , IStaffRepository
         ResponseOkHandler<string> entityVM = null;
         StringContent content = new StringContent(JsonConvert.SerializeObject(guid), Encoding.UTF8, "application/json");
 
-        using (var response = httpClient.PutAsync(request + urlLeaves , content).Result)
+        using (var response = httpClient.PutAsync(request + urlLeaves + guid , content).Result)
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityVM = JsonConvert.DeserializeObject<ResponseOkHandler<string>>(apiResponse);

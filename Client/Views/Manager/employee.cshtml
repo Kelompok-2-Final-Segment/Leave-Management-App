@@ -2,6 +2,8 @@
 @{
     ViewData["Page"] = "Manage Staff";
     Layout = "~/Views/Shared/_LayoutDashboardManager.cshtml";
+    var format = "dd - MM - yyyy"; ;
+    var index = 0;
 }
 
 <div class="row">
@@ -18,13 +20,76 @@
                                 <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">No.</th>
                                 <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">NIK</th>
                                 <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Full Name</th>
-                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Gender</th>
-                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Role</th>
-                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Department</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Birth Date</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Hiring Date</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Email</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Phone Number</th>
                                 <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Action</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @if(Model != null)
+                            {
+                                @foreach(var item in Model)
+                                {
+                                    <tr>
+                                     
+                                        <td>
+                                            <div class="text-center">
+                                                <h6 class="text-sm mb-0">@(index + 1)</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-center">
+                                                <h6 class="text-sm mb-0">@item.NIK</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-center">
+                                                <h6 class="text-sm mb-0">@(item.FirstName + " " +item.LastName)</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-center">
+                                                <h6 class="text-sm mb-0">@item.BirthDate.ToString(format)</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class=" text-center">
+                                                <h6 class="text-sm mb-0">@item.HiringDate.ToString(format)</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class=" text-center">
+                                                <h6 class="text-sm mb-0">@item.Email</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class=" text-center">
+                                                <h6 class="text-sm mb-0">@item.PhoneNumber</h6>
+                                            </div>
+                                        </td>
+                                       
+                                        <td>
+                                            <div class=" text-center">
+                                                <a class="btn btn-primary" id="button-leave-detail" asp-action="" asp-route-guid="@item.Guid">Detail</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    index++;
+                                }
+                                
+                            } else
+                            {
+                                <tr>
+                                    <td colspan="12">
+                                        <h2>
+                                            Data not available
+                                        </h2>
+                                    </td>
+                                </tr>
+                            }
+
                         </tbody>
                     </table>
                 </div>

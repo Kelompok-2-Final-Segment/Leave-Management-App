@@ -41,7 +41,7 @@
 
 @section Scripts{
     <script>
-        let getAllAction = "@Url.Action("GetApprovedLeave", new{guid = ViewBag.guidManager})";
+        let getAllAction = "@Url.Action("GetApprovedLeave", new{guid = TempData["guid"] })";
     </script>
     <script src="~/js/utilities/DataHandler.js" asp-append-version="true"></script>
     <script src="~/js/manager/LeavePages.js" asp-append-version="true"></script>
