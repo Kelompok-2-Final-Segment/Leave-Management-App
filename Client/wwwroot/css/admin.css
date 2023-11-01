@@ -3,9 +3,10 @@
 }
 
 #card-department-dashboard {
-    height: 100% !important;
+    height: 480px !important;
+    overflow-y: hidden;
 }
 
 #card-employee-dashboard {
-    height: 500px !important;
+    height: 480px !important;
 }

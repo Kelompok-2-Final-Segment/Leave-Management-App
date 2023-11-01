@@ -1,5 +1,19 @@
-﻿@{
+﻿@using System.Security.Claims;
+@{
     var date = DateTime.Now.ToString("dddd, dd MMMM yyyy");
+    var claimsIdentity = User.Identity as ClaimsIdentity;
+
+    var username = "User";
+
+    if (claimsIdentity != null)
+    {
+        var usernameClaim = claimsIdentity.FindFirst(ClaimTypes.Name);
+
+        if (usernameClaim != null)
+        {
+            username = usernameClaim.Value;
+        }
+    }
 }
 <!--
 =========================================================
@@ -163,7 +177,7 @@
                         <li class="nav-item d-flex align-items-center">
                             <a href="#" class="nav-link text-white font-weight-bold px-0">
                                 <i class="fa fa-user me-sm-1"></i>
-                                <span class="d-sm-inline d-none">User Name</span>
+                                <span class="d-sm-inline d-none">@username</span>
                             </a>
                         </li>
                         <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
