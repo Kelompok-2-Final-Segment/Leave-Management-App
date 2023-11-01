@@ -28,7 +28,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (Model.Any())
+                            @if (Model != null)
                             {
                                 @foreach (var item in Model)
                                 {
@@ -75,7 +75,7 @@
                                         </td>
                                         <td>
                                             <div class=" text-center">
-                                                <button class="btn btn-primary" id="button-leave-cancel" data-guid="@item.Guid">Cancel</button>
+                                                <button class="btn btn-primary button-leave-cancel" data-guid="@item.Guid">Cancel</button>
                                             </div>
                                         </td>
                                     </tr>

@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $("#button-leave-cancel").on("click", function () {
+    $(".button-leave-cancel").on("click", function () {
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -10,12 +10,29 @@ $(document).ready(function () {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
-                )
+                var dataId = $(this).data("guid");
+                console.log("Data ID of the clicked button: " + dataId);
+                $.ajax({
+                    url: '/leave/edit/' + dataId,
+                    method: 'POST',
+                    dataType: 'json'
+                })
+                    .done(() => {
+                        Swal.fire(
+                            'Cancelled!',
+                            'Your leave has been cancelled.',
+                            'success'
+                        )
+                    }).fail((err) => {
+                        Swal.fire(
+                            'Fail!',
+                            'sorry you can try again later',
+                            'error'
+                        )
+                    });
+
+
             }
-        })
+        });
     });
 });

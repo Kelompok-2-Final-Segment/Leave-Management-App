@@ -104,7 +104,7 @@ public class StaffController : Controller
 
         return Json(result);
     }
-    [HttpGet("Leaves/Pending/{guid}")]
+    [HttpGet]
     public async Task<IActionResult> LeavePending(Guid guid)
     {
         var result = await _staffRepository.GetPendingLeaves(guid);
@@ -114,7 +114,7 @@ public class StaffController : Controller
             return View("LeavePending",result.Data);
         }
         
-        return View("LeavePending");
+        return View("LeavePending",result.Data);
     }
 
     // GET Leave Type by Guid
@@ -129,7 +129,7 @@ public class StaffController : Controller
         return Json(result);
     }   
     
-    [HttpPost("/staff/leave/{guid}")]
+    [HttpPost("/leave/edit/{guid}")]
     public async Task<IActionResult> CancelLeave(Guid guid)
     {
         var result = await _staffRepository.CancelRequestLeave(guid);
