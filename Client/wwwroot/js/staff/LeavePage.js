@@ -141,6 +141,7 @@ function buttonConfig() {
     ];
 }
 
+new DataTable('#tableBalance');
 
 // Remove data table default class for avoiding conflict with bootstrap styles
 document.getElementById('excel-btn').classList.remove('dt-button', 'buttons-pdf', 'buttons-html5');
