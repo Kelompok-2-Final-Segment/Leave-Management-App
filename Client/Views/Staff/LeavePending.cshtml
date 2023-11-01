@@ -1,0 +1,57 @@
+﻿@model IEnumerable<API.DTOs.Leaves.LeaveDto>;
+@{
+    ViewData["Page"] = "Leave Pending";
+    Layout = "~/Views/Shared/_LayoutDashboardStaff.cshtml";
+}
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header pb-0" bg-white>
+                <h3>All Pending Leave</h3>
+            </div>
+            <div class="card-body px-3 pt-0 pb-2">
+                <div class="table-responsive p-0">
+                    <table class="table table-striped" id="tableLeaves">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">No.</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Created Date</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Full Name</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">NIK</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Leave Type</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Start Date</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">End Date</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Status</th>
+                                <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section CssSection{
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+}
+
+@section Scripts{
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+    <script>
+        console.log('@ViewBag.EmployeeGuid');
+        let employeeGuid = '@ViewBag.EmployeeGuid';
+    </script>
+    <script src="~/js/staff/LeaveHistories.js" asp-append-version="true"></script>
+}

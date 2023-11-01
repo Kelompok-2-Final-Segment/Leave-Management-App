@@ -79,7 +79,7 @@ public class StaffController : Controller
         return View();
     }
 
-    [HttpGet("/staff/leaves/pending/{guid}")]
+    [HttpGet("/staffs/leaves/pending/{guid}")]
     public async Task<IActionResult> GetLeavePending(Guid guid)
     {
         var result = await _staffRepository.GetPendingLeaves(guid);
@@ -92,7 +92,7 @@ public class StaffController : Controller
         return Json(result);
     }
 
-    [HttpGet("/staff/leaves/history/{guid}")]
+    [HttpGet("/staffs/leaves/history/{guid}")]
     public async Task<IActionResult> GetLeaveHistories(Guid guid)
     {
         var result = await _staffRepository.GetHistoryLeaves(guid);
