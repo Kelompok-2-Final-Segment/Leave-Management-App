@@ -79,6 +79,19 @@ public class StaffController : Controller
         return View();
     }
 
+    [HttpGet("/staffs/leaves/history/{guid}")]
+    public async Task<IActionResult> GetLeaveHistories(Guid guid)
+    {
+        var result = await _staffRepository.GetHistoryLeaves(guid);
+
+        if (result == null)
+        {
+            return Json(NotFound());
+        }
+
+        return Json(result);
+    }
+
     [HttpGet("/staffs/leaves/pending/{guid}")]
     public async Task<IActionResult> GetLeavePending(Guid guid)
     {
@@ -91,17 +104,40 @@ public class StaffController : Controller
 
         return Json(result);
     }
-
-    [HttpGet("/staffs/leaves/history/{guid}")]
-    public async Task<IActionResult> GetLeaveHistories(Guid guid)
+    [HttpGet("Leaves/Pending/{guid}")]
+    public async Task<IActionResult> LeavePending(Guid guid)
     {
-        var result = await _staffRepository.GetHistoryLeaves(guid);
+        var result = await _staffRepository.GetPendingLeaves(guid);
 
+        if (result.Status == "OK" && result.Data is not null)
+        {
+            return View("LeavePending",result.Data);
+        }
+        
+        return View("LeavePending");
+    }
+
+    // GET Leave Type by Guid
+    [HttpGet("/staff/leave/{guid}")]
+    public async Task<IActionResult> GetLeaveDetailByGuid(Guid guid)
+    {
+        var result = await _staffRepository.GetLeaveDetail(guid);
         if (result == null)
         {
-            return Json(NotFound());
+            return NotFound();
         }
+        return Json(result);
+    }   
+    
+    [HttpPost("/staff/leave/{guid}")]
+    public async Task<IActionResult> CancelLeave(Guid guid)
+    {
+        var result = await _staffRepository.GetLeaveDetail(guid);
+        if (result == null)
+        {
 
+            return NotFound();
+        }
         return Json(result);
     }
 

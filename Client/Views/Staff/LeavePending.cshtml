@@ -2,6 +2,8 @@
 @{
     ViewData["Page"] = "Leave Pending";
     Layout = "~/Views/Shared/_LayoutDashboardStaff.cshtml";
+    string format = "dd - MM - yyyy";
+    int index = 0;
 }
 <div class="row">
     <div class="col-12">
@@ -26,6 +28,68 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @if (Model.Any())
+                            {
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="text-center">
+                                                <h6 class="text-sm mb-0">@(index + 1)</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-center">
+                                                <h6 class="text-sm mb-0">@item.NIK</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-center">
+                                                <h6 class="text-sm mb-0">@item.FullName</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-center">
+                                                <h6 class="text-sm mb-0">@item.LeaveName</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class=" text-center">
+                                                <h6 class="text-sm mb-0">@item.CreatedDate.ToString(format)</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class=" text-center">
+                                                <h6 class="text-sm mb-0">@item.StartDate.ToString(format)</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class=" text-center">
+                                                <h6 class="text-sm mb-0">@item.EndDate.ToString(format)</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class=" text-center">
+                                                <h6 class="text-sm mb-0">@item.Status</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class=" text-center">
+                                                <a class="btn btn-primary" id="button-leave-detail" asp-action="CancelLeave" asp-route-guid="@item.Guid">Cancel</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    index++;
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td class="text-center col-12">
+                                        <h2> Data Not Found</h2>
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -33,25 +97,3 @@
         </div>
     </div>
 </div>
-
-@section CssSection{
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
-}
-
-@section Scripts{
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
-    <script>
-        console.log('@ViewBag.EmployeeGuid');
-        let employeeGuid = '@ViewBag.EmployeeGuid';
-    </script>
-    <script src="~/js/staff/LeaveHistories.js" asp-append-version="true"></script>
-}

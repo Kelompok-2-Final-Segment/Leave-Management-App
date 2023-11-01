@@ -5,6 +5,7 @@ using API.DTOs.Managers;
 using System;
 using API.DTOs.Leaves;
 using Client.Models;
+using Client.Repositories;
 
 namespace Client.Controllers;
 
@@ -139,11 +140,23 @@ public class ManagerController : Controller
 
         return Json(result);
     }
+    // GET Leave Type by Guid
+    [HttpGet("Leaves/{guid}")]
+    public async Task<IActionResult> GetLeaveDetailByGuid(Guid guid)
+    {
+        var result = await _managerRepository.GetLeaveDetails(guid);
+        if (result == null)
+        {
+
+            return NotFound();
+        }
+        return Json(result);
+    }
 
 
     // Employeee Management
-    [HttpGet("staff/")]
-    public async Task<IActionResult> GetAllEmployee()
+    [HttpGet("staffs/")]
+    public async Task<IActionResult> GetStaffs(Guid guid)
     {
         return View("employee");
     }

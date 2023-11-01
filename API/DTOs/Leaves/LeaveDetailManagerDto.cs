@@ -16,6 +16,8 @@ namespace API.DTOs.Leaves
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Description { get; set; }
+        public string RemarkManager { get; set; }
+        public string RemarkAdmin { get; set; }
         public static LeaveDetailManagerDto ConvertToLeaveDetailManagerDto(Leave leave, LeaveType leaveType, Department department, Employee employee)
         {
             return new LeaveDetailManagerDto
@@ -32,6 +34,8 @@ namespace API.DTOs.Leaves
                 StartDate = leave.StartDate,
                 EndDate = leave.EndDate,
                 Description = leave.Description,
+                RemarkManager = leave.RemarksManager,
+                RemarkAdmin = leave.RemarksHR
             };
         }
     }
