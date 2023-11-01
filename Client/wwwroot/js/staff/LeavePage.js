@@ -108,6 +108,9 @@ function buttonConfig() {
             className: 'btn btn-success',
             exportOptions: {
                 columns: ':visible:not(:last-child)'
+            },
+            init: function (dt, node, config) {
+                $(node).removeClass('dt-button buttons-excel button-html5');
             }
         },
         {
@@ -119,6 +122,9 @@ function buttonConfig() {
             className: 'btn btn-danger',
             exportOptions: {
                 columns: ':visible:not(:last-child)'
+            },
+            init: function (dt, node, config) {
+                $(node).removeClass('dt-button buttons-pdf button-html5');
             }
         },
         {
@@ -127,10 +133,14 @@ function buttonConfig() {
                 title: 'Select Column',
                 id: 'colvis-btn'
             },
-            className: 'btn btn-secondary'
+            className: 'btn btn-secondary',
+            init: function (dt, node, config) {
+                $(node).removeClass('dt-button buttons-collection button-colvis');
+            }
         }
     ];
 }
+
 
 // Remove data table default class for avoiding conflict with bootstrap styles
 document.getElementById('excel-btn').classList.remove('dt-button', 'buttons-pdf', 'buttons-html5');
