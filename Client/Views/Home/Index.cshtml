@@ -1,8 +1,170 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_LayoutLanding.cshtml";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<nav class="navbar navbar-transparent navbar-top" role="navigation">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button id="menu-toggle" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#example">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar bar1"></span>
+                    <span class="icon-bar bar2"></span>
+                    <span class="icon-bar bar3"></span>
+                    </button>
+                    <a href="http://www.creative-tim.com">
+                        <div class="logo-container">
+                            <div class="logo">
+                                <img src="~/landing/assets/img/logo.png" alt="Leave Space">
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="example" >
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#">
+                            <b>HOME</b>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#section-leave">
+                            <b>EXPLORE LEAVE</b>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#section-review">
+                            <b>REVIEW</b>
+                            </a>
+                        </li>
+                        <li>
+                            <div class="buttons">
+                                <a href="/login" class="btn btn-fill btn-neutral">
+                                <i class="fa-solid fa-user"></i> Login
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+        </nav>
+        <div class="wrapper">
+            <div id="section-welcome" class="parallax blue" data-color="blue">
+                <div class= "container">
+                    <div class="row">
+                        <div class="col-md-7  hidden-xs">
+                            <div class="parallax-image">
+                                <img src="~/landing/assets/img/illustration.png"/>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="description">
+                                <h1>Leave Space</h1>
+                                <br>
+                                <p> 
+                                Welcome to our leave system—an easy way to request time off. With just a few clicks, prioritize your well-being with our seamless process.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="section-leave"class="section section-gray section-features">
+                <div class="container">
+                    <h4 class="header-text text-center">Explore Leave</h4>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="card card-blue">
+                                <div class="icon">
+                                    <i class="fa-solid fa-plane-departure"></i>
+                                </div>
+                                <div class="text">
+                                    <h4>Annual Leave</h4>
+                                    <p>Take 12 days of annual leave for a well-deserved break, recharging you to maintain a balanced work-life harmony</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card card-blue">
+                                <div class="icon">
+                                    <i class="fa-solid fa-person-breastfeeding"></i>
+                                </div>
+                                <h4>Maternity Leave</h4>
+                                <p>Treasure a generous 3-month maternity leave—a special time to bond with your newest family member</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card card-blue">
+                                <div class="icon">
+                                    <i class="fa-regular fa-hospital"></i>
+                                </div>
+                                <h4>Sick Leave</h4>
+                                <p>Your health matters, and our company values your well-being, providing support during times of illness.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card card-blue">
+                                <div class="icon">
+                                    <i class="fa-solid fa-calendar-check"></i>
+                                </div>
+                                <h4>Explore Another Leave</h4>
+                                <p>Discover flexible leave options for personal time, family needs, or special occasions. Take a break that suits you best!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="section-review" class="section section-testimonial">
+                <div class="container">
+                    <h4 class="header-text text-center">What People Says</h4>
+                    <div id="carousel-example-generic" class="carousel fade" data-ride="carousel">
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner" role="listbox">
+                            <div class="item">
+                                <div class="carousel-testimonial-caption">
+                                    <h3>"Seamless leave management, user-friendly, and keeps us organized! A valuable addition to our workflow."</h3>
+                                    <p>Derryl Anderson, Operational Department</p>
+                                </div>
+                            </div>
+                            <div class="item active">
+                                <div class="carousel-testimonial-caption">
+                                    <h3>"Efficient leave tracking, user-friendly interface, a real time-saver for our team!"</h3>
+                                    <p>Aria Jennifer, Legal Department</p>
+                                </div>
+                            </div>
+                            <div class="item"> 
+                                <div class="carousel-testimonial-caption">    
+                                    <h3>"Fantastic leave app! Easy to use, efficient notifications, and a key player in maintaining our team's work-life balance."</h3>
+                                    <p>Javier Castillo, Information Technology Deparment</p>
+                                </div>
+                            </div>
+                        </div>
+                        <ol class="carousel-indicators carousel-indicators-blue">
+                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer">
+                <div class="container">
+                    <div class="social-area pull-right">
+                        <a class="btn btn-social btn-facebook btn-simple">
+                        <i class="fa fa-facebook-square"></i>
+                        </a>
+                        <a class="btn btn-social btn-twitter btn-simple">
+                        <i class="fa fa-twitter"></i>
+                        </a>
+                        <a class="btn btn-social btn-pinterest btn-simple">
+                        <i class="fa fa-pinterest"></i>
+                        </a>
+                    </div>
+                    <div class="copyright">
+                        &copy; 2023 <a href="#">Leave Space System</a> &#x2022;
+                        <a href="https://www.freepik.com/free-vector/modern-devices-isometric-composition-with-view-modern-workspace-with-big-table-consumer-electronics-computers-illustration_6869960.htm#query=office%20png&position=6&from_view=keyword&track=ais">Image by macrovector</a> on Freepik
+                    </div>
+                </div>
+            </footer>
+        </div>

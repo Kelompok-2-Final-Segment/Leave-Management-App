@@ -20,10 +20,19 @@ function columnConfig() {
             data: null,
             render: function (data, type, row, meta) {
                 return meta.row + meta.settings._iDisplayStart + 1;
+
             }
         },
         { data: "nik" },
-        { data: "fullName" },
+        {
+            data: null,
+            render: function (data, type, row, meta) {
+                if (row.lastName == null) {
+                    return row.firstName;
+                }
+
+                return row.firstName + " " + row.lastName;
+            }        },
         { data: "gender" },
         { data: "roleName" },
         { data: "departmentName" },
