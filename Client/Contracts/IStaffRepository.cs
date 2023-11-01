@@ -10,5 +10,6 @@ public interface IStaffRepository
     public Task<ResponseOkHandler<string>> RequestALeave(CreateLeaveDto createLeaveDto);
     public Task<ResponseOkHandler<EmployeeDetailsDto>> Profile(Guid guid);
     public Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetHistoryLeaves(Guid guid);
+    public Task<ResponseOkHandler<IEnumerable<LeaveDto>>> GetPendingLeaves(Guid guid);
     public Task<ResponseOkHandler<LeaveStatisticStaffDto>> GetStatisticLeaves(Guid guid);
 }
