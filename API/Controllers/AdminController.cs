@@ -177,27 +177,27 @@ namespace API.Controllers
         }
 
         [HttpPut("Employees/Edit")]
-        public IActionResult EditEmployee(RegisterDto registerDto)
+        public IActionResult EditEmployee(EditEmployeeDto editDto)
         {
             try
             {
-                var entity = _employeeRepository.GetByEmail(registerDto.Email);
+                var entity = _employeeRepository.GetByEmail(editDto.Email);
                 if (entity is null)
                 {
                     return NotFound(new ResponseNotFoundHandler("Data Not Found"));
                 }
-                var departmentGuid = _departmentRepository.GetDepartmentGuid(registerDto.DepartmentName);
+                var departmentGuid = _departmentRepository.GetDepartmentGuid(editDto.DepartmentName);
                 if (departmentGuid is null)
                 {
                     
                     return NotFound(new ResponseNotFoundHandler("Department Not Found"));
                 }
                 
-                entity = EmployeeDto.ConvertToEMployee(registerDto, entity);
-                entity.DepartmentGuid = (Guid)departmentGuid;
+                entity = EditEmployeeDto.ConvertToEmployee(editDto);
+                entity.DepartmentGuid = (Guid) departmentGuid;
                 var result = _employeeRepository.Update(entity);
                 var accountRoleToUpdate = _accountRoleRepository.GetAll().FirstOrDefault(ar => ar.AccountGuid == entity.Guid);
-                var roleGuid = _roleRepository.GetRoleGuid(registerDto.RoleName);
+                var roleGuid = _roleRepository.GetRoleGuid(editDto.RoleName);
                 if (roleGuid is null || accountRoleToUpdate is null)
                 { 
                     return NotFound(new ResponseNotFoundHandler("Role Not Found"));

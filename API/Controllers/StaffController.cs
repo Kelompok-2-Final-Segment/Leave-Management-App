@@ -7,6 +7,7 @@ using API.Contracts;
 using System;
 using API.DTOs.Employees;
 using API.Repositories;
+using API.Utilities.Enums;
 
 namespace API.Controllers
 {
@@ -49,8 +50,33 @@ namespace API.Controllers
             };
             return Ok(new ResponseOkHandler<LeaveStatisticStaffDto>(leavestatisticDto));
         }
+        [HttpGet("Leaves/Details/{guid}")]
+        public IActionResult GetLeaveDetails(Guid guid)
+        {
+            var leave = _leaveRepository.GetByGuid(guid);
+            if (leave == null)
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var leaveType = _leaveTypeRepository.GetByGuid(leave.LeaveTypeGuid);
+            var employee = _employeeRepository.GetByGuid(leave.EmployeeGuid);
+            if (employee == null || leaveType == null)
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var department = _departmentRepository.GetByGuid(employee.DepartmentGuid);
+            if (department == null)
+            {
+                return NotFound(new ResponseNotFoundHandler("Data Not Found"));
+            }
+            var leaveDetailManagerDto = LeaveDetailAdminDto.ConvertToLeaveDetailAdminDto(leave, leaveType, department, employee);
 
-         [HttpGet("Leaves/Available/{guid}")]
+
+            return Ok(new ResponseOkHandler<LeaveDetailAdminDto>(leaveDetailManagerDto));
+
+        }
+
+        [HttpGet("Leaves/Available/{guid}")]
         public IActionResult GetAvailableLeave(Guid guid) {
             var leaveBalances = _leaveBalanceRepository.GetAll();
             var leaveType = _leaveTypeRepository.GetAll();
@@ -192,8 +218,8 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new ResponseInternalServerErrorHandler("Failed to Create Data", e.Message));
             }
         }
-        [HttpDelete("Leaves/{guid}")]
-        public IActionResult DeleteRequest(Guid guid)
+        [HttpPut("Leaves/{guid}")]
+        public IActionResult CancelRequest(Guid guid)
         {
             try
             {
@@ -203,8 +229,9 @@ namespace API.Controllers
                     return NotFound(new ResponseNotFoundHandler("Data Not Found"));
 
                 }
-                var result = _leaveRepository.Delete(leave);
-                return Ok(new ResponseOkHandler<String>("Data Deleted"));
+                leave.Status = StatusLevel.Cancelled;
+                var result = _leaveRepository.Update(leave);
+                return Ok(new ResponseOkHandler<String>("Data Updated"));
 
             }
             catch (Exception e)
@@ -229,7 +256,7 @@ namespace API.Controllers
             return Ok(new ResponseOkHandler<EmployeeDetailsDto>(staff));
         }
 
-        [HttpPut("Profile/{guid}")]
+        [HttpPut("Profile/Edit/{guid}")]
         public IActionResult EditStaff(EmployeeDto employeeDto)
         {
             try
