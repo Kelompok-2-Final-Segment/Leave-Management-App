@@ -57,6 +57,24 @@ namespace Client_API.Controllers
             return View("login");
         }
 
+        [HttpGet("/forgotpassword")]
+        public IActionResult ForgotPassword()
+        {
+            return View("forgotpassword");
+        }
+
+        [HttpPost("/forgotpassword")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
+        {
+            return View("forgotpassword");
+        }
+
+        [HttpPost("/changepassword")]
+        public IActionResult ChangePassword()
+        {
+            return View("changepassword");
+        }
+
         [HttpGet("/logout")]
         public IActionResult Logout()
         {
