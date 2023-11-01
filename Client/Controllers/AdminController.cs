@@ -1,4 +1,5 @@
 ﻿using API.DTOs.Accounts;
+using API.DTOs.Employees;
 using API.DTOs.Leaves;
 using API.DTOs.LeaveTypes;
 using API.Models;
@@ -340,7 +341,7 @@ public class AdminController : Controller
         Debug.WriteLine(entity);
         try
         {
-            var updateData = JsonConvert.DeserializeObject<RegisterDto>(entity);
+            var updateData = JsonConvert.DeserializeObject<EditEmployeeDto>(entity);
 
             var result = await adminRepository.UpdateEmployee(updateData);
 

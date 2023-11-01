@@ -26,8 +26,6 @@ async function updateEmployee() {
             phoneNumber: $('#input-phone-number').val(),
             roleName: $('#select-role').val(),
             departmentName: $('#select-department').val(),
-            password: $('#input-password').val(),
-            confirmPassword: $('#input-confirm-password').val(),
         }
 
         let json = JSON.stringify(updateData);
