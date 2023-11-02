@@ -9,16 +9,18 @@ function simplyDateTime(dateTime) {
 function describeLeaveStatus(status) {
     switch (status) {
         case "Pending":
-            return "Waiting Manager Approval";
+            return `<p class="badge badge-sm bg-gradient-success">Waiting Manager Approval</p>`;
         case "Rejected":
-            return "Rejected by Manager";
+            return `<p class="badge badge-sm bg-gradient-danger">Rejected by Manager</p>`;
         case "Accepted":
-            return "Accepted by Manager";
+            return `<p class="badge badge-sm bg-gradient-success">Accepted by Manager</p>`;
         case "RejectedHR":
-            return "Rejected by HR";
+            return `<p class="badge badge-sm bg-gradient-danger">Rejected by HR</p>`;
         case "Approved":
-            return "Approved by HR";
+            return `<p class="badge badge-sm bg-gradient-info">Approved by HR</p>`;
         case "Cancelled":
-            return "Cancelled by Employee";
+            return `<p class="badge badge-sm bg-gradient-danger">Cancelled by Employee</p>`;
+        default:
+            return `<p class="badge badge-sm bg-gradient-danger">Something wrong!</p>`;
     }
 }

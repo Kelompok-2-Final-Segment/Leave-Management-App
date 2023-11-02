@@ -1,22 +1,32 @@
 ﻿@{
     ViewData["Title"] = "404";
-    Layout = "_ErrorLayout";
+    Layout = "_LayoutError";
 }
-
-<div class="th1">
-    <h1>404</h1>
-</div>
-<div class="cloak__wrapper">
-    <div class="cloak__container">
-        <div class="cloak"></div>
+<div id="error-box">
+    <img src="~/error/404.jpg" alt="">
+    <div id="error-message">
+        <h3 class="headline text-warning"> Oops! Page not found</h3>
+        <div class="error-content">
+            <p>
+                We could not find the page you were looking for.
+                Meanwhile, you may return to main page or contact administrator.
+                <br />
+                <br />
+                You will be redirect to the main page in 3 seconds...
+            </p>
+        </div>
     </div>
 </div>
-<div class="info">
-    <h2>We can't find that page</h2>
-    <p>We're fairly sure that page used to be here, but seems to have gone missing. We do apologize on its behalf.</p>
-    <a href="https://jhey.dev" target="_blank" rel="noreferrer noopener">Home</a>
+<div id="footer">
+    <p>
+        &copy; 2023 <a href="#">Leave Space System</a> &#x2022;
+        <a href="https://www.freepik.com/free-vector/modern-devices-isometric-composition-with-view-modern-workspace-with-big-table-consumer-electronics-computers-illustration_6869960.htm#query=office%20png&position=6&from_view=keyword&track=ais">Image by macrovector</a> on Freepik
+
+    </p>
 </div>
 
-@section Links{
-    <link href="~/dashboard/assets/scss/error/error404.min.css" rel="stylesheet" type="text/css" />
+@section Scripts{
+    <script>
+        redirectHandler('/', 3000);
+    </script>
 }

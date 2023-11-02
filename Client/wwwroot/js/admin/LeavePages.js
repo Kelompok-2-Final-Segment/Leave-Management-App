@@ -17,7 +17,7 @@ function detailLeave(guid) {
             $('#input-start-date').val(simplyDateTime(result.startDate));
             $('#input-end-date').val(simplyDateTime(result.startDate));
             $('#input-description').val(result.description);
-            $('#input-leave-status').val(describeLeaveStatus(result.leaveStatus));
+            $('#input-leave-status').val(result.leaveStatus);
             $('#input-manager-remark').val(result.remarkManager);
             $('#input-admin-remark').val(result.remarkAdmin);
 
