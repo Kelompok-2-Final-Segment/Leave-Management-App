@@ -13,8 +13,6 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace Client.Controllers;
-
-[Authorize(Policy = "Admin")]
 public class AdminController : Controller
 {
     private readonly IAdminRepository adminRepository;

@@ -24,12 +24,12 @@ namespace Client_API.Controllers
 
         // Auth
         [HttpGet("/login")]
-        public IActionResult Login()
+        public IActionResult LoginClient()
         {
             return View("login");
         }
         [HttpPost("/login")]
-        public async Task<IActionResult> Login(LoginDto loginDto)
+        public async Task<IActionResult> LoginClient(LoginDto loginDto)
         {
             var result = await _accountRepository.Login(loginDto);
             if (result.Status == "OK")

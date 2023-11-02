@@ -10,6 +10,7 @@ using Client.Repositories;
 namespace Client.Controllers;
 
 [Route("[controller]/")]
+[Authorize(Policy = "Manager")]
 public class ManagerController : Controller
 {
     private readonly IManagerRepository _managerRepository;
@@ -70,6 +71,7 @@ public class ManagerController : Controller
 
         if (result.Status == "OK")
         {
+            TempData["message"] = "Leave Has been Updated Successfully";
             return RedirectToAction("ManagePendingLeaves", new { guid = editStatusManagerModel.EmployeeDetail.ManagerGuid });
         }
         

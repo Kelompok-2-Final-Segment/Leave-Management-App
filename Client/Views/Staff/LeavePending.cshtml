@@ -9,11 +9,11 @@
     <div class="col-12">
         <div class="card mb-4">
             <div class="card-header pb-0" bg-white>
-                <h3>All Pending Leave</h3>
+                <h4>All Pending Leave</h4>
             </div>
             <div class="card-body px-3 pt-0 pb-2">
                 <div class="table-responsive p-0">
-                    <table class="table table-striped" id="tableLeaves">
+                    <table class="table table-striped" id="tableBalance">
                         <thead>
                             <tr>
                                 <th scope="col" class="text-uppercase text-secondary text-sm font-weight-bolder opacity-10">No.</th>
@@ -35,47 +35,50 @@
                                     <tr>
                                         <td>
                                             <div class="text-center">
-                                                <h6 class="text-sm mb-0">@(index + 1)</h6>
+                                                @(index + 1)
                                             </div>
                                         </td>
                                         <td>
                                             <div class="text-center">
-                                                <h6 class="text-sm mb-0">@item.NIK</h6>
+                                                @item.NIK
                                             </div>
                                         </td>
                                         <td>
                                             <div class="text-center">
-                                                <h6 class="text-sm mb-0">@item.FullName</h6>
+                                               @item.FullName
                                             </div>
                                         </td>
                                         <td>
                                             <div class="text-center">
-                                                <h6 class="text-sm mb-0">@item.LeaveName</h6>
+                                                @item.LeaveName
                                             </div>
                                         </td>
                                         <td>
                                             <div class=" text-center">
-                                                <h6 class="text-sm mb-0">@item.CreatedDate.ToString(format)</h6>
+                                                @item.CreatedDate.ToString(format)
                                             </div>
                                         </td>
                                         <td>
                                             <div class=" text-center">
-                                                <h6 class="text-sm mb-0">@item.StartDate.ToString(format)</h6>
+                                                @item.StartDate.ToString(format)
                                             </div>
                                         </td>
                                         <td>
                                             <div class=" text-center">
-                                                <h6 class="text-sm mb-0">@item.EndDate.ToString(format)</h6>
+                                                @item.EndDate.ToString(format)
                                             </div>
                                         </td>
                                         <td>
                                             <div class=" text-center">
-                                                <h6 class="text-sm mb-0">@item.Status</h6>
+                                                @item.Status
                                             </div>
                                         </td>
                                         <td>
                                             <div class=" text-center">
-                                                <button class="btn btn-primary button-leave-cancel" data-guid="@item.Guid">Cancel</button>
+                                                @if (ViewBag.EmployeeGuid != null)
+                                                {
+                                                    <button class="btn btn-primary button-leave-cancel" data-leaveguid="@item.Guid" data-guid="@ViewBag.EmployeeGuid">Cancel</button>
+                                                }
                                             </div>
                                         </td>
                                     </tr>
@@ -86,7 +89,7 @@
                             {
                                 <tr>
                                     <td class="text-center col-12">
-                                        <h2> Data Not Found</h2>
+                                        <h5> Data Not Found</h5>
                                     </td>
                                 </tr>
                             }
@@ -100,4 +103,5 @@
 
 @section Scripts{
     <script src="~/js/staff/cancelLeave.js"></script>
+    <script src="~/js/staff/LeavePage.js" asp-append-version="true"></script>
 }

@@ -1,13 +1,14 @@
 ﻿using API.DTOs.Leaves;
+using API.Models;
 using Client.Contracts;
 using Client.DTOs;
+using Client.Models;
 using Client.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace Client.Controllers;
-
 public class StaffController : Controller
 {
     private readonly IStaffRepository _staffRepository;
@@ -44,11 +45,13 @@ public class StaffController : Controller
     public async Task<IActionResult> RequestALeave(RequestLeaveDto requestLeaveDto)
     {
         var result = await _staffRepository.RequestALeave(requestLeaveDto.Leave);
-        if(result.Status == "OK")
+        if(result.Code < 300)
         {
+            TempData["message"] = "Request Has been Created Successfully";
            return RedirectToAction("Index", new {guid = requestLeaveDto.Leave.EmployeeGuid});
-        } else if(result.Code == 400)
+        } else if(result.Code >= 300)
         {
+            TempData["reqFail"] = result.Message;
             return RedirectToAction("Index", new { guid = requestLeaveDto.Leave.EmployeeGuid });
         }
         return RedirectToAction("Index", new { guid = requestLeaveDto.Leave.EmployeeGuid });
@@ -111,6 +114,7 @@ public class StaffController : Controller
 
         if (result.Status == "OK" && result.Data is not null)
         {
+            ViewBag.EmployeeGuid = guid;
             return View("LeavePending",result.Data);
         }
         
@@ -129,15 +133,15 @@ public class StaffController : Controller
         return Json(result);
     }   
     
-    [HttpPost("/leave/edit/{guid}")]
-    public async Task<IActionResult> CancelLeave(Guid guid)
+    [HttpPost("/leave/edit/")]
+    public async Task<IActionResult> CancelLeave(CancelLeaveModel cancelLeaveModel)
     {
-        var result = await _staffRepository.CancelRequestLeave(guid);
+        var result = await _staffRepository.CancelRequestLeave(cancelLeaveModel.GuidLeave);
         if (result == null)
         {
             return NotFound();
         }
-        return Json(result);
+        return Json(new { redirectUrl = Url.Action("LeavePending", new { guid = cancelLeaveModel.GuidEmployee }) });
     }
 
 }

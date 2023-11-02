@@ -7,29 +7,34 @@ $(document).ready(function () {
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: 'Yes, Cancel it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                var dataId = $(this).data("guid");
-                console.log("Data ID of the clicked button: " + dataId);
-                $.ajax({
-                    url: '/leave/edit/' + dataId,
-                    method: 'POST',
-                    dataType: 'json'
-                })
-                    .done(() => {
-                        Swal.fire(
-                            'Cancelled!',
-                            'Your leave has been cancelled.',
-                            'success'
-                        )
-                    }).fail((err) => {
-                        Swal.fire(
-                            'Fail!',
-                            'sorry you can try again later',
-                            'error'
-                        )
-                    });
+                var leaveId = $(this).data("leaveguid");
+                var employeeId = $(this).data("guid");
+                var values =
+                {
+                    "GuidLeave": leaveId,
+                    "GuidEmployee": employeeId
+                }
+
+                $.post("@Url.Action("CancelLeave")", values, function (data) {
+                    // do stuff;
+                }).done(() => {
+                    Swal.fire(
+                        'Cancelled!',
+                        'Your leave has been cancelled.',
+                        'success'
+                    )
+                }).fail((err) => {
+                    Swal.fire(
+                        'Fail!',
+                        'sorry you can try again later',
+                        'error'
+                    )
+                }) ;
+
+               
 
 
             }
