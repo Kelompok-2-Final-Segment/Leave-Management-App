@@ -74,7 +74,7 @@ public class ManagerController : Controller
             TempData["message"] = "Leave Has been Updated Successfully";
             return RedirectToAction("ManagePendingLeaves", new { guid = editStatusManagerModel.EmployeeDetail.ManagerGuid });
         }
-        
+        TempData["fail"] = result.Message;
         return RedirectToAction("Index", new { guid = editStatusManagerModel.EmployeeDetail.ManagerGuid });
     }
 
@@ -93,7 +93,6 @@ public class ManagerController : Controller
     }
 
     [HttpGet("leaves/history")]
-
     public IActionResult ManageLeaveHistories(Guid guid)
     {
         TempData["guid"] = guid;

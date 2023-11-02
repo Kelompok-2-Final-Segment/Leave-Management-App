@@ -1,49 +1,51 @@
-﻿namespace Client.Utilities
+﻿using System;
+
+namespace Client.Utilities
 {
     public class StatusHandler
     {
-        public static string describeLeaveStatus(string status)
+       
+        public static string ConvertStatus(string status)
         {
+            var bg = "";
+            var st = "";
             switch (status)
             {
                 case "Pending":
-                    return "Waiting Manager Approval";
+                    st = "Waiting Manager Approval";
+                    bg = "bg-gradient-success";
+                    break;
                 case "Rejected":
-                    return "Rejected by Manager";
+                    st = "Rejected by Manager";
+                    bg = "bg-gradient-danger";
+                    break;
                 case "Accepted":
-                    return "Accepted by Manager";
+                    st = "Accepted by Manager";
+                    bg = "bg-gradient-success";
+                    break;
                 case "RejectedHR":
-                    return "Rejected by HR";
+                    st = "Rejected by HR";
+                    bg = "bg-gradient-danger";
+                    break;
                 case "Approved":
-                    return "Approved by HR";
+                    st = "Approved by HR";
+                    bg= "bg-gradient-info";
+                    break;
                 case "Cancelled":
-                    return "Cancelled by Employee";
+                    st = "Cancelled by Employee";
+                    bg = "bg-gradient-danger";
+                    break;
                 default:
                     return "Error! Something wrong.";
             }
+            return SetHtml(st, bg);
         }
-
-
-        public static string setLeaveStatusBackground(string status)
+        public static string SetHtml(string status, string bgClass)
         {
-            switch (status)
-            {
-                case "Pending":
-                    return "bg-gradient-success";
-                case "Rejected":
-                    return "bg-gradient-danger";
-                case "Accepted":
-                    return "bg-gradient-success";
-                case "RejectedHR":
-                    return "bg-gradient-danger";
-                case "Approved":
-                    return "bg-gradient-info";
-                case "Cancelled":
-                    return "bg-gradient-danger";
-                default:
-                    return "bg-gradient-danger";
-            }
+            var html = $"<span class='badge badge-sm {bgClass}'>{status}</span>";
+            return html;
         }
+
     }
 
 }

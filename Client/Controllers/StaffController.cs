@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace Client.Controllers;
+[Authorize(Policy ="Staff")]
 public class StaffController : Controller
 {
     private readonly IStaffRepository _staffRepository;
@@ -51,7 +52,7 @@ public class StaffController : Controller
            return RedirectToAction("Index", new {guid = requestLeaveDto.Leave.EmployeeGuid});
         } else if(result.Code >= 300)
         {
-            TempData["reqFail"] = result.Message;
+            TempData["fail"] = result.Message;
             return RedirectToAction("Index", new { guid = requestLeaveDto.Leave.EmployeeGuid });
         }
         return RedirectToAction("Index", new { guid = requestLeaveDto.Leave.EmployeeGuid });
@@ -95,19 +96,20 @@ public class StaffController : Controller
         return Json(result);
     }
 
+    //[HttpGet("/staffs/leaves/pending/{guid}")]
+    //public async Task<IActionResult> GetLeavePending(Guid guid)
+    //{
+    //    var result = await _staffRepository.GetPendingLeaves(guid);
+
+    //    if (result == null)
+    //    {
+    //        return Json(NotFound());
+    //    }
+
+    //    return Json(result);
+    //}
+
     [HttpGet("/staffs/leaves/pending/{guid}")]
-    public async Task<IActionResult> GetLeavePending(Guid guid)
-    {
-        var result = await _staffRepository.GetPendingLeaves(guid);
-
-        if (result == null)
-        {
-            return Json(NotFound());
-        }
-
-        return Json(result);
-    }
-    [HttpGet]
     public async Task<IActionResult> LeavePending(Guid guid)
     {
         var result = await _staffRepository.GetPendingLeaves(guid);
@@ -133,15 +135,16 @@ public class StaffController : Controller
         return Json(result);
     }   
     
-    [HttpPost("/leave/edit/")]
-    public async Task<IActionResult> CancelLeave(CancelLeaveModel cancelLeaveModel)
+    [HttpPost("/leave/edit/{guid}")]
+    public async Task<IActionResult> CancelLeave(Guid guid)
     {
-        var result = await _staffRepository.CancelRequestLeave(cancelLeaveModel.GuidLeave);
+        var result = await _staffRepository.CancelRequestLeave(guid);
         if (result == null)
         {
             return NotFound();
         }
-        return Json(new { redirectUrl = Url.Action("LeavePending", new { guid = cancelLeaveModel.GuidEmployee }) });
+
+        return Json(result); 
     }
 
 }

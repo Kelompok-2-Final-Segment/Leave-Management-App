@@ -156,7 +156,7 @@
                                     </td>
                                     <td>
                                         <div class=" text-center">
-                                            <span class="badge badge-sm @StatusHandler.setLeaveStatusBackground(item.Status)">@StatusHandler.describeLeaveStatus(item.Status)</span>
+                                            @Html.Raw(StatusHandler.ConvertStatus(item.Status))
                                         </div>
                                     </td>
                                 </tr>

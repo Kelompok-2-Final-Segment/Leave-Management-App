@@ -230,7 +230,7 @@ namespace API.Controllers
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
             var leaveDto = from l in leaves
-                           where l.Status.ToString() == "Approved"
+                           where l.Status.ToString() == "Accepted"
                            join emp in employees on l.EmployeeGuid equals emp.Guid
                            where emp.DepartmentGuid == department.Guid
                            join lt in leaveTypes on l.LeaveTypeGuid equals lt.Guid
