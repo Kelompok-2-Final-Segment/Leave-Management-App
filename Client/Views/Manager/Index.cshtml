@@ -1,4 +1,5 @@
-﻿@model API.DTOs.Managers.DashboardManagerDto;
+﻿@using Client.Utilities;
+@model API.DTOs.Managers.DashboardManagerDto;
 @{
     ViewData["Page"] = "Dashboard";
     Layout = "~/Views/Shared/_LayoutDashboardManager.cshtml";
@@ -155,7 +156,7 @@
                                     </td>
                                     <td>
                                         <div class=" text-center">
-                                            <h6 class="text-sm mb-0">@item.Status</h6>
+                                            <span class="badge badge-sm @StatusHandler.setLeaveStatusBackground(item.Status)">@StatusHandler.describeLeaveStatus(item.Status)</span>
                                         </div>
                                     </td>
                                 </tr>

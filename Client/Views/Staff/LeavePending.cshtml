@@ -75,7 +75,10 @@
                                         </td>
                                         <td>
                                             <div class=" text-center">
-                                                <button class="btn btn-primary button-leave-cancel" data-guid="@item.Guid">Cancel</button>
+                                                @if (ViewBag.EmployeeGuid != null)
+                                                {
+                                                    <button class="btn btn-primary button-leave-cancel" data-leaveguid="@item.Guid" data-guid="@ViewBag.EmployeeGuid">Cancel</button>
+                                                }
                                             </div>
                                         </td>
                                     </tr>

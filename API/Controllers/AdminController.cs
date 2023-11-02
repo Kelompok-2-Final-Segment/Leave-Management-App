@@ -9,11 +9,13 @@ using API.DTOs.Employees;
 using API.Utilities.Enums;
 using API.DTOs.Leaves;
 using API.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Policy = "Admin")]
     public class AdminController : ControllerBase
     {
         private readonly IAccountRepository _accountRepository;

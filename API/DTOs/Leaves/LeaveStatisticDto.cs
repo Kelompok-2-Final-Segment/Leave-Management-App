@@ -18,7 +18,7 @@ namespace API.DTOs.Leaves
             {
                 TotalEmployees = employees.Count(),
                 TotalDepartments = departments.Count(),
-                PendingLeaves = leaves.Count(l => l.Status.ToString() == "Pending"),
+                PendingLeaves = leaves.Count(l => l.Status.ToString() == "Accepted"),
                 RejectedLeaves = leaves.Count(l => l.Status.ToString() == "Rejected"),
                 ApprovedLeaves = leaves.Count(l => l.Status.ToString() == "Approved")
             };

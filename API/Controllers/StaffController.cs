@@ -8,6 +8,7 @@ using System;
 using API.DTOs.Employees;
 using API.Repositories;
 using API.Utilities.Enums;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -77,6 +78,7 @@ namespace API.Controllers
         }
 
         [HttpGet("Leaves/Available/{guid}")]
+        [AllowAnonymous]
         public IActionResult GetAvailableLeave(Guid guid) {
             var leaveBalances = _leaveBalanceRepository.GetAll();
             var leaveType = _leaveTypeRepository.GetAll();

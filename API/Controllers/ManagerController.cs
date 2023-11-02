@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using API.DTOs.Employees;
 using API.DTOs.Leaves;
 using API.DTOs.Managers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -85,6 +86,7 @@ namespace API.Controllers
         }
 
         [HttpGet("Dashboard/{guid}")]
+        [AllowAnonymous]
         public IActionResult GetDashboardDetail(Guid guid)
         {
             var leaves = _leaveRepository.GetAll();
