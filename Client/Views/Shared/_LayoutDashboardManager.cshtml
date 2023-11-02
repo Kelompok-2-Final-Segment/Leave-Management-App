@@ -382,6 +382,17 @@
             console.log("wwaw")
         </script>
     }
+
+    @if (TempData["fail"] != null)
+    {
+        <script type="text/javascript">
+            Swal.fire(
+                'Failed!',
+                '@TempData["fail"]',
+                'error'
+            )
+        </script>
+    }
 </body>
 
 </html>
