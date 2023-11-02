@@ -1,15 +1,24 @@
-function simplyDateTime(dateTime) {
-    dateTime = dateTime.slice(0, 10);
+function simplyDate(dateTime) {
+    let date = dateTime.slice(0, 10);
 
-    let split = dateTime.split('-');
+    let split = date.split('-');
 
     return `${split[2]}-${split[1]}-${split[0]}`;
+}
+
+function simplyDateTime(dateTime) {
+    let date = dateTime.slice(0, 10);
+    let time = dateTime.slice(11, 16);
+
+    let split = date.split('-');
+
+    return `${split[2]}-${split[1]}-${split[0]} ${time}`;
 }
 
 function describeLeaveStatus(status) {
     switch (status) {
         case "Pending":
-            return `<p class="badge badge-sm bg-gradient-success">Waiting Manager Approval</p>`;
+            return `<p class="badg e badge-sm bg-gradient-success">Waiting Manager Approval</p>`;
         case "Rejected":
             return `<p class="badge badge-sm bg-gradient-danger">Rejected by Manager</p>`;
         case "Accepted":

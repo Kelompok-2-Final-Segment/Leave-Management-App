@@ -100,13 +100,13 @@ function columnConfig() {
         {
             data: null,
             render: function (data, type, row, meta) {
-                return simplyDateTime(row.startDate);
+                return simplyDate(row.startDate);
             }
         },
         {
             data: null,
             render: function (data, type, row, meta) {
-                return simplyDateTime(row.endDate);
+                return simplyDate(row.endDate);
             }
         },
         {

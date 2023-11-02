@@ -13,6 +13,8 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace Client.Controllers;
+
+[Authorize(Policy = "Admin")]
 public class AdminController : Controller
 {
     private readonly IAdminRepository adminRepository;
@@ -108,6 +110,8 @@ public class AdminController : Controller
         {
             return Json(NotFound());
         }
+        
+        result.Data = result.Data.OrderByDescending(item => item.CreatedDate);
 
         return Json(result);
     }
@@ -122,6 +126,9 @@ public class AdminController : Controller
         {
             return NotFound();
         }
+
+        result.Data = result.Data.OrderByDescending(item => item.CreatedDate);
+
 
         return Json(result);
     }
@@ -138,6 +145,8 @@ public class AdminController : Controller
             return NotFound();
         }
 
+        result.Data = result.Data.OrderByDescending(item => item.CreatedDate);
+
         return Json(result);
     }
 
@@ -153,6 +162,8 @@ public class AdminController : Controller
             var emptyResponse = new ResponseOkHandler<string[]>(emptyArray);
             return Json(emptyResponse);
         }
+
+        result.Data = result.Data.OrderByDescending(item => item.CreatedDate);
 
         return Json(result);
     }

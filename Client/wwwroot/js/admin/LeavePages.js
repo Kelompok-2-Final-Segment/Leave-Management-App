@@ -14,8 +14,8 @@ function detailLeave(guid) {
             $('#input-department').val(result.departmentName);
             $('#input-apply-date').val(simplyDateTime(result.createdDate));
             $('#input-type').val(result.leaveName);
-            $('#input-start-date').val(simplyDateTime(result.startDate));
-            $('#input-end-date').val(simplyDateTime(result.startDate));
+            $('#input-start-date').val(simplyDate(result.startDate));
+            $('#input-end-date').val(simplyDate(result.startDate));
             $('#input-description').val(result.description);
             $('#input-leave-status').val(result.leaveStatus);
             $('#input-manager-remark').val(result.remarkManager);
@@ -98,7 +98,7 @@ $("#table-leave").DataTable({
     },
     columns: columnConfig(),
     dom: 'Bfrtip',
-    buttons: buttonConfig()
+    buttons: buttonConfig(),
 });
 
 // Create column configuration for data table
@@ -122,13 +122,13 @@ function columnConfig() {
         {
             data: null,
             render: function (data, type, row, meta) {
-                return simplyDateTime(row.startDate);
+                return simplyDate(row.startDate);
             }
         },
         {
             data: null,
             render: function (data, type, row, meta) {
-                return simplyDateTime(row.endDate);
+                return simplyDate(row.endDate);
             }
         },
         {
