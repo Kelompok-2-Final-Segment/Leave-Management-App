@@ -12,11 +12,11 @@
 }
 
 #modal-fit {
-    height: 90vh !important;
+    height: 80vh !important;
 }
 
 #modal-fit form {
-    height: 80vh !important;
+    height: 70vh !important;
     overflow-y: scroll;
     overflow-x: hidden;
 }
