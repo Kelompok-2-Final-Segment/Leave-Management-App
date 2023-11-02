@@ -34,6 +34,25 @@ function describeLeaveStatus(status) {
     }
 }
 
+function simplyLeaveStatus(status) {
+    switch (status) {
+        case "Pending":
+            return `Waiting Manager Approval`;
+        case "Rejected":
+            return `Rejected by Manager`;
+        case "Accepted":
+            return `Accepted by Manager`;
+        case "RejectedHR":
+            return `Rejected by HR`;
+        case "Approved":
+            return `Approved by HR`;
+        case "Cancelled":
+            return `Cancelled by Employee`;
+        default:
+            return `Something wrong!`;
+    }
+}
+
 function booleanIcon(boolean) {
     if (boolean == true) {
         return `<i class="fa-solid fa-circle-check fa-2x" style="color: #5e72e4;"></i>`;
