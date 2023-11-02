@@ -17,7 +17,7 @@ function detailLeave(guid) {
             $('#input-start-date').val(simplyDateTime(result.startDate));
             $('#input-end-date').val(simplyDateTime(result.startDate));
             $('#input-description').val(result.description);
-            $('#input-leave-status').val(describeLeaveStatus(result.leaveStatus));
+            $('#input-leave-status').val(simplyLeaveStatus(result.leaveStatus));
             $('#input-manager-remark').val(result.remarkManager);
             $('#input-admin-remark').val(result.remarkAdmin);
 
@@ -26,6 +26,7 @@ function detailLeave(guid) {
 
 $(document).ready(function () {
     console.log(getAllAction);
+    console.log("sini");
     // Setting Up Data Table
     $("#tableLeaves").DataTable({
         ajax: {
@@ -38,6 +39,8 @@ $(document).ready(function () {
         buttons: buttonConfig()
     }).done(result => {
         console.log(result)
+    }).fail(error => {
+        console.log(error)
     });
 });
 

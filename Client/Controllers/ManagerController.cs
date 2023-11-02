@@ -142,7 +142,7 @@ public class ManagerController : Controller
         return Json(result);
     }
     // GET Leave Type by Guid
-    [HttpGet("Leaves/{guid}")]
+    [HttpGet("/leaves/{guid}")]
     public async Task<IActionResult> GetLeaveDetailByGuid(Guid guid)
     {
         var result = await _managerRepository.GetLeaveDetails(guid);

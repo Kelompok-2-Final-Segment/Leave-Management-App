@@ -1,7 +1,7 @@
 ﻿/* Detail Button Event */
 function detailLeave(guid) {
     $.ajax({
-        url: '/manager/leave/' + guid,
+        url: '/leaves/' + guid,
         method: 'GET'
     })
         .done((data, textStatus, errorThrown) => {
@@ -17,77 +17,13 @@ function detailLeave(guid) {
             $('#input-start-date').val(simplyDateTime(result.startDate));
             $('#input-end-date').val(simplyDateTime(result.startDate));
             $('#input-description').val(result.description);
-            $('#input-leave-status').val(describeLeaveStatus(result.leaveStatus));
+            $('#input-leave-status').val(simplyLeaveStatus(result.status));
             $('#input-manager-remark').val(result.remarkManager);
             $('#input-admin-remark').val(result.remarkAdmin);
 
         });
 }
 
-/* Button Edit Leave Type Event */
-function editLeaveType(guid) {
-    $('#modal-h5-title').text("UPDATE LEAVE TYPE");
-
-    $.ajax({
-        url: '/admin/leave-type/' + guid,
-        method: 'GET'
-    })
-        .done((data, textStatus, errorThrown) => {
-            let result = data.data;
-            $('#input-guid').val(result.guid);
-            $('#input-name').val(result.name);
-            $('#input-balance').val(result.balance);
-            $('#select-female-only').val(result.femaleOnly.toString()).change();
-            $('#input-min-duration').val(result.minDuration);
-            $('#input-max-duration').val(result.maxDuration);
-            $('#input-remarks').val(result.remarks);
-        });
-
-    $('#button-save').on('click', () => {
-        var leaveTypeData = {
-            guid: $('#input-guid').val(),
-            name: $('#input-name').val(),
-            balance: $('#input-balance').val(),
-            femaleOnly: $('#select-female-only').val(),
-            minDuration: $('#input-min-duration').val(),
-            maxDuration: $('#input-max-duration').val(),
-            remarks: $('#input-remarks').val(),
-        }
-
-        let json = JSON.stringify(leaveTypeData);
-
-        $.ajax({
-            type: 'PUT',
-            url: updateAction,
-            data: { entity: json },
-            dataType: "json",
-        })
-            .done((data, textStatus, errorThrown) => {
-                $('#modal-leave-type').modal('hide');
-                if (data.code >= 300) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Failed to Update Leave Type',
-                        text: 'Oops! Something went wrong while trying to update employee data. Please double-check your information.',
-                        footer: '<a href="">Why do I have this issue?</a>'
-                    });
-                }
-
-                if (data.code >= 200 && data.code < 300) {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Leave Type Updated Successfully',
-                        showConfirmButton: false,
-                        timer: 2500
-                    });
-                }
-
-                $('#table-leave-type').DataTable().ajax.reload();
-            });
-    });
-
-}
 $(document).ready(function () {
     console.log("lewat");
     // Setting Up Data Table

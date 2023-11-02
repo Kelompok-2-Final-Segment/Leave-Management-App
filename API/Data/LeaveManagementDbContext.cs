@@ -91,7 +91,10 @@ namespace API.Data
 
             modelBuilder.Entity<LeaveType>().HasData(
                 new LeaveType { Guid = Guid.NewGuid(), Name = "Annual Leave", Balance = 12, FemaleOnly = false, MaxDuration = 12, MinDuration = 1 },
-                new LeaveType { Guid = Guid.NewGuid(), Name = "Sick Leave", Balance = 90, FemaleOnly = false, MaxDuration = 90, MinDuration = 1 },
+                new LeaveType { Guid = Guid.NewGuid(), Name = "Sick Leave", Balance = 7, FemaleOnly = false, MaxDuration = 7, MinDuration = 1 },
+                new LeaveType { Guid = Guid.NewGuid(), Name = "Maternity Leave", Balance = 45, FemaleOnly = true, MaxDuration = 45, MinDuration = 1 },
+                new LeaveType { Guid = Guid.NewGuid(), Name = "Big Leave", Balance = 30, FemaleOnly = false, MaxDuration = 30, MinDuration = 1 },
+                new LeaveType { Guid = Guid.NewGuid(), Name = "Haid Leave", Balance = 2, FemaleOnly = true, MaxDuration = 2, MinDuration = 1 },
                 new LeaveType { Guid = Guid.NewGuid(), Name = "Personal Leave", Balance = 2, FemaleOnly = false, MaxDuration = 2, MinDuration = 1 }
                 );
         }

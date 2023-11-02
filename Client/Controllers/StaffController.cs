@@ -92,31 +92,18 @@ public class StaffController : Controller
         {
             return Json(NotFound());
         }
-
         return Json(result);
     }
 
-    //[HttpGet("/staffs/leaves/pending/{guid}")]
-    //public async Task<IActionResult> GetLeavePending(Guid guid)
-    //{
-    //    var result = await _staffRepository.GetPendingLeaves(guid);
 
-    //    if (result == null)
-    //    {
-    //        return Json(NotFound());
-    //    }
-
-    //    return Json(result);
-    //}
-
-    [HttpGet("/staffs/leaves/pending/{guid}")]
+    [HttpGet("/staffs/leaves/pendings/{guid}")]
     public async Task<IActionResult> LeavePending(Guid guid)
     {
         var result = await _staffRepository.GetPendingLeaves(guid);
 
+        ViewBag.EmployeeGuid = guid;
         if (result.Status == "OK" && result.Data is not null)
         {
-            ViewBag.EmployeeGuid = guid;
             return View("LeavePending",result.Data.OrderByDescending(l => l.CreatedDate));
         }
         

@@ -154,6 +154,10 @@ namespace API.Controllers
                     {
                         available = false;
                     }
+                    if (item.Name == "Big Leave" && employeeCreate.HiringDate <= DateTime.Today.AddYears(-6))
+                    {
+                        available = false;
+                    }
                     LeaveBalance leaveBalance = new LeaveBalance
                     {
                         Guid = Guid.NewGuid(),
@@ -389,7 +393,7 @@ namespace API.Controllers
                         return NotFound(new ResponseNotFoundHandler("Data Not Found"));
 
                     }
-                    TimeSpan leaveDuration = entity.StartDate - entity.EndDate;
+                    TimeSpan leaveDuration = entity.EndDate - entity.StartDate;
                     int leaveLength = leaveDuration.Days;
                     leaveBalance.UsedBalance += leaveLength;
                     _leaveBalanceRepository.Update(leaveBalance);

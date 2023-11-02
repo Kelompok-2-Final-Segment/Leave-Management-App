@@ -4,7 +4,7 @@
     ViewData["Page"] = "Dashboard";
     Layout = "~/Views/Shared/_LayoutDashboardManager.cshtml";
     string format = "dd - MM - yyyy";
-    
+    var index = 0;
 }
 
 
@@ -109,6 +109,7 @@
                 <table class="table align-items-center ">
                     <thead>
                         <tr>
+                            <th class="text-center">No</th>
                             <th class="text-center">NIK</th>
                             <th class="text-center">Full Name</th>
                             <th class="text-center">Leave Type</th>
@@ -124,6 +125,11 @@
                             @foreach (var item in Model.RecentLeave)
                             {
                                 <tr>
+                                    <td>
+                                        <div class="text-center">
+                                            <h6 class="text-sm mb-0">@(index + 1)</h6>
+                                        </div>
+                                    </td>
                                     <td>
                                         <div class="text-center">
                                             <h6 class="text-sm mb-0">@item.NIK</h6>
@@ -160,6 +166,7 @@
                                         </div>
                                     </td>
                                 </tr>
+                                index++;
                             }
                         }
                         else

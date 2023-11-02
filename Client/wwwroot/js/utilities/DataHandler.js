@@ -18,7 +18,7 @@ function simplyDateTime(dateTime) {
 function describeLeaveStatus(status) {
     switch (status) {
         case "Pending":
-            return `<p class="badg e badge-sm bg-gradient-success">Waiting Manager Approval</p>`;
+            return `<p class="badge badge-sm bg-gradient-success">Waiting Manager Approval</p>`;
         case "Rejected":
             return `<p class="badge badge-sm bg-gradient-danger">Rejected by Manager</p>`;
         case "Accepted":

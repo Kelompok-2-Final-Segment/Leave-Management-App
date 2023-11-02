@@ -15,6 +15,7 @@ namespace API.DTOs.Leaves
         public string LeaveName { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public string LeaveStatus { get; set; }
         public string Description { get; set; }
         public string RemarkManager { get; set; }
         public string RemarkAdmin { get; set; }
@@ -33,6 +34,7 @@ namespace API.DTOs.Leaves
                 LeaveName = leaveType.Name,
                 StartDate = leave.StartDate,
                 EndDate = leave.EndDate,
+                LeaveStatus = leave.Status.ToString(),
                 Description = leave.Description,
                 RemarkManager = leave.RemarksManager,
                 RemarkAdmin = leave.RemarksHR
