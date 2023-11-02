@@ -10,3 +10,13 @@
 #card-employee-dashboard {
     height: 480px !important;
 }
+
+#modal-fit {
+    height: 90vh !important;
+}
+
+#modal-fit form {
+    height: 80vh !important;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
