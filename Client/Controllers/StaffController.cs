@@ -117,7 +117,7 @@ public class StaffController : Controller
         if (result.Status == "OK" && result.Data is not null)
         {
             ViewBag.EmployeeGuid = guid;
-            return View("LeavePending",result.Data);
+            return View("LeavePending",result.Data.OrderByDescending(l => l.CreatedDate));
         }
         
         return View("LeavePending",result.Data);
