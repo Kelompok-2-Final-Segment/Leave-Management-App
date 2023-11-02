@@ -33,3 +33,11 @@ function describeLeaveStatus(status) {
             return `<p class="badge badge-sm bg-gradient-danger">Something wrong!</p>`;
     }
 }
+
+function booleanIcon(boolean) {
+    if (boolean == true) {
+        return `<i class="fa-solid fa-circle-check fa-2x" style="color: #5e72e4;"></i>`;
+    }
+
+    return `<i class="fa-solid fa-circle-xmark fa-2x" style="color: #f5365c;"></i>`;
+} 

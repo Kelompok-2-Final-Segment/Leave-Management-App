@@ -185,11 +185,21 @@ function columnConfig() {
                 return meta.row + meta.settings._iDisplayStart + 1;
             }
         },
-        { data: "name" },
+        {
+            data: null,
+            render: function (data, type, row, meta) {
+                return `<b>${row.name}</b>`;
+            }
+        },
         { data: "balance" },
         { data: "minDuration" },
         { data: "maxDuration" },
-        { data: "femaleOnly" },
+        {
+            data: null,
+            render: function (data, type, row, meta) {
+                return booleanIcon(row.femaleOnly);
+            }
+        },
         { data: "remarks" },
         {
             data: null,
