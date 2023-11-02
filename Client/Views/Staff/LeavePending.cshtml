@@ -1,4 +1,5 @@
-﻿@model IEnumerable<API.DTOs.Leaves.LeaveDto>;
+﻿@using Client.Utilities;
+@model IEnumerable<API.DTOs.Leaves.LeaveDto>;
 @{
     ViewData["Page"] = "Leave Pending";
     Layout = "~/Views/Shared/_LayoutDashboardStaff.cshtml";
@@ -35,42 +36,42 @@
                                     <tr>
                                         <td>
                                             <div class="text-center">
-                                                @(index + 1)
+                                                <h6 class="text-sm mb-0"> @(index + 1) </h6>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="text-center">
-                                                @item.NIK
+                                                <h6 class="text-sm mb-0">@item.CreatedDate.ToString("dd-MM-yyyy HH:mm")</h6>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="text-center">
-                                               @item.FullName
+                                                <h6 class="text-sm mb-0">@item.FullName</h6>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="text-center">
-                                                @item.LeaveName
+                                                <h6 class="text-sm mb-0">@item.NIK</h6>
                                             </div>
                                         </td>
                                         <td>
                                             <div class=" text-center">
-                                                @item.CreatedDate.ToString(format)
+                                                <h6 class="text-sm mb-0">@item.LeaveName</h6>
                                             </div>
                                         </td>
                                         <td>
                                             <div class=" text-center">
-                                                @item.StartDate.ToString(format)
+                                                <h6 class="text-sm mb-0"> @item.StartDate.ToString(format) </h6>
                                             </div>
                                         </td>
                                         <td>
                                             <div class=" text-center">
-                                                @item.EndDate.ToString(format)
+                                                <h6 class="text-sm mb-0"> @item.EndDate.ToString(format) </h6>
                                             </div>
                                         </td>
                                         <td>
                                             <div class=" text-center">
-                                                @item.Status
+                                                @Html.Raw(StatusHandler.ConvertStatus(item.Status))
                                             </div>
                                         </td>
                                         <td>

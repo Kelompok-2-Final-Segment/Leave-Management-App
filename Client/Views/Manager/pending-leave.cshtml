@@ -1,8 +1,9 @@
-﻿@model IEnumerable<API.DTOs.Leaves.LeaveDto>;
+﻿@using Client.Utilities;
+@model IEnumerable<API.DTOs.Leaves.LeaveDto>;
 @{
     ViewData["Page"] = "Pending Leave";
     Layout = "~/Views/Shared/_LayoutDashboardManager.cshtml";
-    string format = "dd - MM - yyyy";
+    string format = "dd-MM-yyyy";
     int index = 0;
     
 }
@@ -41,7 +42,7 @@
                                         </td>
                                         <td>
                                             <div class="text-center">
-                                                <h6 class="text-sm mb-0">@item.NIK</h6>
+                                                <h6 class="text-sm mb-0">@item.CreatedDate.ToString("dd-MM-yyyy HH:mm")</h6>
                                             </div>
                                         </td>
                                         <td>
@@ -51,12 +52,12 @@
                                         </td>
                                         <td>
                                             <div class="text-center">
-                                                <h6 class="text-sm mb-0">@item.LeaveName</h6>
+                                                <h6 class="text-sm mb-0">@item.NIK</h6>
                                             </div>
                                         </td>
                                         <td>
                                             <div class=" text-center">
-                                                <h6 class="text-sm mb-0">@item.CreatedDate.ToString(format)</h6>
+                                                <h6 class="text-sm mb-0">@item.LeaveName</h6>
                                             </div>
                                         </td>
                                         <td>
@@ -71,7 +72,7 @@
                                         </td>
                                         <td>
                                             <div class=" text-center">
-                                                <h6 class="text-sm mb-0">@item.Status</h6>
+                                                @Html.Raw(StatusHandler.ConvertStatus(item.Status))
                                             </div>
                                         </td>  
                                         <td>

@@ -11,15 +11,6 @@
                 <h5>STAFF FORM</h5>
             </div>
         <form asp-action="RequestALeave" method="post" >
-            <div class="form-group">
-                <input asp-for="Leave.EmployeeGuid" value="@Model.Leave.EmployeeGuid" hidden />
-                <label asp-for="Leave.Description">Deskripsi</label>
-                <textarea asp-for="Leave.Description"  class="form-control"
-                          id="alasan"
-                          rows="3"                       
-                          required></textarea>
-                <span asp-validation-for="Leave.Description" class="text-danger"></span>
-            </div>
             <div class="row">
                 <div class="col-md-12 col-sm-12">
                     <div class="form-group">
@@ -38,36 +29,48 @@
                     </div>
                 </div>
             </div>
+            <div class="form-inline">
+                <div class="form-group">
+                    <label asp-for="Leave.StartDate">Mulai Cuti</label>
+                    <input asp-for="Leave.StartDate"
+                           type="date"
+                           value="@DateTime.Now.ToString("yyy-MM-dd")"
+                           class="form-control"
+                           id="mulai"
+                           aria-describedby="mulai"
+                           required />
+                    <span asp-validation-for="Leave.StartDate" class="text-danger"></span>
 
-            <div class="form-group">
-                <label asp-for="Leave.StartDate">Mulai Cuti</label>
-                <input asp-for="Leave.StartDate" 
-                       type="date"
-                       class="form-control"
-                       id="mulai"
-                       aria-describedby="mulai"
-   
-                       required />
-                <span asp-validation-for="Leave.StartDate" class="text-danger"></span>
-
+                </div>
+                <div class="form-group">
+                    <label asp-for="Leave.EndDate">Berakhir Cuti</label>
+                    <input asp-for="Leave.EndDate"
+                           type="date"
+                           value="@DateTime.Now.ToString("yyy-MM-dd")"
+                           class="form-control"
+                           id="berakhir"
+                           aria-describedby="berakhir"
+                           required />
+                    <span asp-validation-for="Leave.EndDate" class="text-danger"></span>
+                </div>
             </div>
+           
             <div class="form-group">
-                <label asp-for="Leave.EndDate">Berakhir Cuti</label>
-                <input asp-for="Leave.EndDate"
-                        type="date"
-                       class="form-control"
-                       id="berakhir"
-                       aria-describedby="berakhir"
-                       required />
-                <span asp-validation-for="Leave.EndDate" class="text-danger"></span>
+                <input asp-for="Leave.EmployeeGuid" value="@Model.Leave.EmployeeGuid" hidden />
+                <label asp-for="Leave.Description">Deskripsi</label>
+                <textarea asp-for="Leave.Description"  class="form-control"
+                          id="alasan"
+                          rows="3"                       
+                          required></textarea>
+                <span asp-validation-for="Leave.Description" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary justify-content-end">Submit</button>
         </form>
     </div>
 </div>
 
 @section Scripts{
-    <script src="~/js/leave.js" asp-append-version="true"></script>
+    <script src="~/js/date.js" asp-append-version="true"></script>
 }
 
 

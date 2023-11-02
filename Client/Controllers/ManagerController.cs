@@ -47,7 +47,7 @@ public class ManagerController : Controller
             leaveDetails = new List<LeaveDto>();
         }
 
-        return View("pending-leave",leaveDetails);
+        return View("pending-leave",leaveDetails.OrderByDescending(l => l.CreatedDate));
     }
 
     [HttpGet("leaves/pending/edit")]
