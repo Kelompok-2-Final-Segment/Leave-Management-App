@@ -15,7 +15,6 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Policy = "Admin")]
     public class AdminController : ControllerBase
     {
         private readonly IAccountRepository _accountRepository;

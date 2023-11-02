@@ -1,10 +1,12 @@
 ﻿using API.Utilities.Handlers;
 using Client.Contracts;
 using Newtonsoft.Json;
+using NuGet.Common;
+using System.Net.Http.Headers;
 
 namespace Client.Repositories;
 
-public class GeneralRepository 
+public class GeneralRepository
 {
     protected readonly string request;
     protected HttpClient httpClient;
@@ -16,8 +18,11 @@ public class GeneralRepository
         this.request = request;
         httpClient = new HttpClient
         {
-            BaseAddress = new Uri("https://localhost:7064/api/")
+            BaseAddress = new Uri("https://localhost:7064/api/"),
+
         };
+
+
     }
 
 }

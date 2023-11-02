@@ -80,13 +80,13 @@ namespace API.Controllers
         [HttpGet("Leaves/Available/{guid}")]
         [AllowAnonymous]
         public IActionResult GetAvailableLeave(Guid guid) {
-            var leaveBalances = _leaveBalanceRepository.GetAll();
+            var leaveBalances = _leaveBalanceRepository.GetAll().Where(lb => lb.EmployeeGuid == guid && lb.IsAvailable == true); ;
             var leaveType = _leaveTypeRepository.GetAll();
             if (!leaveBalances.Any() && !leaveType.Any())
             {
                 return NotFound(new ResponseNotFoundHandler("Data Not Found"));
             }
-            leaveBalances = leaveBalances.Where(lb => lb.EmployeeGuid == guid && lb.IsAvailable == true);
+    
             var availableLeave = from lb in leaveBalances
                                  join lt in leaveType on lb.LeaveTypeGuid equals lt.Guid
                                  select AvailableLeaveDto.ConvertToAvailableLeaveDto(lt, lb);
